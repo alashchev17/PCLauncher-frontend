@@ -12,10 +12,7 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
-  "author": {
-    "name": "f0Re3t",
-    "email": "vlad.f0Re3t@yandex.by"
-  },
+  "author": "f0Re3t <vlad.f0Re3t@yandex.by> Volk <volk@volkdev.su>",
   "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^6.4.2",
@@ -25,6 +22,7 @@
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "@electron-forge/plugin-webpack": "^6.4.2",
+    "@types/node": "^20.6.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vercel/webpack-asset-relocator-loader": "^1.7.3",
