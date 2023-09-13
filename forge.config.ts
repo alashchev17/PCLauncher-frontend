@@ -23,12 +23,12 @@ const config: ForgeConfig = {
         config: rendererConfig,
         entryPoints: [
           {
-            html: './src/index.html',
-            js: './src/renderer.ts',
+            html: './frontend/index.html',
+            js: './frontend/js/view.js',
             name: 'main_window',
             preload: {
               js: './src/preload.ts',
-            },
+            }
           },
         ],
       },

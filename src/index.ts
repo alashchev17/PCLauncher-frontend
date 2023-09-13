@@ -9,10 +9,14 @@ const createWindow = (): void => {
     height: 800,
     width: 1100,
     frame: false,
-    resizable: false
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    }
   });
 
-  mainWindow.loadFile('frontend/index.html');
+  mainWindow.loadFile('./frontend/index.html');
 
   mainWindow.webContents.openDevTools();
 };

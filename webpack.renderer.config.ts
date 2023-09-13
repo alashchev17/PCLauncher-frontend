@@ -9,6 +9,7 @@ rules.push({
 });
 
 export const rendererConfig: Configuration = {
+  entry: './src/renderer.ts',
   module: {
     rules,
   },
