@@ -42,14 +42,8 @@ class view {
   
     constructor() {
         for (var key in this.#selectors) {
-            let selectrs = document.querySelectorAll("." + this.#selectors[key]);
-            this.#selectors[key] = selectrs[0];
-             if(key.indexOf("Page") !== -1) {
-                continue;
-            }
-            selectrs.forEach(selector => {
-                selector.classList.add('nodrag');
-            });
+            let selectr = document.querySelector("." + this.#selectors[key]);
+            this.#selectors[key] = selectr;
         }
         let sl = this.#selectors; 
         //events
