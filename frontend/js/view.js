@@ -42,12 +42,14 @@ class view {
   
     constructor() {
         for (var key in this.#selectors) {
-            let selector = document.querySelector("." + this.#selectors[key]);
-            this.#selectors[key] = selector;
-            if(key.indexOf("Page") !== -1) {
+            let selectrs = document.querySelectorAll("." + this.#selectors[key]);
+            this.#selectors[key] = selectrs[0];
+             if(key.indexOf("Page") !== -1) {
                 continue;
             }
-            selector.classList.add('nodrag');
+            selectrs.forEach(selector => {
+                selector.classList.add('nodrag');
+            });
         }
         let sl = this.#selectors; 
         //events
