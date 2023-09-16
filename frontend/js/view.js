@@ -9,6 +9,7 @@ class view {
         downloadBlock: 'mainpage__download',
         downloadInfo: 'mainpage__info',
         progressBlock: 'mainpage__progress',
+        progressHover: 'mainpage__blur-hover',
         progressBar: 'mainpage__progress-bar',
         progressRing: 'progress-ring__circle',
         onlineBlock: 'mainpage__online',
@@ -47,7 +48,7 @@ class view {
         }
         let sl = this.#selectors; 
         //events
-        this.events(sl)
+        this.events(sl);
   
         //Circle
         this.radius = sl.progressRing.r.baseVal.value;
@@ -69,13 +70,14 @@ class view {
         let sl = this.#selectors;
         if (percent == 1) {
             sl.downloadButton.remove();
-            this.selectors_toggle([sl.progressBlock, sl.downloadInfo, sl.progressBar, sl.onlineBlock])
+            this.selectors_toggle([sl.progressBlock, sl.downloadInfo, sl.progressBar, sl.onlineBlock]);
         }
         this.progressBar = percent;
         this.progressCircle = percent;
         if (percent == 100) {
-            this.selectors_toggle([sl.progressBlock, sl.downloadInfo, sl.progressBar, sl.onlineBlock])
+            this.selectors_toggle([sl.progressBlock, sl.downloadInfo, sl.progressBar, sl.onlineBlock]);
             sl.downloadBlock.innerHTML = this.#play_button;
+            sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active);
         }
     }
     set page(p) {
@@ -83,28 +85,46 @@ class view {
         if(p != this.page_name) {
           this.page = this.page_name;
         }
-        sl.classList.toggle(sl.classList[0] + this.#active)
+        sl.classList.toggle(sl.classList[0] + this.#active);
         this.page_name = p;
     }
     events(sl) {
         sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
-        sl.downloadButton.addEventListener("click", () => { this.update = 1; });
+        sl.downloadButton.addEventListener("click", () => {
+            // this.update = 1;
+            /* УДАЛИТЬ КОД 96-99 строк на проде, снять комментарий с 94-ой строки */
+            this.percent_update(1);
+            if (sl.progressHover.classList.contains(sl.progressHover.classList[0] + this.#active)) {
+                sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active);
+            }
+        });
+        sl.downloadButton.addEventListener("mouseenter", () => { sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active); })
+        sl.downloadButton.addEventListener("mouseleave", () => { sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active); })
         sl.settingButton.addEventListener("click", () => { if (this.page_name != 'preloader') this.selectors_toggle([sl.settingButton, sl.settingBlock]); });
         sl.hideButton.addEventListener("click", () => { });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
         sl.profileButton.addEventListener("click", () => { this.page = 'login' });
         sl.loginButton.addEventListener("click", function (e) {
             event.preventDefault;
-            this.login(sl.loginInput, sl.loginCheck)
+            this.login(sl.loginInput, sl.loginCheck);
         });
 
     }
     selectors_toggle(selectors) {
-        for (var i = 0; i != selectors.Length; i++) {
-            selectors[i].classList.toggle(selectors[i].classList[0] + this.#active)
+        selectors.forEach(selector => {
+            selector.classList.toggle(selector.classList[0] + this.#active);
+        });
+    }
+    percent_update(percent) {
+        if (percent <= 100) {
+            this.update = percent;
+            setTimeout(() => { this.percent_update(percent + 1) }, 100);
+        } else {
+            return;
         }
     }
+    // percent_update() удалить на проде
     setText(cl, text) {
         document.querySelector("." + cl).innerHTML = text;
+    }
 }
-  }

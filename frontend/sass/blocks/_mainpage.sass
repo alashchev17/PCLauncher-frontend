@@ -1,0 +1,395 @@
+.logotype
+  max-width: 52px
+  max-height: 52px
+.mainpage
+  &__wrapper
+    position: relative
+    height: 100%
+    width: 100%
+    overflow: hidden
+    background-color: #000000
+    top: 0%
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 100%), url(../img/background.png)
+    background-position: center center
+    background-size: cover
+    z-index: $mainpageIndex
+    transition: background 0.3s
+    &--error
+      background: #0C0C0C
+    &--hidden
+      background: #000000
+    &--login
+      background: url(../img/background.png)
+      background-position: center center
+      background-size: cover
+  &__section
+    display: flex
+    flex-direction: column
+    &--hidden
+      display: none
+  &__content
+    display: none
+  &__blur
+    width: 100%
+    height: 338px
+    position: absolute
+    left: 0
+    bottom: 0
+    border-bottom-left-radius: 41px
+    border-bottom-right-radius: 41px
+    background: rgba(0, 0, 0, 0.2)
+    backdrop-filter: blur(10px)
+    z-index: $blurIndex
+    &-hover
+      position: absolute
+      left: 0
+      right: 0
+      width: 100%
+      height: 100%
+      background: radial-gradient(50% 35% at 50% 55%, rgba(74,45,249,0.3) 5.1%, rgba(0,0,0,0) 100%)
+      opacity: 0
+      visibility: hidden
+      transition: all 0.3s
+      &--active
+        opacity: 1
+        visibility: visible
+    &--hidden
+      display: none
+  &__stroke
+    margin-top: 175px
+    width: 100%
+    height: 1px
+    background-color: rgba(255, 255, 255, 0.1)
+  &__tray
+    position: absolute
+    top: 10px
+    right: 10px
+    display: flex
+    z-index: $trayIndex
+    &-button
+      width: 51px
+      height: 51px
+      background-repeat: no-repeat
+      background-position: center center
+      transition: background-image 0.3s
+      &--hide
+        background-image: url(../img/icons/hide.svg)
+        background-size: 16px 2px
+      &--settings
+        background-image: url(../img/icons/settings.svg)
+        background-size: 16px 16px
+      &--close
+        background-image: url(../img/icons/close.svg)
+        background-size: 14px 14px
+      &--active
+        background-image: url(../img/icons/settings--active.svg)
+  &__header
+    margin-bottom: 70px
+    position: relative
+    z-index: $headerIndex
+    &--hidden
+      display: none
+  &__navigation
+    display: flex
+    align-items: center
+    justify-content: space-between
+  &__branding
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    padding: 0px
+    gap: 15px
+    font-family: "Roboto Bold"
+    text-transform: uppercase
+    margin-bottom: 40px
+  &__label
+    display: inline-block
+    font-family: "Roboto Regular"
+    font-size: 12px
+    line-height: 18px
+    padding: 3px 10px
+    background: rgba(255, 255, 255, 0.15)
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2)
+    backdrop-filter: blur(20px)
+    border-radius: 15px
+  &__title
+    font-size: 48px
+    line-height: 42px
+  &__links
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-bottom: 50px
+  &__link
+    font-size: 16px
+    line-height: 22px
+    position: relative
+    display: flex
+    align-items: center
+    &:not(:last-child)
+      margin-right: 20px
+  &__updates
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 20px
+    margin-bottom: 70px
+  &__update
+    display: inline-flex
+    align-items: flex-end
+    position: relative
+    height: 150px
+    padding: 15px
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15)
+    border-radius: 10px
+    cursor: pointer
+    &:first-child
+      width: 230px
+    &:last-child
+      width: 313px
+    &-title
+      font-family: "Roboto Medium"
+      font-weight: 500
+      font-size: 16px
+      line-height: 22px
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+    &--news
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50.38%, rgba(0, 0, 0, 0.5) 100%), url(../img/update-bg-1.png), #2A2A2A
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: cover
+    &--update
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50.38%, rgba(0, 0, 0, 0.5) 100%), url(../img/update-bg-2.png), #2A2A2A
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: cover
+  &__download
+    text-align: center
+    position: relative
+  &__info
+    display: none
+    width: 100%
+    &--active
+      display: flex
+      justify-content: space-between
+  &__button
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    font-family: "Roboto Medium"
+    font-weight: 500
+    font-size: 16px
+    line-height: 22px
+    color: #ffffff
+    padding: 11px 11px 10px 22px
+    background-color: #0C0C0C
+    border: 3px solid #4A2DF9
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15)
+    border-radius: 40px
+    margin-bottom: 40px
+    transition: 0.3s all
+    &--ready
+      background-color: #4A2DF9
+      &:hover
+        .mainpage
+          &__button
+            &-icon
+              path
+                fill: #ffffff!important
+    &:hover 
+      background-color: #4A2DF9
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15)
+      .mainpage
+        &__button
+          &-icon
+            path
+              fill: #4A2DF9
+    &-icon
+      margin-left: 14.5px
+      width: 34px
+      height: 34px
+      path
+        transition: all 0.3s
+  &__online
+    text-align: center
+    font-family: "Roboto Regular"
+    font-weight: 400
+    font-size: 16px
+    line-height: 22px
+    text-align: center
+    color: #D4D4D2
+    &--active
+      margin-top: 83px
+    &-number
+      color: #ffffff
+      font-family: "Roboto Medium"
+      font-weight: 500
+  &__progress
+    position: absolute
+    left: 50%
+    top: -50%
+    transform: translateX(-50%)
+    box-sizing: content-box
+    display: none
+    &-bar
+      display: none
+      position: absolute
+      top: 172px
+      left: 0
+      width: 0%
+      height: 3px
+      background-color: #4A2DF9
+      &--active
+        display: block
+    &--active
+      display: block
+    &::after
+      content: ''
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      width: 12px
+      height: 15px
+      background-image: url(../img/icons/download-3.svg)
+      background-repeat: no-repeat
+      background-size: cover
+      background-position: center center
+.navigation
+  &__button
+    display: inline-block
+    background: rgba(255, 255, 255, 0.15)
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15)
+    background-repeat: no-repeat
+    background-position: center center
+    width: 42px
+    height: 42px
+    border-radius: 15px
+    cursor: pointer
+.button
+  &__burger
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 4px
+    transition: 0.3s all
+    cursor: pointer
+    &-item
+      width: 20px
+      height: 2px
+      background-color: #ffffff
+      border-radius: 10px
+      transition: 0.3s all
+    &--active
+      background-color: #4A2DF9
+      .button__burger-item
+        &:nth-child(2)
+          opacity: 0
+          visibility: hidden
+        &:first-child
+          transform: translateY(6px) rotate(45deg)
+        &:last-child
+          transform: translateY(-6px) rotate(-45deg)
+  &__profile
+    background-size: 17.63px 18.66px
+    background-image: url(../img/icons/profile.svg)
+.burger
+  &__menu
+    z-index: $burgerIndex
+    opacity: 0
+    visibility: hidden
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-color: #0C0C0C
+    padding-top: 122px
+    overflow: hidden
+    transition: 0.3s all
+    &--active
+      opacity: 1
+      visibility: visible
+  &__title, &__subtitle
+    font-family: "Roboto Medium"
+    font-weight: 500
+    font-size: 22px
+    line-height: 145%
+  &__items
+    margin-top: 40px
+    display: flex
+    align-items: center
+    gap: 20px
+    margin-bottom: 81px
+  &__item
+    display: flex
+    flex-direction: column
+    border-radius: 20px
+    overflow: hidden
+    &-content
+      padding: 20px
+      display: flex
+      flex-direction: column
+      gap: 10px
+      background-color: #181818
+  &__link
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    padding: 10px
+    background: linear-gradient(93.24deg, #2A2A2A 0%, #3E3E3E 100%)
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15)
+    border-radius: 10px
+  &__footer
+    background-color: #101010
+    width: 100%
+    height: 180px
+    padding: 0 70px
+    display: flex
+    justify-content: space-between
+    align-items: center
+  &__social
+    display: flex
+    gap: 10px
+    &-link
+      width: 40px
+      height: 40px
+      display: flex
+      align-items: center
+      justify-content: center
+      background: rgba(255, 255, 255, 0.15)
+      box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2)
+      backdrop-filter: blur(20px)
+      border-radius: 40px
+  &__info
+    font-weight: 400
+    font-size: 16px
+    line-height: 138%
+    color: #787878
+.progress-ring
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  &__circle
+    transform-origin: center
+    transform: rotate(-90deg)
+    transition: stroke-dashoffset 0.3s
+.info
+  &__status, &__speed, &__size
+    font-family: "Roboto Bold"
+    font-style: normal
+    font-weight: 700
+    font-size: 12px
+    line-height: 18px
+    text-transform: uppercase
+  &__data
+    display: flex
+    gap: 40px
+.main
+  &--active
+    display: block

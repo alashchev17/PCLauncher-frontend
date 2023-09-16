@@ -1,0 +1,118 @@
+.login
+  display: flex
+  height: 100%
+  &__aside
+    padding: 140px 70px
+    background-color: #000000
+    max-width: 442px
+  &__form
+    width: 302px
+    height: 100%
+    display: flex
+    flex-direction: column
+    gap: 40px
+  &__title
+    font-family: "Roboto Medium"
+    font-weight: 500
+    font-size: 32px
+    line-height: 131%
+  &__registration
+    font-family: "Roboto Regular"
+    font-weight: 400
+    font-size: 16px
+    line-height: 138%
+    color: #787878
+  &__link
+    color: #ffffff
+  &__input
+    padding: 15px
+    background-color: #181818
+    font-family: "Roboto Regular"
+    font-weight: 400
+    font-size: 16px
+    line-height: 138%
+    border-radius: 10px
+    color: #D4D4D2
+    &::placeholder
+      color: #D4D4D2
+  &__label
+    font-family: "Roboto Regular"
+    font-weight: 400
+    font-size: 16px
+    line-height: 138%
+    color: #D4D4D2
+    display: flex
+    align-items: center
+    gap: 10px
+    cursor: pointer
+  &__checkbox
+    position: relative
+    transition: all 0.15s
+    &:checked + .login__checkbox--real
+      border-color: #4A2DF9
+      background-color: #4A2DF9
+      .login__checkmark
+        opacity: 1
+        visibility: visible
+    &--hidden
+      -webkit-appearance: none
+      position: absolute
+    &--real
+      width: 24px
+      height: 24px
+      border-radius: 50%
+      border: 1px solid #2A2A2A
+  &__checkmark
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    opacity: 0
+    visibility: hidden
+    transition: all 0.15s
+  &__button
+    display: flex
+    align-items: center
+    gap: 7px
+    color: #ffffff
+    font-family: "Roboto Medium"
+    font-weight: 500
+    font-size: 16px
+    line-height: 138%
+    background-color: #4A2DF9
+    padding: 13px 20px
+    border-radius: 40px
+    transition: all 0.3s
+    &-icon
+      path
+        transition: all 0.3s
+    &:hover
+      background-color: #FFFFFF
+      color: #4A2DF9
+      .login__button-icon
+        path
+          fill: #4A2DF9
+    &:disabled
+      background-color: #787878
+      color: #D4D4D2
+      .login__button-icon
+        path
+          fill: #D4D4D2
+  &__content
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100%
+    height: 100%
+.form
+  &__block
+    display: flex
+    flex-direction: column
+    gap: 15px
+    &--bottom
+      flex-direction: row
+      align-items: center
+      justify-content: space-between
+      margin-top: auto
+      .login__link
+        color: #787878
