@@ -27,6 +27,7 @@ const createWindow = (): void => {
   ipcMain.on('window-all-closed', () => {
     app.quit();
   });
+
 };
 
 app.on('ready', createWindow);
