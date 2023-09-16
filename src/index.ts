@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -23,10 +23,8 @@ const createWindow = (): void => {
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+ipcMain.on('window-all-closed', () => {
+  app.quit();
 });
 
 app.on('activate', () => {
