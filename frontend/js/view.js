@@ -101,7 +101,7 @@ class view {
         sl.downloadButton.addEventListener("mouseenter", () => { sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active); })
         sl.downloadButton.addEventListener("mouseleave", () => { sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active); })
         sl.settingButton.addEventListener("click", () => { if (this.page_name != 'preloader') this.selectors_toggle([sl.settingButton, sl.settingBlock]); });
-        sl.hideButton.addEventListener("click", () => { });
+        sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
         sl.profileButton.addEventListener("click", () => { this.page = 'login' });
         sl.loginButton.addEventListener("click", function (e) {

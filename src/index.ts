@@ -19,13 +19,18 @@ const createWindow = (): void => {
   mainWindow.loadFile('./frontend/index.html');
 
   mainWindow.webContents.openDevTools();
+
+  ipcMain.on('minimize', () => {
+    mainWindow.minimize()
+  })
+
+  ipcMain.on('window-all-closed', () => {
+    app.quit();
+  });
 };
 
 app.on('ready', createWindow);
 
-ipcMain.on('window-all-closed', () => {
-  app.quit();
-});
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
