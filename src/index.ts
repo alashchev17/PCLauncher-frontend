@@ -10,6 +10,7 @@ const createWindow = (): void => {
     width: 1100,
     frame: false,
     resizable: false,
+    transparent:true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
