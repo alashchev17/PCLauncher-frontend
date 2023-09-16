@@ -44,6 +44,9 @@ class view {
         for (var key in this.#selectors) {
             let selector = document.querySelector("." + this.#selectors[key]);
             this.#selectors[key] = selector;
+            if(key.indexOf("Page") !== -1) {
+                continue;
+            }
             selector.classList.add('nodrag');
         }
         let sl = this.#selectors; 
