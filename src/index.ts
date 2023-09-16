@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -30,6 +30,10 @@ const createWindow = (): void => {
   });
 
 };
+
+ipcMain.on('open-link', (e, link) => {
+  shell.openExternal(link);
+})
 
 app.on('ready', createWindow);
 

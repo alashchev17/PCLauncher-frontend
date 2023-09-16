@@ -1,4 +1,3 @@
-
 console.log("view.js loaded");
 
 class view {
@@ -19,7 +18,8 @@ class view {
         settingBlock: 'settings',
         profileButton: 'button__profile',
         loginButton: 'login__button',
-        loginInput: 'login__input',
+        loginInputNick: 'login__nick',
+        loginInputPass: 'login__password',
         loginCheck: 'login__checkbox',
         //Pages
         loginPage: 'login',
@@ -55,6 +55,10 @@ class view {
         this.circumference = 2 * Math.PI * this.radius;
         sl.progressRing.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
         sl.progressRing.style.strokeDashoffset = this.circumference;
+
+
+        setTimeout(() => { this.page = 'login' }, 2000);
+        
 
     }
     set progressCircle(percent) {
@@ -104,9 +108,23 @@ class view {
         sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
         sl.profileButton.addEventListener("click", () => { this.page = 'login' });
-        sl.loginButton.addEventListener("click", function (e) {
-            event.preventDefault;
-            this.login(sl.loginInput, sl.loginCheck);
+        sl.loginButton.addEventListener("click", (e) => {
+            var login = sl.loginInputNick.value;
+            var password = sl.loginInputPass.value;
+            var check = sl.loginCheckInput;
+            if (login.length > 0 && password.length > 0) {
+                e.preventDefault();
+                //this.login(login, password, check);
+                this.page = 'main';
+            }
+        });
+
+        document.querySelectorAll("a[target='_blank']").forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                const href = link.getAttribute('href'); 
+                ipcRenderer.send("open-link", href)
+            });
         });
 
     }
@@ -127,4 +145,5 @@ class view {
     setText(cl, text) {
         document.querySelector("." + cl).innerHTML = text;
     }
+
 }

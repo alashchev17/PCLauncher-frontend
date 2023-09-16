@@ -123,6 +123,7 @@ a {
   text-decoration: none;
   color: white;
   font-family: "Roboto Regular";
+  outline: none;
 }
 
 a, input, button, label {
