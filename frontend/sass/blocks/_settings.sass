@@ -1,0 +1,130 @@
+.settings
+  position: absolute
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+  opacity: 0
+  visibility: hidden
+  transition: all 0.3s
+  background: #2A2A2A
+  z-index: $settingsIndex
+  display: flex
+  align-items: center
+  flex-direction: column
+  justify-content: center
+  &--active
+    opacity: 1
+    visibility: visible
+  &__content
+    max-width: 796px
+    width: 100%
+    border-radius: 20px
+    background-color: #0C0C0C
+    padding: 40px
+  &__title
+    font-family: "Roboto Medium"
+    font-weight: 500
+    font-size: 22px
+    line-height: 145%
+    margin-bottom: 30px
+  &__wrapper
+    display: flex
+    flex-direction: column
+    gap: 10px
+    max-height: 424px
+    height: 424px
+    overflow-y: scroll
+    padding-right: 15px
+    &::-webkit-scrollbar
+      width: 5px
+      background: transparent
+      z-index: 0
+      border-radius: 50px
+    &::-webkit-scrollbar-track
+      background: linear-gradient(to left,rgba(42, 42, 42, 0) 0%,rgba(42, 42, 42, 0) 30%,rgba(42, 42, 42, 1) 50%,rgba(42, 42, 42, 0) 70%,rgba(42, 42, 42, 0) 100%)
+    &::-webkit-scrollbar-thumb
+      width: 5px
+      background: #4A2DF9
+      z-index: 10
+      border-radius: 50px
+  &__item
+    display: flex
+    min-height: 42px
+    justify-content: space-between
+    align-items: center
+    gap: 20px
+    color: #D4D4D2
+  &__block
+    display: flex
+    align-items: center
+    gap: 10px
+  &__label
+    min-height: 42px
+    height: 42px
+    display: flex
+    justify-content: space-between
+    align-items: center
+    width: 100%
+    font-family: "Roboto Regular"
+    font-weight: 400
+    font-size: 16px
+    line-height: 138%
+    color: #D4D4D2
+    cursor: pointer
+  &__input
+    display: inline-block
+    max-width: 75px
+    font-family: "Roboto Medium"
+    font-weight: 500
+    font-size: 16px
+    line-height: 138%
+    background-color: transparent
+    border: 1px solid #3A3A3A
+    border-radius: 5px
+    color: #D4D4D2
+    text-align: center
+    padding: 10px
+  &__buttons
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 10px
+  &__checkbox
+    position: relative
+    transition: all 0.15s
+    &:checked + .settings__checkbox--real
+      border-color: #4A2DF9
+      background-color: #4A2DF9
+      .settings__checkmark
+        opacity: 1
+        visibility: visible
+    &--hidden
+      -webkit-appearance: none
+      position: absolute
+    &--real
+      width: 24px
+      height: 24px
+      border-radius: 5px
+      border: 1px solid #2A2A2A
+  &__checkmark
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    opacity: 0
+    visibility: hidden
+    transition: all 0.15s
+  &__button
+    color: #ffffff
+    font-family: "Roboto Medium"
+    font-weight: 500
+    font-size: 16px
+    line-height: 138%
+    padding: 10px 20px
+    background-color: transparent
+    border: 1px solid #3A3A3A
+    border-radius: 50px
+    &--primary
+      background-color: #4A2DF9
+      border-color: #4A2DF9

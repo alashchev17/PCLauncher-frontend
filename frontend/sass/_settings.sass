@@ -1,0 +1,35 @@
+*, *::before, *::after
+  box-sizing: border-box
+  margin: 0
+  padding: 0
+img
+  user-select: none
+  pointer-events: none
+.nodrag
+  -webkit-app-region: no-drag
+body
+  -webkit-app-region: drag
+  user-select: none
+  width: 100vw
+  height: 100vh
+  color: white
+  position: relative
+  font-family: "Roboto Regular"
+a
+  text-decoration: none
+  color: white
+  font-family: "Roboto Regular"
+input, button, select
+  border: unset
+  outline: none
+button
+  cursor: pointer
+  background-color: transparent
+.root
+.container
+  display: flex
+  flex-direction: column
+  padding: 70px
+  height: 100%
+  &__burger
+    padding: 70px 70px 0 70px

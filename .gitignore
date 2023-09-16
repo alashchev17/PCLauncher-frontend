@@ -85,6 +85,9 @@ typings/
 # Webpack
 .webpack/
 
+# Local environment settings
+.vscode/
+
 # Vite
 .vite/
 

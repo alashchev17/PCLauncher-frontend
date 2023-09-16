@@ -1,0 +1,25 @@
+.preloader
+  opacity: 0
+  visibility: hidden
+  height: 100%
+  width: 100%
+  position: absolute
+  transition: all 0.1s
+  top: 0
+  left: 0
+  z-index: $preloaderIndex
+  background: #000000
+  transition: all 0.75s
+  .container
+    position: relative
+  &--active
+    opacity: 1
+    visibility: visible
+  &__logotype
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+  &__heading
+    text-align: center
+    margin-top: auto
