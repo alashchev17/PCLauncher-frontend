@@ -44,6 +44,7 @@ class view {
         for (var key in this.#selectors) {
             let selectr = document.querySelector("." + this.#selectors[key]);
             this.#selectors[key] = selectr;
+            
         }
         let sl = this.#selectors; 
         //events
