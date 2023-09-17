@@ -98,9 +98,6 @@ class view {
             // this.update = 1;
             /* УДАЛИТЬ КОД 96-99 строк на проде, снять комментарий с 94-ой строки */
             this.percent_update(1);
-            if (sl.progressHover.classList.contains(sl.progressHover.classList[0] + this.#active)) {
-                sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active);
-            }
         });
         sl.downloadButton.addEventListener("mouseenter", () => { sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active); })
         sl.downloadButton.addEventListener("mouseleave", () => { sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active); })
@@ -122,8 +119,8 @@ class view {
         document.querySelectorAll("a[target='_blank']").forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault(); 
-                const href = link.getAttribute('href'); 
-                ipcRenderer.send("open-link", href)
+                const href = link.getAttribute('href');
+                ipcRenderer.send("open-link", href);
             });
         });
 
