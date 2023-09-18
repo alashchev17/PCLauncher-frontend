@@ -1,0 +1,37 @@
+.slider
+    &__bottom
+        position: absolute
+        left: 0
+        bottom: 0
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding: 15px
+        background-color: rgba(#000000, 0.4)
+        border-radius: unset
+        z-index: 1
+    &__button
+        position: static !important
+        margin: unset !important
+        color: #737D83 !important
+        width: 12.33px !important
+        height: 24px !important
+        &::after
+            font-size: 24px !important
+    &__pagination
+        position: static !important
+        color: #737D83 !important
+    &__image
+        width: 100%
+        height: 100%
+        object-fit: cover
+.swiper
+    &-pagination
+        &-bullet
+            background: darken(#737D83, 25%) !important
+            opacity: unset !important
+            &-active
+                background: #737D83 !important
+    &-slide
+        border-radius: unset

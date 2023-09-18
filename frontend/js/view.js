@@ -1,5 +1,7 @@
 console.log("view.js loaded");
 
+
+
 class view {
     #selectors = {
         burgerButton: 'button__burger',
@@ -7,6 +9,7 @@ class view {
         downloadButton: 'mainpage__button',
         downloadBlock: 'mainpage__download',
         downloadInfo: 'mainpage__info',
+        mainpageSlider: 'mainpage__update-slider',
         progressBlock: 'mainpage__progress',
         progressHover: 'mainpage__blur-hover',
         progressBar: 'mainpage__progress-bar',
@@ -30,15 +33,15 @@ class view {
     };
     #active = "--active";
     #play_button = `
-  <button class="mainpage__button mainpage__button--ready">
-    Запустить
-    <svg class="mainpage__button-icon" width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="34" height="34" rx="17" fill="black"/>
-      <path d="M23.5849 16.1914C24.1384 16.5508 24.1384 17.4492 23.5849 17.8086L14.2453 23.8735C13.6918 24.2329 13 23.7837 13 23.0649L13 10.9351C13 10.2163 13.6918 9.76709 14.2453 10.1265L23.5849 16.1914Z" fill="white"/>
-    </svg>
-  </button>
-  `;
-  page_name = "preloader";
+    <button class="mainpage__button mainpage__button--ready">
+        Запустить
+        <svg class="mainpage__button-icon" width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="34" height="34" rx="17" fill="black"/>
+        <path d="M23.5849 16.1914C24.1384 16.5508 24.1384 17.4492 23.5849 17.8086L14.2453 23.8735C13.6918 24.2329 13 23.7837 13 23.0649L13 10.9351C13 10.2163 13.6918 9.76709 14.2453 10.1265L23.5849 16.1914Z" fill="white"/>
+        </svg>
+    </button>
+    `;
+    page_name = "preloader";
   
     constructor() {
         for (var key in this.#selectors) {
