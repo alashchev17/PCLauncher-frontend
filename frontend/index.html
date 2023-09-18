@@ -190,18 +190,23 @@
                         <div class="swiper-wrapper">
                             <!-- Slides -->
                             <div class="swiper-slide">
+                                <span class="slider__topic">Мероприятие</span>
                                 <img class="slider__image" src="./img/background.png" alt="News">
                             </div>
                             <div class="swiper-slide">
+                                <span class="slider__topic">Сообщество</span>
                                 <img class="slider__image" src="./img/update-bg-1.png" alt="News">
                             </div>
                             <div class="swiper-slide">
+                                <span class="slider__topic">Мероприятие</span>
                                 <img class="slider__image" src="./img/update-bg-2.png" alt="News">
                             </div>
                             <div class="swiper-slide">
+                                <span class="slider__topic">Сообщество</span>
                                 <img class="slider__image" src="./img/background.png" alt="News">
                             </div>
                             <div class="swiper-slide">
+                                <span class="slider__topic">Мероприятие</span>
                                 <img class="slider__image" src="./img/gambit-craft.png" alt="News">
                             </div>
                         </div>
@@ -521,8 +526,8 @@
             loop: true,
 
             autoplay: {
-                disableOnInteraction: false,
-                delay: 3000,
+                disableOnInteraction: true,
+                delay: 3500,
             },
 
             // If we need pagination
@@ -534,11 +539,6 @@
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
-            },
-
-            // And if we need scrollbar
-            scrollbar: {
-                el: '.swiper-scrollbar',
             },
         });
     </script>
