@@ -1,5 +1,8 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 
+import { Main } from './main'
+
+
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
@@ -43,3 +46,5 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+new Main();
