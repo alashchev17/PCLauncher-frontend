@@ -1,13 +1,13 @@
-import { WebSocketConnection } from './websocket'
+import { Main } from './main'
+
+//import { Window } from './window';
 
 
 export class SessionManager {
     private session: string;
-    private WS : WebSocketConnection
     public checked: boolean = false;
 
-    constructor(ws: WebSocketConnection) {
-        this.WS = ws;
+    constructor() {
     }
     
     
@@ -20,7 +20,10 @@ export class SessionManager {
         if(twofactor != 0) {
             data.twofactor = twofactor;
         };
-        this.WS.send(this.generateRequest(1, data));
+        Main.WS.send(this.generateRequest(1, data));       
+        
+    }
+    public logout() {
     }
     private generateRequest(key:number, data: any) : string{
         let obj  = {

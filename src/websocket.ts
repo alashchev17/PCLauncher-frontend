@@ -1,5 +1,5 @@
-import { ipcMain, ipcRenderer } from "electron";
 import WebSocket from 'ws';
+//import { Main } from './main'
 
 export class WebSocketConnection {
     private ws: WebSocket | null = null;
