@@ -1,5 +1,7 @@
 import { Main } from './main'
 
+import * as crypto from 'crypto';
+
 //import { Window } from './window';
 
 
@@ -16,10 +18,12 @@ export class SessionManager {
         this.checked = true;
     }
     public authorize(login: string, password: string, save:boolean, twofactor: number) {
-        let data = {login:login, password:password, twofactor:0}
+        let hashPassword = crypto.createHash('sha256').update(password).digest('hex');
+        let data = {login:login, password:hashPassword, code:0}
         if(twofactor != 0) {
-            data.twofactor = twofactor;
+            data.code = twofactor;
         };
+        console.log(this.generateRequest(1, data));
         Main.WS.send(this.generateRequest(1, data));       
         
     }

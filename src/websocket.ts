@@ -1,6 +1,8 @@
 import WebSocket from 'ws';
 //import { Main } from './main'
 
+import { Window } from './window';
+
 export class WebSocketConnection {
     private ws: WebSocket | null = null;
     private method;
@@ -8,13 +10,13 @@ export class WebSocketConnection {
     private errorListeners: ((error: any) => void)[] = [];
 
     private methodsMessage: { [key: number]: string } = {
-        1: 'Authorization'
+        1: 'Authorization',
+        2: 'Notification'
     }
 
  
     constructor() {
         this.method = new WebSocketMethods();
-        //this.connectionPromise = this.connect();
     }
  
     public async connect() {
@@ -44,17 +46,13 @@ export class WebSocketConnection {
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
-        interface message {
-            type: number;
-            response: {
-                'error': number,
-                'error_message': string,
-            };
-        }
-        const obj : message = JSON.parse(event.data.toString()); 
-        if(obj.response.error != 0) {
+        const obj = JSON.parse(event.data.toString());
+        if(obj.response.error != undefined) {
+            if(obj.error >= 100 && obj.error != 106 && obj.errmr <= 10000) {
+                Window.main.webContents.send('error', obj.response);
+            }
             //Отправка ошибки на фронт
-            console.log(obj.response.error_message);
+            console.log(obj.response.error_message, obj.response.error);
             return;
         }
         this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
@@ -114,7 +112,15 @@ export class WebSocketConnection {
         }
     }
 
-    private Authorization(data : any) {
-        console.log(data);
+    private Authorization(data: any) {
+        let type = 'login-success';
+        if (data.token == '') {
+            type = 'login-twofactor';
+        }
+        Window.main.webContents.send(type, data);
+        console.log('Auth' + data);
+    }
+    private Notification(data: any) {
+        console.log('Not' + data);
     }
  }

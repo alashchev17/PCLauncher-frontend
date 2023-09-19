@@ -35,7 +35,7 @@ export class Window {
       app.quit();
     });
     ipcMain.on('open-link', (e, link) => {
-        shell.openExternal(link);
+        shell.openExternal(`https://${link}`);
       });
   }
 
