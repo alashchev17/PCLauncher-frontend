@@ -7,8 +7,8 @@ import { ipcMain } from 'electron';
 import { Window } from './window';
 
 export class Main {
-    static WS: WebSocketConnection = new WebSocketConnection();
-    static Session : SessionManager = new SessionManager();
+    static WS = new WebSocketConnection();
+    static Session = new SessionManager();
     private IPCMethods = {
         'login': (e:any, login: string, password: string, save: boolean, twofactor: number) =>{ Main.Session.authorize(login, password, save, twofactor); },
         'logout': (e:any) => { Main.Session.logout(); } 
