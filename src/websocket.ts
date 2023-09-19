@@ -1,4 +1,4 @@
-import { ipcRenderer } from "electron";
+import { ipcMain, ipcRenderer } from "electron";
 import WebSocket from 'ws';
 
 export class WebSocketConnection {
@@ -6,6 +6,10 @@ export class WebSocketConnection {
     private method;
 
     private errorListeners: ((error: any) => void)[] = [];
+
+    private methodsMessage: { [key: number]: string } = {
+        1: 'Authorization'
+    }
 
  
     constructor() {
@@ -40,7 +44,20 @@ export class WebSocketConnection {
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
-        this.method.CallFunction(1);
+        interface message {
+            type: number;
+            response: {
+                'error': number,
+                'error_message': string,
+            };
+        }
+        const obj : message = JSON.parse(event.data.toString()); 
+        if(obj.response.error != 0) {
+            //Отправка ошибки на фронт
+            console.log(obj.response.error_message);
+            return;
+        }
+        this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
     }
  
     private onClose(event:  WebSocket.CloseEvent) {
@@ -65,7 +82,6 @@ export class WebSocketConnection {
     }
 
     private emitError(error: any) {
-        // Вызываем все зарегистрированные обработчики ошибок
         for (const listener of this.errorListeners) {
             listener(error);
         }
@@ -84,20 +100,21 @@ export class WebSocketConnection {
 }
 
  class WebSocketMethods {
-    [key: string]: (...args: any[]) => any;
+    [key: string]: (...object: any[]) => any;
 
     constructor() {
 
     }
-    CallFunction(key: number, ...data: any[]) {
+    CallFunction(key: string, data: any) {
         const fn = this[key]
         if (typeof fn === 'function') {
-          return fn(...data);
+          return fn(data);
         } else {
           throw new Error(`Function '${key}' not found`);
         }
     }
 
-    private Authorization(data: any) {
+    private Authorization(data : any) {
+        console.log(data);
     }
  }

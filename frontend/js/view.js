@@ -108,9 +108,10 @@ class view {
         sl.loginButton.addEventListener("click", (e) => {
             var login = sl.loginInputNick.value;
             var password = sl.loginInputPass.value;
-            var check = sl.loginCheckInput;
+            var check = false;
             if (login.length > 0 && password.length > 0) {
                 e.preventDefault();
+                ipcRenderer.send("login", login, password, check);
                 //this.login(login, password, check);
                 this.page = 'main';
             }
