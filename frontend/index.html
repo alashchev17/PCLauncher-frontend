@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="mainpage mainpage__wrapper">
-    <section class="main mainpage__content">
+    <section class="main mainpage__content main--hidden">
         <div class="container">
         <header class="mainpage__header">
             <nav class="navigation mainpage__navigation">
@@ -363,24 +363,25 @@
             </div>
             <!-- /.form__block -->
             <div class="form__block">
-            <input type="text" class="login__nick login__input" placeholder="Имя пользователя" required />
-            <input type="password" class="login__password login__input" placeholder="Пароль" required />
-            <label class="login__label">
-                <input type="checkbox" class="login__checkbox login__checkbox--hidden" />
-                <div class="login__checkbox login__checkbox--real">
-                <svg
-                    class="login__checkmark"
-                    width="12"
-                    height="9"
-                    viewBox="0 0 12 9"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
-                </svg>
-                </div>
-                Запомните меня
-            </label>
+                <input type="text" class="login__nick login__input" placeholder="Имя пользователя" required />
+                <input type="password" class="login__password login__input" placeholder="Пароль" required />
+                <input type="number" class="login__twofactor login__input login__twofactor--hidden" placeholder="Код двухфакторной авторизации" />
+                <label class="login__label">
+                    <input type="checkbox" class="login__checkbox login__checkbox--hidden" />
+                    <div class="login__checkbox login__checkbox--real">
+                    <svg
+                        class="login__checkmark"
+                        width="12"
+                        height="9"
+                        viewBox="0 0 12 9"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
+                    </svg>
+                    </div>
+                    Запомните меня
+                </label>
             </div>
             <!-- /.form__block -->
             <div class="form__block form__block--bottom">

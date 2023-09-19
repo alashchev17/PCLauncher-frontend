@@ -4,10 +4,19 @@
   &__logotype
     max-width: 52px
     max-height: 52px
+    transition: all 0.3s ease-in-out
+    &--hidden
+      opacity: 0
+      visibility: hidden
   &__aside
     padding: 140px 70px
     background-color: #000000
     max-width: 442px
+    transition: all 0.3s ease-in-out
+    opacity: 1
+    &--hidden
+      opacity: 0
+      transform: translateX(-100%)
   &__form
     width: 302px
     height: 100%
@@ -38,6 +47,17 @@
     color: #D4D4D2
     &::placeholder
       color: #D4D4D2
+  &__twofactor
+    transform: translateY(-15px)
+    opacity: 0
+    visibility: hidden
+    transition: all 0.3s ease-in-out
+    &--hidden
+      display: none
+    &--active
+      transform: translateY(0)
+      opacity: 1
+      visibility: visible
   &__label
     font-family: "Roboto Regular"
     font-weight: 400

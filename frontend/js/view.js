@@ -20,9 +20,12 @@ class view {
         settingButton: 'mainpage__tray-button--settings',
         settingBlock: 'settings',
         profileButton: 'button__profile',
+        loginLogo: 'login__logotype',
+        loginAside: 'login__aside',
         loginButton: 'login__button',
         loginInputNick: 'login__nick',
         loginInputPass: 'login__password',
+        loginInput2FA: 'login__twofactor',
         loginCheck: 'login__checkbox',
         //Pages
         loginPage: 'login',
@@ -32,6 +35,7 @@ class view {
 
     };
     #active = "--active";
+    #hidden = "--hidden";
     #play_button = `
     <button class="mainpage__button mainpage__button--ready">
         Запустить
@@ -107,16 +111,66 @@ class view {
         sl.settingButton.addEventListener("click", () => { if (this.page_name != 'preloader') this.selectors_toggle([sl.settingButton, sl.settingBlock]); });
         sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
-        sl.profileButton.addEventListener("click", () => { this.page = 'login' });
+        sl.profileButton.addEventListener("click", () => {
+            sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
+            setTimeout(() => {
+                this.page = 'login';
+                setTimeout(() => {
+                    sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
+                    sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                }, 100);
+            }, 500);
+        });
         sl.loginButton.addEventListener("click", (e) => {
             var login = sl.loginInputNick.value;
             var password = sl.loginInputPass.value;
+            var twofactor = sl.loginInput2FA.value;
             var check = false;
-            if (login.length > 0 && password.length > 0) {
-                e.preventDefault();
-                ipcRenderer.send("login", login, password, check);
-                //this.login(login, password, check);
-                this.page = 'main';
+            
+            if (sl.loginInput2FA.getAttribute("required")) {
+                if (login != "GitHub" && sl.loginInput2FA.classList.contains(sl.loginInput2FA.classList[0] + this.#active)) {
+                    e.preventDefault();
+                    sl.loginInput2FA.classList.remove(sl.loginInput2FA.classList[0] + this.#active);
+                    setTimeout(() => {
+                        sl.loginInput2FA.classList.add(sl.loginInput2FA.classList[0] + this.#hidden);
+                        sl.loginInput2FA.removeAttribute("required");
+                    }, 300);
+                    return;
+                } else if (login.length > 0 && password.length > 0 && twofactor.length > 0) {
+                    e.preventDefault();
+                    ipcRenderer.send("login", login, password, check, twofactor);
+                    //this.login(login, password, check, twofactor);
+                    sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
+                    sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
+                    setTimeout(() => {
+                        this.page = 'main';
+                        setTimeout(() => {
+                            sl.mainPage.classList.remove(sl.mainPage.classList[0] + this.#hidden);
+                        }, 100);
+                    }, 300);
+                }
+            } else if (!sl.loginInput2FA.getAttribute("required")) {
+                if (login.length > 0 && password.length > 0) {
+                    e.preventDefault();
+                    ipcRenderer.send("login", login, password, check);
+                    //this.login(login, password, check);
+                    if (login == "GitHub") {
+                        sl.loginInput2FA.classList.remove(sl.loginInput2FA.classList[0] + this.#hidden);
+                        setTimeout(() => {
+                            sl.loginInput2FA.classList.add(sl.loginInput2FA.classList[0] + this.#active);
+                            sl.loginInput2FA.setAttribute("required", "required");
+                        }, 300);
+                        return;
+                    }
+                    sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
+                    sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
+                    setTimeout(() => {
+                        this.page = 'main';
+                        setTimeout(() => {
+                            sl.mainPage.classList.remove(sl.mainPage.classList[0] + this.#hidden);
+                        }, 100);
+                    }, 300);
+                }
             }
         });
 
