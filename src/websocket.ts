@@ -1,11 +1,13 @@
 import WebSocket from 'ws';
-//import { Main } from './main'
+import { Main } from './main'
 
 import { Window } from './window';
 
 export class WebSocketConnection {
     private ws: WebSocket | null = null;
     private method;
+
+    public token = '';
 
     private errorListeners: ((error: any) => void)[] = [];
 
@@ -14,6 +16,7 @@ export class WebSocketConnection {
         2: 'Notification'
     }
 
+    private notsentErrors: [106];
  
     constructor() {
         this.method = new WebSocketMethods();
@@ -48,10 +51,7 @@ export class WebSocketConnection {
     private onMessage(event: WebSocket.MessageEvent) {
         const obj = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
-            if(obj.error >= 100 && obj.error != 106 && obj.errmr <= 10000) {
-                Window.main.webContents.send('error', obj.response);
-            }
-            //Отправка ошибки на фронт
+            Window.main.webContents.send('error', obj.response);
             console.log(obj.response.error_message, obj.response.error);
             return;
         }
@@ -95,6 +95,16 @@ export class WebSocketConnection {
             this.errorListeners.splice(index, 1);
         }
     }
+    public sendRequest(key:number, data: any) {
+        let obj  = {
+            type: key,
+            data: data,
+            token: this.token,
+        }; 
+        let jsonObj = JSON.stringify(obj);
+        console.log(jsonObj);
+        this.ws.send(jsonObj);
+    }
 }
 
  class WebSocketMethods {
@@ -116,11 +126,17 @@ export class WebSocketConnection {
         let type = 'login-success';
         if (data.token == '') {
             type = 'login-twofactor';
+        } else {
+
+            if(data.save) {
+                Main.WS.token = data.token;
+                Main.Session.saveSession(data);
+            }
         }
         Window.main.webContents.send(type, data);
-        console.log('Auth' + data);
+        console.log('Auth: ' + data);
     }
     private Notification(data: any) {
-        console.log('Not' + data);
+        console.log('Note: ' + data);
     }
  }

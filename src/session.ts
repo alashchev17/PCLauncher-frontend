@@ -6,7 +6,6 @@ import * as crypto from 'crypto';
 
 
 export class SessionManager {
-    private session: string;
     public checked: boolean = false;
 
     constructor() {
@@ -22,19 +21,14 @@ export class SessionManager {
         let data = {login:login, password:hashPassword, code:0}
         if(twofactor != 0) {
             data.code = twofactor;
-        };
-        console.log(this.generateRequest(1, data));
-        Main.WS.send(this.generateRequest(1, data));       
+        };     
+        Main.WS.sendRequest(1, data);
         
     }
     public logout() {
     }
-    private generateRequest(key:number, data: any) : string{
-        let obj  = {
-            type: key,
-            data: data
-        }; 
-        return JSON.stringify(obj);
 
+    public saveSession (data: any) {
+        //Сохраняем сессию в файл
     }
 }
