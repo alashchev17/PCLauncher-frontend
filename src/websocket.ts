@@ -53,7 +53,7 @@ export class WebSocketConnection {
         console.log(event.data.toString());
         const obj = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
-            Window.main.webContents.send('error', obj.response);
+            Window.main.webContents.send('error-method', obj.response);
             return;
         }
         this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
