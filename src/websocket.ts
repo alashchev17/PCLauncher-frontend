@@ -134,13 +134,11 @@ export class WebSocketConnection {
             }
         }
         Window.main.webContents.send(type, data);
-        console.log('Auth: ' + data);
     }
     private Notification(data: any) {
-        console.log('Note: ' + data);
     }
     private Logout(data: any) {
-        if(data == 'ok') {
+        if(data == 'reset') {
             Main.WS.token = "";
             Window.main.webContents.send('logout');
         }
