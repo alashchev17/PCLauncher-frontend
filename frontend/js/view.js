@@ -27,6 +27,8 @@ class view {
         loginInputPass: 'login__password',
         loginInput2FA: 'login__twofactor',
         loginCheck: 'login__checkbox',
+        errorMsgBlock: 'error-block',
+        errorMsgBlockText: 'error-block__name',
         //Pages
         loginPage: 'login',
         mainPage: 'main',
@@ -103,12 +105,29 @@ class view {
         ipcRenderer.on("error-method", (event, data) => {
             switch (data.error) {
                 case 101:
-                    
+                    // text: "Заполните все поля!"
+                    this.errorBlockHandle(sl, "Заполните все поля", 101);
+                    break;
                 case 102:
+                    // text: "Такого пользователя не существует!"
+                    this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
+                    break;
                 case 103:
+                    // text: "Вы уже авторизованы под этим аккаунтом!"
+                    this.errorBlockHandle(sl, "Вы уже авторизованы под этим аккаунтом", 103);
+                    break;
                 case 104:
+                    // text: "Вы ввели неверный пароль!"
+                    this.errorBlockHandle(sl, "Вы ввели неверный пароль", 104);
+                    break;
                 case 105:
+                    // text: "Неверный код двухфакторной аутентификации!"
+                    this.errorBlockHandle(sl, "Неверный код двухфакторной аутентификации", 105);
+                    break;
                 case 107:
+                    // text: "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад."
+                    this.errorBlockHandle(sl, "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад", 107);
+                    break;
             }
         });
         ipcRenderer.on("login-success", (event, data) => {
@@ -138,6 +157,14 @@ class view {
                     sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
                 }, 100);
             }, 500);
+            if (sl.loginInput2FA.hasAttribute("required")) {
+                sl.loginInput2FA.value = "";
+                sl.loginInput2FA.classList.add(sl.loginInput2FA.classList[0] + this.#hidden);
+                setTimeout(() => {
+                    sl.loginInput2FA.classList.remove(sl.loginInput2FA.classList[0] + this.#active);
+                    sl.loginInput2FA.removeAttribute("required");
+                }, 300);
+            }
         });
 
         sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
@@ -203,4 +230,25 @@ class view {
         return;
     }
 
+    errorBlockHandle(sl, text, type) {
+        sl.errorMsgBlockText.textContent = text;
+        sl.errorMsgBlock.classList.toggle(sl.errorMsgBlock.classList[0] + this.#active);
+        setTimeout(() => {
+            sl.errorMsgBlock.classList.toggle(sl.errorMsgBlock.classList[0] + this.#active);
+        }, 3000);
+        switch(type) {
+            case 102:
+            case 103:
+                sl.loginInputNick.value = "";
+                sl.loginInputPass.value = "";
+                break;
+            case 104:
+                sl.loginInputPass.value = "";
+                break;
+            case 105:
+            case 107:
+                sl.loginInput2FA.value = "";
+                break;
+        }
+    }
 }

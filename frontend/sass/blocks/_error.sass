@@ -10,7 +10,7 @@
     padding: 10px 15px
     border-radius: 40px
     transition: all 0.3s
-    z-index: 4
+    z-index: $errorBlockIndex
     top: 0
     left: 50%
     transform: translateX(-50%) translateY(-45px)
@@ -18,6 +18,8 @@
       opacity: 1
       visibility: visible 
       transform: translateX(-50%) translateY(30px)
+    &__name
+      white-space: nowrap
   &__section
     display: flex
     flex-direction: column

@@ -5,13 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/main.css" />
-    <link rel="stylesheet" href="./styles/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    
     <link rel="shortcut icon" href="./img/icons/logo.svg" />
     <title>Gambit Launcher</title>
   </head>
   <body>
+    <div class="error-block">
+        <svg
+        class="error-block__icon"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        >
+            <rect x="10" y="18" width="4" height="4" rx="2" fill="white" />
+            <rect x="10" y="2" width="4" height="13" rx="2" fill="white" />
+        </svg>
+        <span class="error-block__name">Нестабильное интернет соединение</span>
+    </div>
+    <!-- /.error-block -->
     <div class="mainpage mainpage__wrapper">
     <section class="main mainpage__content main--hidden">
         <div class="container">
@@ -276,21 +289,7 @@
             <span class="mainpage__online">Онлайн: <strong class="mainpage__online-number">999</strong></span>
         </section>
 
-        <div class="error-block">
-            <svg
-            class="error-block__icon"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            >
-            <rect x="10" y="18" width="4" height="4" rx="2" fill="white" />
-            <rect x="10" y="2" width="4" height="13" rx="2" fill="white" />
-            </svg>
-            <span class="error-block__name">Нестабильное интернет соединение</span>
-        </div>
-        <!-- /.error-block -->
+        
         </div>
         <!-- /.container -->
         <div class="mainpage__blur">
