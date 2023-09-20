@@ -126,7 +126,7 @@ class view {
                     break;
                 case 107:
                     // text: "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад."
-                    this.errorBlockHandle(sl, "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад", 107);
+                    this.errorBlockHandle(sl, "Произошла ошибка отправки кода. Возможно, вы уже отправляли его менее минуты назад", 107);
                     break;
             }
         });
@@ -175,7 +175,12 @@ class view {
         });
         sl.downloadButton.addEventListener("mouseenter", () => { sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active); })
         sl.downloadButton.addEventListener("mouseleave", () => { sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active); })
-        sl.settingButton.addEventListener("click", () => { if (this.page_name != 'preloader') this.selectors_toggle([sl.settingButton, sl.settingBlock]); });
+        sl.settingButton.addEventListener("click", () => {
+            if (this.page_name == 'preloader' || this.page_name == 'login') {
+                return;
+            }
+            this.selectors_toggle([sl.settingButton, sl.settingBlock]); 
+        });
         sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
         sl.profileButton.addEventListener("click", () => {
