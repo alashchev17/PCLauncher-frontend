@@ -16,8 +16,6 @@ export class WebSocketConnection {
         2: 'Notification',
         3: 'Logout'
     }
-
-    private notsentErrors: [106];
  
     constructor() {
         this.method = new WebSocketMethods();
