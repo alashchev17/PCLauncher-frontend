@@ -13,7 +13,8 @@ export class WebSocketConnection {
 
     private methodsMessage: { [key: number]: string } = {
         1: 'Authorization',
-        2: 'Notification'
+        2: 'Notification',
+        3: 'Logout'
     }
 
     private notsentErrors: [106];
@@ -49,10 +50,10 @@ export class WebSocketConnection {
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
+        console.log(event.data.toString());
         const obj = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
             Window.main.webContents.send('error', obj.response);
-            console.log(obj.response.error_message, obj.response.error);
             return;
         }
         this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
@@ -127,9 +128,8 @@ export class WebSocketConnection {
         if (data.token == '') {
             type = 'login-twofactor';
         } else {
-
+            Main.WS.token = data.token;
             if(data.save) {
-                Main.WS.token = data.token;
                 Main.Session.saveSession(data);
             }
         }
@@ -138,5 +138,11 @@ export class WebSocketConnection {
     }
     private Notification(data: any) {
         console.log('Note: ' + data);
+    }
+    private Logout(data: any) {
+        if(data == 'ok') {
+            Main.WS.token = "";
+            Window.main.webContents.send('logout');
+        }
     }
  }

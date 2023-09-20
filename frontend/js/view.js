@@ -1,5 +1,5 @@
-console.log("view.js loaded");
 
+console.log("view.js loaded");
 
 
 class view {
@@ -129,6 +129,17 @@ class view {
             }, 300);
         });
 
+        ipcRenderer.on("logout", (event, data) => {
+            sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
+            setTimeout(() => {
+                this.page = 'login';
+                setTimeout(() => {
+                    sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
+                    sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                }, 100);
+            }, 500);
+        });
+
         sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
         sl.downloadButton.addEventListener("click", () => {
             // this.update = 1;
@@ -141,14 +152,7 @@ class view {
         sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
         sl.profileButton.addEventListener("click", () => {
-            sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
-            setTimeout(() => {
-                this.page = 'login';
-                setTimeout(() => {
-                    sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
-                    sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
-                }, 100);
-            }, 500);
+            ipcRenderer.send('logout');
         });
         sl.loginButton.addEventListener("click", (e) => {
             let login = sl.loginInputNick.value.trim();

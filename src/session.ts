@@ -2,7 +2,7 @@ import { Main } from './main'
 
 import * as crypto from 'crypto';
 
-//import { Window } from './window';
+import { Window } from './window';
 
 
 export class SessionManager {
@@ -26,6 +26,8 @@ export class SessionManager {
         
     }
     public logout() {
+        Main.WS.sendRequest(3, {}); 
+        
     }
 
     public saveSession (data: any) {
