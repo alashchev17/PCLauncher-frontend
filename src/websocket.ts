@@ -3,11 +3,13 @@ import { Main } from './main'
 
 import { Window } from './window';
 
-export class WebSocketConnection {
+export class WebSocketConnection {  // Придумать таймаут. Если в течении времени не выполнено - выдавать окно.
     private ws: WebSocket | null = null;
     private method;
 
     public token = '';
+
+    public reconnectionCount: number = 0;
 
     private errorListeners: ((error: any) => void)[] = [];
 
@@ -24,10 +26,11 @@ export class WebSocketConnection {
     public async connect() {
         return new Promise<void>((resolve, reject) => {
             try {
-                this.ws = new WebSocket("ws://45.90.219.11:4327/launcher");
+                this.ws = new WebSocket("ws://45.90.219.11:4327/launcher" );
                 this.ws.onmessage = this.onMessage.bind(this);
                 this.ws.onerror = this.onError.bind(this);
                 this.ws.onclose = (event) => {
+                    console.log(event);
                     this.onClose(event);
                     this.ws.onclose = this.onClose.bind(this);
                     resolve();
@@ -40,6 +43,7 @@ export class WebSocketConnection {
             } catch (error) {
                 reject(error);
             }
+            setTimeout(this.Reconnection, 200);
         });
     }
  
@@ -56,13 +60,33 @@ export class WebSocketConnection {
         }
         this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
     }
+
+    private Reconnection() {
+        setTimeout(() => {
+            if(Main.WS.ws.readyState === WebSocket.OPEN) {
+                this.reconnectionCount = 1;
+                return;
+            }
+
+            Window.main.webContents.send('reconnection', Main.WS.reconnectionCount);
+
+            console.log(`reconnecting ${Main.WS.reconnectionCount}`);
+           
+            Main.WS.connect();
+
+            Main.WS.reconnectionCount++;
+        }, 2000)
+        
+    }
  
     private onClose(event:  WebSocket.CloseEvent) {
+
         console.log('WebSocket connection closed:', event);
+        this.Reconnection();
     }
  
     private onError(event: WebSocket.ErrorEvent) {
-        console.error('WebSocket error:', event);
+        console.error('WebSocket error:', event); // Обработка ошибок сокета, переподключение если это возможно
         this.emitError(event);
     }
 

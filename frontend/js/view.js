@@ -1,4 +1,3 @@
-
 console.log("view.js loaded");
 
 
@@ -166,6 +165,14 @@ class view {
                 }, 300);
             }
         });
+
+        ipcRenderer.on("reconnection", (event, data) => {
+            if (this.page_name == 'error') {
+                //Просто выводим количество переподключений (data)
+                return;
+            }
+            //this.page = 'error'; Обновляем страницу при первом переподключении
+        })
 
         sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
         sl.downloadButton.addEventListener("click", () => {
