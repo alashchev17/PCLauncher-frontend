@@ -12,9 +12,12 @@ export class SessionManager {
     }
     
     
-    private checkSession() {
-        //Проверяем файл или чет на существовании сессии
+    public checkSession() {
+        //Проверяем файл или чет на существовании сессии и отправляем запрос на авторизацию и ретурн.
         this.checked = true;
+        setTimeout(() => {
+            Window.main.webContents.send('session_not_found')
+        }, 3000);
     }
     public authorize(login: string, password: string, save:boolean, twofactor: number) {
         let hashPassword = crypto.createHash('sha256').update(password).digest('hex');

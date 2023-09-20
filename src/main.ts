@@ -14,16 +14,18 @@ export class Main {
         'logout': (e:any) => { Main.Session.logout(); } 
     }
     constructor() {
-        Window.create();
         this.init();
     }
     async init() {
         console.log("Starting");
+        Window.create();
         await Main.WS.connect().catch(this.errorHandler)
         Main.WS.addErrorListener(this.errorSocketHandler)
         for (const [key, value] of Object.entries(this.IPCMethods)) {
             ipcMain.on(key, value);
         }
+        Main.Session.checkSession();
+        console.log("init finished");
     }
     errorHandler(error: any) {
         console.log(error);

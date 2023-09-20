@@ -1,3 +1,4 @@
+
 console.log("view.js loaded");
 
 
@@ -63,9 +64,6 @@ class view {
         this.circumference = 2 * Math.PI * this.radius;
         sl.progressRing.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
         sl.progressRing.style.strokeDashoffset = this.circumference;
-
-
-        setTimeout(() => { this.page = 'login' }, 2000);
         
 
     }
@@ -108,7 +106,9 @@ class view {
                     this.errorBlockHandle(sl, "Заполните все поля", 101);
                     break;
                 case 102:
-                    // text: "Такого пользователя не существует!"
+                    if(page_name == 'preloader') {
+                        this.page = 'login';
+                    }
                     this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
                     break;
                 case 103:
@@ -122,6 +122,9 @@ class view {
                 case 105:
                     // text: "Неверный код двухфакторной аутентификации!"
                     this.errorBlockHandle(sl, "Неверный код двухфакторной аутентификации", 105);
+                    break;
+                case 106:
+                        this.page = 'login';
                     break;
                 case 107:
                     // text: "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад."
@@ -166,6 +169,10 @@ class view {
             }
         });
 
+        ipcRenderer.on("page_open", (event, data) => {
+            this.page = data;
+        });
+
         ipcRenderer.on("reconnection", (event, data) => {
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
@@ -173,6 +180,10 @@ class view {
             }
             //this.page = 'error'; Обновляем страницу при первом переподключении
         })
+
+        ipcRenderer.on("session_not_found", (event, data) => {
+            this.page = 'login';
+        });
 
         sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
         sl.downloadButton.addEventListener("click", () => {

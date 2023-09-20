@@ -43,7 +43,7 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
             } catch (error) {
                 reject(error);
             }
-            setTimeout(this.Reconnection, 200);
+            setTimeout(this.Reconnection, 1000);
         });
     }
  
@@ -75,7 +75,7 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
             Main.WS.connect();
 
             Main.WS.reconnectionCount++;
-        }, 2000)
+        }, 1000)
         
     }
  
