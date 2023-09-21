@@ -4,6 +4,8 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 export class Window {
   static main: BrowserWindow | null = null;
 
+  static DomLoad: boolean = false;
+
   static createWindow(): void {
     Window.main = new BrowserWindow({
       height: 800,
@@ -24,6 +26,10 @@ export class Window {
     Window.main.on('system-context-menu', (event, _point) => {
       event.preventDefault();
     });
+
+    Window.main.webContents.on('dom-ready', () => {
+      Window.DomLoad = true;
+    })
 
     ipcMain.on('minimize', () => {
       if (Window.main) {

@@ -8,6 +8,8 @@ import { Window } from './window';
 export class SessionManager {
     public checked: boolean = false;
 
+    public session_token : string = undefined;
+
     constructor() {
     }
     
@@ -15,9 +17,7 @@ export class SessionManager {
     public checkSession() {
         //Проверяем файл или чет на существовании сессии и отправляем запрос на авторизацию и ретурн.
         this.checked = true;
-        setTimeout(() => {
-            Window.main.webContents.send('session_not_found')
-        }, 3000);
+        Window.main.webContents.send('session_not_found')
     }
     public authorize(login: string, password: string, save:boolean, twofactor: number) {
         let hashPassword = crypto.createHash('sha256').update(password).digest('hex');

@@ -17,15 +17,27 @@ export class Main {
         this.init();
     }
     async init() {
+        const startTime = performance.now();
         console.log("Starting");
-        Window.create();
-        await Main.WS.connect().catch(this.errorHandler)
-        Main.WS.addErrorListener(this.errorSocketHandler)
+        
         for (const [key, value] of Object.entries(this.IPCMethods)) {
             ipcMain.on(key, value);
         }
+       
+        Window.create();
+        
+        Main.WS.addErrorListener(this.errorSocketHandler);
+        while (!Main.WS.isConnected() || !Window.DomLoad) {
+            if(Main.WS.reconnectionCount == 0) {
+                Main.WS.Reconnect();
+            }
+            await new Promise(resolve => setTimeout(resolve, 500)); 
+        }
+        
         Main.Session.checkSession();
-        console.log("init finished");
+        
+        const endTime = performance.now();
+        console.log(`Application initialized in ${endTime - startTime} ms`)
     }
     errorHandler(error: any) {
         console.log(error);

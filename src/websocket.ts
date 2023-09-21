@@ -21,34 +21,26 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
  
     constructor() {
         this.method = new WebSocketMethods();
+        this.connect();
     }
  
-    public async connect() {
-        return new Promise<void>((resolve, reject) => {
-            try {
-                this.ws = new WebSocket("ws://45.90.219.11:4327/launcher" );
-                this.ws.onmessage = this.onMessage.bind(this);
-                this.ws.onerror = this.onError.bind(this);
-                this.ws.onclose = (event) => {
-                    console.log(event);
-                    this.onClose(event);
-                    this.ws.onclose = this.onClose.bind(this);
-                    resolve();
-                };
-                this.ws.onopen = (event) => {
-                    this.onOpen(event);
-                    this.ws.onopen = this.onOpen.bind(this);
-                    resolve();
-                };
-            } catch (error) {
-                reject(error);
-            }
-            setTimeout(this.Reconnection, 1000);
-        });
+    private async connect() {
+        this.ws = new WebSocket("ws://45.90.219.11:4327/launcher" );
+        this.ws.onmessage = this.onMessage.bind(this);
+        this.ws.onerror = this.onError.bind(this);
+        this.ws.onclose = (event) => {
+            console.log(event);
+            this.onClose(event);
+            this.ws.onclose = this.onClose.bind(this);
+        };
+        this.ws.onopen = (event) => {
+            this.onOpen(event);
+            this.ws.onopen = this.onOpen.bind(this);
+        };
     }
  
     private onOpen(event: WebSocket.Event) {
-        console.log('WebSocket connection opened:', event);
+        console.log('WebSocket connection opened:');
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
@@ -60,11 +52,21 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
         }
         this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
     }
+ 
+    private onClose(event:  WebSocket.CloseEvent) {
+        console.log('WebSocket connection closed:');
+        if(this.reconnectionCount == 0) {
+            this.Reconnect();
+        }
+    }
 
-    private Reconnection() {
-        setTimeout(() => {
+    public Reconnect() {
+        this.reconnectionCount++;
+        let inetrvalReconnect : any;
+        inetrvalReconnect =  setInterval(() => {
             if(Main.WS.ws.readyState === WebSocket.OPEN) {
-                this.reconnectionCount = 1;
+                this.reconnectionCount = 0;
+                clearInterval(inetrvalReconnect);
                 return;
             }
 
@@ -75,14 +77,7 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
             Main.WS.connect();
 
             Main.WS.reconnectionCount++;
-        }, 1000)
-        
-    }
- 
-    private onClose(event:  WebSocket.CloseEvent) {
-
-        console.log('WebSocket connection closed:', event);
-        this.Reconnection();
+        }, 2000)
     }
  
     private onError(event: WebSocket.ErrorEvent) {
