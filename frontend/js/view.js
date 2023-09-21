@@ -33,6 +33,7 @@ class view {
         errorReason: 'error__reason',
         errorReasonText: 'error__reason-text',
         errorWaitingPoints: 'points',
+        preloaderTitle: 'preloader__heading',
         //Pages
         loginPage: 'login',
         mainPage: 'main',
@@ -182,8 +183,14 @@ class view {
         ipcRenderer.on("reconnection", (event, data) => {
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
-                console.log(data);
                 sl.reconnectionTimer.textContent = data;
+                return;
+            } else if (this.page_name == 'preloader') {
+                sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.preloaderTitle.textContent = "Проблемы с подключением, переподключаемся...";
+                    sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                }, 300);
                 return;
             }
             sl.errorReasonText.textContent = "Переподключение ";
@@ -193,6 +200,17 @@ class view {
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
+            if (this.page_name == 'preloader') {
+                sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.preloaderTitle.textContent = "Подключение восстановлено!";
+                    sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                    setTimeout(() => {
+                        this.page = "login";
+                    }, 1000);
+                }, 300);
+                return;
+            }
             sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
             setTimeout(() => {
                 sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
@@ -200,11 +218,7 @@ class view {
                 sl.errorWaitingPoints.textContent = "";
                 sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
                 setTimeout(() => {
-                    if (!(this.lastPage == "preloader")) {
-                        this.page = this.lastPage;
-                    } else {
-                        this.page = "login";
-                    }
+                    this.page = this.lastPage;
                 }, 1000);
             }, 300);
         });
