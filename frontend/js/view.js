@@ -185,7 +185,7 @@ class view {
             this.page = 'error'; // Обновляем страницу при первом переподключении
         })
 
-        ipcRenderer.on("reconnected", (event, data) => {
+        ipcRenderer.on("reconnected", (event) => {
             if (this.page_name == 'error') {
                 this.page = this.lastPage;
             }

@@ -70,11 +70,12 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
         let inetrvalReconnect : any;
         inetrvalReconnect =  setInterval(() => {
             if(Main.WS.ws.readyState === WebSocket.OPEN) {
-                this.reconnectionCount = 0;
-                clearInterval(inetrvalReconnect);
-                if(this.reconnectionCount > 1) {
+                if(Main.WS.reconnectionCount > 1) {
+                    console.log("Recconected");
                     Window.main.webContents.send('reconnected');
                 }
+                this.reconnectionCount = 0;
+                clearInterval(inetrvalReconnect);
                 return;
             }
 
