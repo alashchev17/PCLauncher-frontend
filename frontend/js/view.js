@@ -29,6 +29,7 @@ class view {
         loginCheck: 'login__checkbox',
         errorMsgBlock: 'error-block',
         errorMsgBlockText: 'error-block__name',
+        reconnectionTimer: 'reconnection-timer',
         //Pages
         loginPage: 'login',
         mainPage: 'main',
@@ -178,7 +179,7 @@ class view {
         ipcRenderer.on("reconnection", (event, data) => {
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
-                alert(data);
+                sl.reconnectionTimer.textContent = data;
                 return;
             }
             this.page = 'error'; // Обновляем страницу при первом переподключении
