@@ -48,6 +48,7 @@ class view {
     </button>
     `;
     page_name = "preloader";
+    lastPage;
   
     constructor() {
         for (var key in this.#selectors) {
@@ -96,6 +97,7 @@ class view {
           this.page = this.page_name;
         }
         sl.classList.toggle(sl.classList[0] + this.#active);
+        this.lastPage = this.page_name;
         this.page_name = p;
     }
     events(sl) {
@@ -182,6 +184,12 @@ class view {
             this.page = 'error'; // Обновляем страницу при первом переподключении
         })
 
+        ipcRenderer.on("reconnected", (event, data) => {
+            if (this.page_name == 'error') {
+                this.page = this.lastPage;
+            }
+        });
+        
         ipcRenderer.on("session_not_found", (event, data) => {
             this.page = 'login';
         });
