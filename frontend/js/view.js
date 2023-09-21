@@ -183,7 +183,7 @@ class view {
                 sl.reconnectionTimer.textContent = data;
                 return;
             }
-            sl.errorReason.textContent = '';
+            sl.errorReason.textContent = 'Переподключение';
             sl.reconnectionTimer.textContent = '1';
             this.page = 'error'; // Обновляем страницу при первом переподключении
         });
