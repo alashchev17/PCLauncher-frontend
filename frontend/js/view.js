@@ -30,6 +30,7 @@ class view {
         errorMsgBlock: 'error-block',
         errorMsgBlockText: 'error-block__name',
         reconnectionTimer: 'reconnection-timer',
+        errorReason: 'error__reason',
         //Pages
         loginPage: 'login',
         mainPage: 'main',
@@ -183,12 +184,13 @@ class view {
                 return;
             }
             this.page = 'error'; // Обновляем страницу при первом переподключении
-        })
+        });
 
-        ipcRenderer.on("reconnected", (event) => {
-            if (this.page_name == 'error') {
+        ipcRenderer.on("reconnected", (event, data) => {
+            sl.errorReason.innerHTML = "Подключение восстановлено, перенаправление!";
+            setTimeout(() => {
                 this.page = this.lastPage;
-            }
+            }, 300);
         });
         
         ipcRenderer.on("session_not_found", (event, data) => {
