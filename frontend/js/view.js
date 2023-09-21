@@ -209,6 +209,9 @@ class view {
                     setTimeout(() => {
                         sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
                         sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
+                        setTimeout(() => {
+                            this.page.classList.remove(this.page.classList[0] + this.#hidden);
+                        }, 500);
                     }, 100);
                 }, 500);
                 return;
@@ -241,6 +244,7 @@ class view {
                     sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
                     setTimeout(() => {
                         if (this.lastPage == 'login') {
+                            this.page.classList.add(this.page.classList[0] + this.#hidden);
                             setTimeout(() => {
                                 this.page = this.lastPage;
                                 setTimeout(() => {
