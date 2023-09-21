@@ -183,14 +183,16 @@ class view {
                 sl.reconnectionTimer.textContent = data;
                 return;
             }
+            sl.errorReason.textContent = '';
+            sl.reconnectionTimer.textContent = '1';
             this.page = 'error'; // Обновляем страницу при первом переподключении
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
             sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
-            sl.errorReason.textContent = "Подключение восстановлено, перенаправление!";
-            sl.reconnectionTimer.textContent = "";
             setTimeout(() => {
+                sl.errorReason.textContent = "Подключение восстановлено, перенаправление!";
+                sl.reconnectionTimer.textContent = "";
                 sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
                 setTimeout(() => {
                     if (!(this.lastPage == "preloader")) {
