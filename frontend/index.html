@@ -516,7 +516,12 @@
     <section class="error error__section">
         <div class="error__content">
             <h1 class="error__title">Ошибка подключения</h1>
-            <span class="error__reason error__reason--active">Переподключение <span class="reconnection-timer">1...</span></span>
+            <div class="error__reason error__reason--active">
+                <span class="error__reason-text">Переподключение</span>
+                <span class="reconnection-timer">1</span>
+                <span class="points">...</span>
+            </div>
+            <!-- /.error__reason -->
             <!-- <div class="error__buttons">
                 <button class="error__button">Попробовать опять</button>
                 <button class="error__button">Попробовать снова</button>

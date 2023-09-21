@@ -31,6 +31,8 @@ class view {
         errorMsgBlockText: 'error-block__name',
         reconnectionTimer: 'reconnection-timer',
         errorReason: 'error__reason',
+        errorReasonText: 'error__reason-text',
+        errorWaitingPoints: 'points',
         //Pages
         loginPage: 'login',
         mainPage: 'main',
@@ -180,19 +182,22 @@ class view {
         ipcRenderer.on("reconnection", (event, data) => {
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
-                sl.reconnectionTimer.textContent = data + '...';
+                console.log(data);
+                sl.reconnectionTimer.textContent = data;
                 return;
             }
-            sl.errorReason.textContent = 'Переподключение ';
-            sl.reconnectionTimer.textContent = '1...';
+            sl.errorReasonText.textContent = "Переподключение ";
+            sl.reconnectionTimer.textContent = "1";
+            sl.errorWaitingPoints.textContent = "...";
             this.page = 'error'; // Обновляем страницу при первом переподключении
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
             sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
             setTimeout(() => {
-                sl.errorReason.textContent = "Подключение восстановлено, перенаправление!";
+                sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
                 sl.reconnectionTimer.textContent = "";
+                sl.errorWaitingPoints.textContent = "";
                 sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
                 setTimeout(() => {
                     if (!(this.lastPage == "preloader")) {
