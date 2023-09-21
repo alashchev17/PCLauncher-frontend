@@ -30,6 +30,7 @@ class view {
         errorMsgBlock: 'error-block',
         errorMsgBlockText: 'error-block__name',
         reconnectionTimer: 'reconnection-timer',
+        errorReason: 'error__reason',
         //Pages
         loginPage: 'login',
         mainPage: 'main',
@@ -186,7 +187,10 @@ class view {
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
-            this.page = this.lastPage;
+            sl.errorReason.innerHTML = "Подключение восстановлено, перенаправление!";
+            setTimeout(() => {
+                this.page = this.lastPage;
+            }, 300);
         });
         
         ipcRenderer.on("session_not_found", (event, data) => {
