@@ -222,7 +222,7 @@ class view {
                 setTimeout(() => {
                     this.page.classList.remove(this.page.classList[0] + this.#hidden);
                 }, 500);
-            }, 500); 
+            }, 300); 
             // Обновляем страницу при первом переподключении
         });
 
