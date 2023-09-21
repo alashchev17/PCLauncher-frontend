@@ -183,12 +183,10 @@ class view {
                 return;
             }
             this.page = 'error'; // Обновляем страницу при первом переподключении
-        })
+        });
 
         ipcRenderer.on("reconnected", (event, data) => {
-            if (this.page_name == 'error') {
-                this.page = this.lastPage;
-            }
+            this.page = this.lastPage;
         });
         
         ipcRenderer.on("session_not_found", (event, data) => {
