@@ -28,6 +28,9 @@ export class SessionManager {
         Main.WS.sendRequest(1, data);
         
     }
+    public authorizeByToken(token: string) {
+        //Тут запрос на авторизацию через токен
+    }
     public logout() {
         Main.WS.sendRequest(3, {}); 
         

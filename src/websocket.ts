@@ -47,6 +47,11 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
         console.log(event.data.toString());
         const obj = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
+            if(obj.response.error == 2 && Main.WS.token != '') {
+                //Пытаемся авторизоваться через сохраненный ключ если есть, если нет - выкидываем на авторизацию.
+                Window.main.webContents.send("logout");
+                Main.WS.token = '';
+            }
             Window.main.webContents.send('error-method', obj.response);
             return;
         }
