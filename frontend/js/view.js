@@ -187,6 +187,7 @@ class view {
         });
 
         ipcRenderer.on("reconnection", (event, data) => {
+            
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
                 sl.reconnectionTimer.textContent = data;
@@ -202,7 +203,24 @@ class view {
             sl.errorReasonText.textContent = "Переподключение ";
             sl.reconnectionTimer.textContent = "1";
             sl.errorWaitingPoints.textContent = "...";
-            this.page = 'error'; // Обновляем страницу при первом переподключении
+            if (this.page_name == 'login') {
+                setTimeout(() => {
+                    this.page = 'error';
+                    setTimeout(() => {
+                        sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
+                        sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
+                    }, 100);
+                }, 500);
+                return;
+            }
+            this.page.classList.add(this.page.classList[0] + this.#hidden);
+            setTimeout(() => {
+                this.page = 'error';
+                setTimeout(() => {
+                    this.page.classList.remove(this.page.classList[0] + this.#hidden);
+                }, 500);
+            }, 500); 
+            // Обновляем страницу при первом переподключении
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
@@ -222,7 +240,23 @@ class view {
                     sl.errorWaitingPoints.textContent = "";
                     sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
                     setTimeout(() => {
-                        this.page = this.lastPage;
+                        if (this.lastPage == 'login') {
+                            setTimeout(() => {
+                                this.page = this.lastPage;
+                                setTimeout(() => {
+                                    sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
+                                    sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                                }, 100);
+                            }, 500);
+                            return;
+                        }
+                        this.page.classList.add(this.page.classList[0] + this.#hidden);
+                        setTimeout(() => {
+                            this.page = this.lastPage;
+                            setTimeout(() => {
+                                this.page.classList.remove(this.page.classList[0] + this.#hidden);
+                            }, 300);
+                        }, 500);
                     }, 1000);
                 }, 300);
             }

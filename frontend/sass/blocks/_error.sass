@@ -1,7 +1,12 @@
 .error
-  display: none
+  opacity: 1
+  visibility: visible
+  transition: all 0.5s ease-in-out
   &--active
     display: flex
+  &--hidden
+    opacity: 0
+    visibility: hidden
   &-block
     position: absolute
     display: inline-flex
