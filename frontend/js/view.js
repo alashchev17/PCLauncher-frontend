@@ -48,6 +48,7 @@ class view {
     </button>
     `;
     page_name = "preloader";
+    lastPage;
   
     constructor() {
         for (var key in this.#selectors) {
@@ -96,6 +97,7 @@ class view {
           this.page = this.page_name;
         }
         sl.classList.toggle(sl.classList[0] + this.#active);
+        this.lastPage = this.page_name;
         this.page_name = p;
     }
     events(sl) {
