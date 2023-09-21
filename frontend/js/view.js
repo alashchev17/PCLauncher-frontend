@@ -279,7 +279,7 @@ class view {
         sl.downloadButton.addEventListener("mouseenter", () => { sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active); })
         sl.downloadButton.addEventListener("mouseleave", () => { sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active); })
         sl.settingButton.addEventListener("click", () => {
-            if (this.page_name == 'preloader' || this.page_name == 'login') {
+            if (this.page_name == 'preloader' || this.page_name == 'login' || this.page_name == 'error') {
                 return;
             }
             this.selectors_toggle([sl.settingButton, sl.settingBlock]); 
