@@ -205,9 +205,6 @@ class view {
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Подключение восстановлено!";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
-                    setTimeout(() => {
-                        this.page = "login";
-                    }, 1000);
                 }, 300);
                 return;
             }
