@@ -105,6 +105,9 @@ class view {
         this.lastPage = this.page_name;
         this.page_name = p;
     }
+    get page() {
+        return this.#selectors[this.page_name + 'Page'];
+    }
     events(sl) {
         ipcRenderer.on("error-method", (event, data) => {
             switch (data.error) {
