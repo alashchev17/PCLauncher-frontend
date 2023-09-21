@@ -193,7 +193,7 @@ class view {
             setTimeout(() => {
                 sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
                 setTimeout(() => {
-                    if (!(lastPage == "preloader")) {
+                    if (!(this.lastPage == "preloader")) {
                         this.page = this.lastPage;
                     } else {
                         this.page = "login";
