@@ -200,24 +200,26 @@ class view {
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
-            if (this.page_name == 'preloader') {
-                sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+            if (this.lastPage !== "preloader") {
+                if (this.page_name == 'preloader') {
+                    sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                    setTimeout(() => {
+                        sl.preloaderTitle.textContent = "Подключение восстановлено!";
+                        sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                    }, 300);
+                    return;
+                }
+                sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
                 setTimeout(() => {
-                    sl.preloaderTitle.textContent = "Подключение восстановлено!";
-                    sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                    sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
+                    sl.reconnectionTimer.textContent = "";
+                    sl.errorWaitingPoints.textContent = "";
+                    sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
+                    setTimeout(() => {
+                        this.page = this.lastPage;
+                    }, 1000);
                 }, 300);
-                return;
             }
-            sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
-            setTimeout(() => {
-                sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
-                sl.reconnectionTimer.textContent = "";
-                sl.errorWaitingPoints.textContent = "";
-                sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
-                setTimeout(() => {
-                    this.page = this.lastPage;
-                }, 1000);
-            }, 300);
         });
         
         ipcRenderer.on("session_not_found", (event, data) => {
