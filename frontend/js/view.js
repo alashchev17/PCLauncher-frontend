@@ -187,9 +187,18 @@ class view {
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
-            sl.errorReason.innerHTML = "Подключение восстановлено, перенаправление!";
+            sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
+            sl.errorReason.textContent = "Подключение восстановлено, перенаправление!";
+            sl.reconnectionTimer.textContent = "";
             setTimeout(() => {
-                this.page = this.lastPage;
+                sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
+                setTimeout(() => {
+                    if (!(lastPage == "preloader")) {
+                        this.page = this.lastPage;
+                    } else {
+                        this.page = "login";
+                    }
+                }, 1000);
             }, 300);
         });
         
