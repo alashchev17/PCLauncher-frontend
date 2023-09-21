@@ -1,4 +1,7 @@
 .error
+  display: none
+  &--active
+    display: flex
   &-block
     position: absolute
     display: inline-flex
@@ -21,13 +24,22 @@
     &__name
       white-space: nowrap
   &__section
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    background-color: #000000
+    align-items: center
+    justify-content: center
+    // margin: 130px auto 0 auto
+  &__content
     display: flex
     flex-direction: column
     justify-content: center
     align-items: center
     gap: 10px
     max-width: 357px
-    margin: 130px auto 0 auto
   &__title
     font-family: "Roboto Medium"
     font-weight: 500

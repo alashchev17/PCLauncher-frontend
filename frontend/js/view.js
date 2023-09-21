@@ -33,7 +33,7 @@ class view {
         loginPage: 'login',
         mainPage: 'main',
         preloaderPage: 'preloader',
-        // ErrorPage: 'error',
+        errorPage: 'error',
 
     };
     #active = "--active";
@@ -124,7 +124,7 @@ class view {
                     this.errorBlockHandle(sl, "Неверный код двухфакторной аутентификации", 105);
                     break;
                 case 106:
-                        this.page = 'login';
+                    this.page = 'login';
                     break;
                 case 107:
                     // text: "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад."
@@ -176,9 +176,10 @@ class view {
         ipcRenderer.on("reconnection", (event, data) => {
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
+                alert(data);
                 return;
             }
-            //this.page = 'error'; Обновляем страницу при первом переподключении
+            this.page = 'error'; // Обновляем страницу при первом переподключении
         })
 
         ipcRenderer.on("session_not_found", (event, data) => {
