@@ -267,7 +267,16 @@ class view {
         });
         
         ipcRenderer.on("session_not_found", (event, data) => {
-            this.page = 'login';
+            if (this.page_name == 'preloader') {
+                sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.preloaderTitle.textContent = "Подключение восстановлено!";
+                    sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                    setTimeout(() => {
+                        this.page = 'login';
+                    }, 1500);
+                }, 300);
+            }
         });
 
         sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
