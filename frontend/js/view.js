@@ -180,7 +180,7 @@ class view {
         ipcRenderer.on("reconnection", (event, data) => {
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
-                sl.reconnectionTimer.textContent = `${data}...`;
+                sl.reconnectionTimer.textContent = data + '...';
                 return;
             }
             sl.errorReason.textContent = 'Переподключение ';
