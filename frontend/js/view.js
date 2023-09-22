@@ -143,7 +143,7 @@ class view {
                     this.errorBlockHandle(sl, "Заполните все поля", 101);
                     break;
                 case 102:
-                    if(page_name == 'preloader') {
+                    if (this.page_name == 'preloader') {
                         this.page = 'login';
                     }
                     this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
@@ -288,6 +288,7 @@ class view {
                     setTimeout(() => {
                         if (this.lastPage == 'login') {
                             this.page.classList.add(this.page.classList[0] + this.#hidden);
+                            sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
                             setTimeout(() => {
                                 this.page = this.lastPage;
                                 setTimeout(() => {
@@ -299,6 +300,7 @@ class view {
                             return;
                         }
                         this.page.classList.add(this.page.classList[0] + this.#hidden);
+                        sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
                         setTimeout(() => {
                             this.page = this.lastPage;
                             setTimeout(() => {
