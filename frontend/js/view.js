@@ -33,6 +33,9 @@ class view {
         errorReason: 'error__reason',
         errorReasonText: 'error__reason-text',
         errorWaitingPoints: 'points',
+        errorTipBlock: 'error__tip',
+        errorTipTitle: 'error__tip-title',
+        errorTipText: 'error__tip-text',
         preloaderTitle: 'preloader__heading',
         //Pages
         loginPage: 'login',
@@ -54,6 +57,27 @@ class view {
     `;
     page_name = "preloader";
     lastPage;
+
+    tipTexts = [
+        {
+            title: "Подсказка",
+            text: "Чтобы приобрести дом или квартиру, вы можете посетить Центр Купли-Продаж в Сан-Фиерро и ознакомиться с предлагаемыми вариантами.",
+        },
+        {
+            title: "Подсказка",
+            text: "В случае блокировки, вы можете обратиться в раздел 'Жалобы на администрацию' и подать заявление на амнистию.",
+        },
+        {
+            title: "Совет",
+            text: "Нажмите клавишу Y на клавиатуре, чтобы открыть меню взаимодействия.",
+        },
+        {
+            title: "Подсказка",
+            text: "Обратиться за внутриигровой помощью или пожаловаться на игрока можно через /ask и /rep соответственно.",
+        },
+    ];
+
+    count = 0;
   
     constructor() {
         for (var key in this.#selectors) {
@@ -146,6 +170,24 @@ class view {
             }
         });
         ipcRenderer.on("login-success", (event, data) => {
+            if (this.page_name == 'preloader') {
+                sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.preloaderTitle.textContent = "Подключение установлено";
+                    sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                    setTimeout(() => {
+                        sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
+                        sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
+                        setTimeout(() => {
+                            this.page = 'main';
+                            setTimeout(() => {
+                                sl.mainPage.classList.remove(sl.mainPage.classList[0] + this.#hidden);
+                            }, 100);
+                        }, 300);
+                    }, 1000);
+                }, 300);
+                return;
+            }
             sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
             sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
             setTimeout(() => {
@@ -187,10 +229,19 @@ class view {
         });
 
         ipcRenderer.on("reconnection", (event, data) => {
-            
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
                 sl.reconnectionTimer.textContent = data;
+                if (typeof data === "number" && data % 5 === 0) {
+                    console.log(data);
+                    if (this.count != this.tipTexts.length) {
+                        this.errorTipHandle(this.tipTexts[this.count], sl);
+                        this.count++;
+                    } else {
+                        this.count = 0;
+                        this.errorTipHandle(this.tipTexts[this.count], sl);
+                    }
+                }
                 return;
             } else if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
@@ -228,14 +279,6 @@ class view {
 
         ipcRenderer.on("reconnected", (event, data) => {
             if (this.lastPage !== "preloader") {
-                if (this.page_name == 'preloader') {
-                    sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
-                    setTimeout(() => {
-                        sl.preloaderTitle.textContent = "Подключение восстановлено!";
-                        sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
-                    }, 300);
-                    return;
-                }
                 sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
@@ -250,6 +293,7 @@ class view {
                                 setTimeout(() => {
                                     sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
                                     sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                                    this.count = 0;
                                 }, 100);
                             }, 500);
                             return;
@@ -259,6 +303,7 @@ class view {
                             this.page = this.lastPage;
                             setTimeout(() => {
                                 this.page.classList.remove(this.page.classList[0] + this.#hidden);
+                                this.count = 0;
                             }, 300);
                         }, 500);
                     }, 1000);
@@ -270,7 +315,7 @@ class view {
             if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
                 setTimeout(() => {
-                    sl.preloaderTitle.textContent = "Подключение восстановлено!";
+                    sl.preloaderTitle.textContent = "Подключение установлено";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
                     setTimeout(() => {
                         this.page = 'login';
@@ -367,5 +412,15 @@ class view {
                 sl.loginInput2FA.value = "";
                 break;
         }
+    }
+    errorTipHandle(text, sl) {
+        sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
+        setTimeout(() => {
+            sl.errorTipTitle.textContent = text.title;
+            sl.errorTipText.textContent = text.text;
+            setTimeout(() => {
+                sl.errorTipBlock.classList.add(sl.errorTipBlock.classList[0] + this.#active);
+            }, 500);
+        }, 500);
     }
 }
