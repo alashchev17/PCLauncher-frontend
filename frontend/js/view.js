@@ -279,7 +279,10 @@ class view {
 
         ipcRenderer.on("reconnected", (event, data) => {
             if (this.lastPage !== "preloader") {
-                sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
+                if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
+                    sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
+                }
+                sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
                     sl.reconnectionTimer.textContent = "";
@@ -288,7 +291,6 @@ class view {
                     setTimeout(() => {
                         if (this.lastPage == 'login') {
                             this.page.classList.add(this.page.classList[0] + this.#hidden);
-                            sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
                             setTimeout(() => {
                                 this.page = this.lastPage;
                                 setTimeout(() => {
@@ -300,7 +302,6 @@ class view {
                             return;
                         }
                         this.page.classList.add(this.page.classList[0] + this.#hidden);
-                        sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
                         setTimeout(() => {
                             this.page = this.lastPage;
                             setTimeout(() => {
