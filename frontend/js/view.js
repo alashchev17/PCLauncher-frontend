@@ -233,7 +233,6 @@ class view {
                 //Просто выводим количество переподключений (data)
                 sl.reconnectionTimer.textContent = data;
                 if (typeof data === "number" && data % 5 === 0) {
-                    console.log(data);
                     if (this.count != this.tipTexts.length) {
                         this.errorTipHandle(this.tipTexts[this.count], sl);
                         this.count++;
