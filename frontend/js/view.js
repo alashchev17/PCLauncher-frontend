@@ -232,7 +232,7 @@ class view {
             if (this.page_name == 'error') {
                 //Просто выводим количество переподключений (data)
                 sl.reconnectionTimer.textContent = data;
-                if (typeof data === "number" && data % 5 === 0) {
+                if (typeof data === "number" && data % 3 === 0) {
                     if (this.count != this.tipTexts.length) {
                         this.errorTipHandle(this.tipTexts[this.count], sl);
                         this.count++;
