@@ -237,8 +237,8 @@ class view {
                         this.errorTipHandle(this.tipTexts[this.count], sl);
                         this.count++;
                     } else {
-                        this.count = 0;
-                        this.errorTipHandle(this.tipTexts[this.count], sl);
+                        this.errorTipHandle(this.tipTexts[0], sl);
+                        this.count = 1;
                     }
                 }
                 return;
