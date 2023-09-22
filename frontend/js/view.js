@@ -277,7 +277,7 @@ class view {
         });
 
         ipcRenderer.on("reconnected", (event, data) => {
-            if (this.lastPage !== "preloader") {
+            if (this.lastPage !== "preloader" && this.lastPage !== undefined) {
                 if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
                     sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
                 }
