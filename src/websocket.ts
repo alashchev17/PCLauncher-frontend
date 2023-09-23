@@ -82,17 +82,25 @@ export class WebSocketConnection {
         console.log(event.data.toString());
         const obj : IncomingRequest = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
-            if(obj.response.error == 2 && Main.WS.token != '') {
+            if(obj.response.error == 2 && Main.WS.token != '') { // Access denied
                 if(Main.Config.Settings.session != '') {
                     Main.Session.authorizeByToken();
                     return;
                 }
                 Window.main.webContents.send("logout");
                 Main.WS.token = '';
-            } else if(obj.response.error == 102 && Main.WS.token == '') {
-                Window.main.webContents.send("session_not_found");
-            } else if(obj.response.error == 102 && Main.WS.token != '') {
-                Window.main.webContents.send("logout");
+                return;
+            } 
+
+
+            if((obj.response.error == 102 || obj.response.error == 106) && Main.Config.Settings.session != '') {  // Session
+               let type = "session_not_found";
+                if(Main.WS.token != '') {
+                    type = "logout";
+                }
+                Main.Config.Settings.session = "";
+                Main.Config.saveSettings();
+                Window.main.webContents.send(type);
             }
             Window.main.webContents.send('error-method', obj.response);
             return;
@@ -193,6 +201,7 @@ export class WebSocketConnection {
 
 
     private Authorization(data: AuthorizationRequest) {
+        let token = Main.WS.token;
         let type = 'login-success';
         if (data.token == '') {
             type = 'login-twofactor';
@@ -202,7 +211,9 @@ export class WebSocketConnection {
                 Main.Session.saveSession(data.session_token);
             }
         }
-        Window.main.webContents.send(type, data);
+        if(token == '') {
+            Window.main.webContents.send(type, data);
+        }
     }
 
 
@@ -213,6 +224,8 @@ export class WebSocketConnection {
     private Logout(data: string) {
         if(data == 'reset') {
             Main.WS.token = "";
+            Main.Config.Settings.session = "";
+            Main.Config.saveSettings();
             Window.main.webContents.send('logout');
         }
     }
