@@ -4,39 +4,61 @@ import * as crypto from 'crypto';
 
 import { Window } from './window';
 
+interface Authorize {
+    login: string;
+    password: string;
+    code: number;
+    save: boolean;
+}
+
+interface AuthorizeToken {
+    session: string;
+}
+
 
 export class SessionManager {
     public checked: boolean = false;
-
-    public session_token : string = undefined;
 
     constructor() {
     }
     
     
     public checkSession() {
-        //Проверяем файл или чет на существовании сессии и отправляем запрос на авторизацию и ретурн.
-        this.checked = true;
-        Window.main.webContents.send('session_not_found')
+        this.authorizeByToken()
     }
     public authorize(login: string, password: string, save:boolean, twofactor: number) {
         let hashPassword = crypto.createHash('sha256').update(password).digest('hex');
-        let data = {login:login, password:hashPassword, code:0}
+        let data : Authorize = {
+            login:login, 
+            password:hashPassword, 
+            code:0, 
+            save:save}
         if(twofactor != 0) {
             data.code = twofactor;
         };     
         Main.WS.sendRequest(1, data);
         
     }
-    public authorizeByToken(token: string) {
-        //Тут запрос на авторизацию через токен
+    public authorizeByToken() {
+        let session = Main.Config.Settings.session;
+        if (session == '') {
+            this.checked = true;
+            Window.main.webContents.send('session_not_found')
+            return;
+        }
+        let data : AuthorizeToken = {
+            session: Main.Config.Settings.session
+        }
+        Main.WS.sendRequest(1, data);
+        
     }
     public logout() {
         Main.WS.sendRequest(3, {}); 
         
     }
 
-    public saveSession (data: any) {
-        //Сохраняем сессию в файл
+    public saveSession (token: string) {
+        Main.Config.Settings.session = token;
+        Main.Config.saveSettings(); 
     }
 }

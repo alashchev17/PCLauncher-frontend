@@ -5,10 +5,12 @@ import { SessionManager } from './session'
 import { ipcMain } from 'electron';
 
 import { Window } from './window';
+import { SettingsManager } from './settings';
 
 export class Main {
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
+    static Config = new SettingsManager();
     private IPCMethods = {
         'login': (e:any, login: string, password: string, save: boolean, twofactor: number) =>{ Main.Session.authorize(login, password, save, twofactor); },
         'logout': (e:any) => { Main.Session.logout(); } 
