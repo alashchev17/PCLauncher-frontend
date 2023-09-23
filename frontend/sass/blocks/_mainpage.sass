@@ -7,7 +7,7 @@
     height: 100%
     width: 100%
     overflow: hidden
-    background-color: #000000
+    background-color: $solid-gray
     top: 0%
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 100%), url(../img/background.png)
     background-position: center center
@@ -17,7 +17,7 @@
     &--error
       background: #0C0C0C
     &--hidden
-      background: #000000
+      background: $solid-gray
     &--login
       background: url(../img/background.png)
       background-position: center center
@@ -39,7 +39,7 @@
     bottom: 0
     border-bottom-left-radius: 41px
     border-bottom-right-radius: 41px
-    background: rgba(0, 0, 0, 0.2)
+    background: rgba($solid-gray, 0.2)
     backdrop-filter: blur(10px)
     z-index: $blurIndex
     &-hover
@@ -95,6 +95,7 @@
     display: flex
     align-items: center
     justify-content: space-between
+    position: relative
   &__branding
     display: flex
     flex-direction: column
@@ -333,7 +334,7 @@
 .navigation
   &__button
     display: inline-block
-    background: rgba(255, 255, 255, 0.15)
+    background-color: rgba(255, 255, 255, 0.15)
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15)
     background-repeat: no-repeat
     background-position: center center
@@ -381,6 +382,14 @@
   &__profile
     background-size: 17.63px 18.66px
     background-image: url(../img/icons/profile.svg)
+    transition: background-color 0.3s ease-in-out
+    &--active
+      background-image: url('../img/icons/cross.svg')
+      background-color: #4A2DF9
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 24px
+
 .burger
   &__menu
     z-index: $burgerIndex

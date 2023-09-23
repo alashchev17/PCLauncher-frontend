@@ -30,32 +30,121 @@
         <div class="container">
         <header class="mainpage__header">
             <nav class="navigation mainpage__navigation">
-            <a class="button navigation__button button__burger" style="display: none;">
-                <span class="button__burger-item"></span>
-                <span class="button__burger-item"></span>
-                <span class="button__burger-item"></span>
-            </a>
-            <img src="./img/icons/logo.svg" alt="Gambit Logotype" class="logotype mainpage__logotype" />
-            <div class="navigation__links">
-                <a target="_blank" href="gambit-rp.ru" class="navigation__link">
-                    <i class="mainpage__icon icon icon__website"></i>
-                    Сайт
+                <a class="button navigation__button button__burger" style="display: none;">
+                    <span class="button__burger-item"></span>
+                    <span class="button__burger-item"></span>
+                    <span class="button__burger-item"></span>
                 </a>
-                <a target="_blank" href="forum.gambit-rp.ru" class="navigation__link">
-                    <i class="mainpage__icon icon icon__forum"></i>
-                    Форум
-                </a>
-                <a target="_blank" href="vk.com/gambitrp" class="navigation__link">
-                    <i class="mainpage__icon icon icon__vkmain"></i>
-                    Сообщество
-                </a>
-                <a target="_blank" href="discord.gg/gambit-role-play-samp-812393858884960331" class="navigation__link">
-                    <i class="mainpage__icon icon icon__discord"></i>
-                    Дискорд
-                </a>
-            </div>
-            <!-- /.navigation__links -->
-            <a class="button navigation__button button__profile"></a>
+                <img src="./img/icons/logo.svg" alt="Gambit Logotype" class="logotype mainpage__logotype" />
+                <div class="navigation__links">
+                    <a target="_blank" href="gambit-rp.ru" class="navigation__link">
+                        <i class="mainpage__icon icon icon__website"></i>
+                        Сайт
+                    </a>
+                    <a target="_blank" href="forum.gambit-rp.ru" class="navigation__link">
+                        <i class="mainpage__icon icon icon__forum"></i>
+                        Форум
+                    </a>
+                    <a target="_blank" href="vk.com/gambitrp" class="navigation__link">
+                        <i class="mainpage__icon icon icon__vkmain"></i>
+                        Сообщество
+                    </a>
+                    <a target="_blank" href="discord.gg/gambit-role-play-samp-812393858884960331" class="navigation__link">
+                        <i class="mainpage__icon icon icon__discord"></i>
+                        Дискорд
+                    </a>
+                </div>
+                <!-- /.navigation__links -->
+                <a class="button button__profile navigation__button "></a>
+                <div class="user mainpage__user">
+                    <div class="user__content user__content--characters user__content--active">
+                        <div class="user__header">
+                            <h2 class="user__title">Список персонажей</h2>
+                            <a href="#" class="user__link user__link--notifications">Уведомления</a>
+                        </div>
+                        <!-- /.user__header -->
+                        <ul class="user__characters">
+                            <li class="user__characters-item">
+                                <div class="user__characters-image"></div>
+                                <div class="user__characters-info">
+                                    <span class="user__characters-nickname">Nick_Name</span>
+                                    <span class="user__characters-status">Одобрен</span>
+                                </div>
+                                <!-- /.user__characters-info -->
+                            </li>
+                            <li class="user__characters-item">
+                                <div class="user__characters-image"></div>
+                                <div class="user__characters-info">
+                                    <span class="user__characters-nickname">Nick_Name</span>
+                                    <span class="user__characters-status">Одобрен</span>
+                                </div>
+                                <!-- /.user__characters-info -->
+                            </li>
+                            <li class="user__characters-item user__characters-item--disabled" disabled>
+                                <div class="user__characters-image"></div>
+                                <div class="user__characters-info">
+                                    <span class="user__characters-nickname">Nick_Name</span>
+                                    <span class="user__characters-status">Заблокирован до 01.01.2025</span>
+                                </div>
+                                <!-- /.user__characters-info -->
+                            </li>
+                            <li class="user__characters-item user__characters-item--denied">
+                                <div class="user__characters-image"></div>
+                                <div class="user__characters-info">
+                                    <span class="user__characters-nickname">Nick_Name</span>
+                                    <span class="user__characters-status">Отклонён</span>
+                                </div>
+                                <!-- /.user__characters-info -->
+                            </li>
+                            <li class="user__characters-item">
+                                <div class="user__characters-image"></div>
+                                <div class="user__characters-info">
+                                    <span class="user__characters-nickname">Nick_Name</span>
+                                    <span class="user__characters-status">Мёртв</span>
+                                </div>
+                                <!-- /.user__characters-info -->
+                            </li>
+                            <li class="user__characters-item">
+                                <div class="user__characters-image"></div>
+                                <div class="user__characters-info">
+                                    <span class="user__characters-nickname">Nick_Name</span>
+                                    <span class="user__characters-status">Одобрен</span>
+                                </div>
+                                <!-- /.user__characters-info -->
+                            </li>
+                        </ul>
+                        <!-- /.user__characters -->
+                    </div>
+                    <!-- /.user__content -->
+                    <div class="user__content user__content--notifications user__content--hidden">
+                        <div class="user__header">
+                            <h2 class="user__title">Список уведомлений</h2>
+                            <a href="#" class="user__link user__link--characters">Персонажи</a>
+                        </div>
+                        <!-- /.user__header -->
+                        <ul class="user__notifications">
+                            <li class="user__notifications-item">
+                                <span class="user__notifications-date">23 сен 2023</span>
+                                <p class="user__notifications-info">Тестовое уведомление</p>
+                            </li>
+                            <li class="user__notifications-item">
+                                <span class="user__notifications-date">23 сен 2023</span>
+                                <p class="user__notifications-info">Тестовое уведомление</p>
+                            </li>
+                            <li class="user__notifications-item">
+                                <span class="user__notifications-date">23 сен 2023</span>
+                                <p class="user__notifications-info">Тестовое уведомление</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.user__content -->
+                    <hr class="user__stroke" />
+                    <a href="#" class="user__logout">
+                        <i class="icon icon__logout"></i>
+                        Выйти из аккаунта
+                    </a>
+                </div>
+                <!-- /.user -->
             </nav>
         </header>
         <section class="mainpage__section">
@@ -543,7 +632,7 @@
       </section>
     <div class="mainpage__tray">
         <button class="mainpage__tray-button mainpage__tray-button--hide"></button>
-        <button class="mainpage__tray-button mainpage__tray-button--settings settings-but"></button>
+        <button class="mainpage__tray-button mainpage__tray-button--settings"></button>
         <button class="mainpage__tray-button mainpage__tray-button--close"></button>
     </div>
     </div>
@@ -581,7 +670,7 @@
     <script src="./js/view.js" type="text/javascript"></script>
     <script src="./js/app.js"></script>
     <script>
-      v = new app();
+        v = new app();
     </script>
   </body>
 </html>

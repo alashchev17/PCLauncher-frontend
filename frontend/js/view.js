@@ -20,6 +20,7 @@ class view {
         settingButton: 'mainpage__tray-button--settings',
         settingBlock: 'settings',
         profileButton: 'button__profile',
+        infoBlock: 'info-block',
         loginLogo: 'login__logotype',
         loginAside: 'login__aside',
         loginButton: 'login__button',
@@ -41,6 +42,14 @@ class view {
         preloaderTipTitle: 'preloader__tip-title',
         preloaderTipText: 'preloader__tip-text',
         preloaderTitle: 'preloader__heading',
+        // User Block (Characters & Notifications)
+        userBlock: 'user',
+        userLogout: 'user__logout',
+        userGoToNotifications: 'user__link--notifications',
+        userGoToCharacters: 'user__link--characters',
+        userCharacters: 'user__characters-item',
+        userCharactersContent: 'user__content--characters',
+        userNotificationsContent: 'user__content--notifications',
         //Pages
         loginPage: 'login',
         mainPage: 'main',
@@ -50,6 +59,8 @@ class view {
     };
     #active = "--active";
     #hidden = "--hidden";
+    #disabled = "--disabled";
+    #denied = "--denied";
     #play_button = `
     <button class="mainpage__button mainpage__button--ready">
         Запустить
@@ -85,8 +96,13 @@ class view {
   
     constructor() {
         for (var key in this.#selectors) {
-            let selectr = document.querySelector("." + this.#selectors[key]);
-            this.#selectors[key] = selectr;
+            if (key != 'userCharacters') {
+                let selectr = document.querySelector("." + this.#selectors[key]);
+                this.#selectors[key] = selectr;
+            } else {
+                let selectr = document.querySelectorAll('.' + this.#selectors[key]);
+                this.#selectors[key] = selectr;
+            }
             
         }
         let sl = this.#selectors; 
@@ -359,7 +375,37 @@ class view {
         sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
         sl.profileButton.addEventListener("click", () => {
-            ipcRenderer.send('logout');
+            sl.profileButton.classList.toggle(sl.profileButton.classList[1] + this.#active);
+            if (!sl.userCharactersContent.classList.contains(sl.userCharactersContent.classList[0] + this.#active)) {
+                this.userContentHandle(sl, "notifications");
+            }
+            sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#active);
+        });
+        sl.userLogout.addEventListener("click", e => {
+            e.preventDefault();
+            sl.profileButton.classList.toggle(sl.profileButton.classList[1] + this.#active);
+            sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#active);
+            setTimeout(() => {
+                ipcRenderer.send('logout');
+            }, 300);
+        });
+        sl.userCharacters.forEach(userCharacter => {
+            userCharacter.addEventListener('click', () => {
+                if  (
+                    !userCharacter.classList.contains(userCharacter.classList[0] + this.#disabled) &&
+                    !userCharacter.classList.contains(userCharacter.classList[0] + this.#denied)
+                ) {
+                    userCharacter.classList.toggle(userCharacter.classList[0] + this.#active);
+                }
+            });
+        });
+        sl.userGoToNotifications.addEventListener("click", e => {
+            e.preventDefault();
+            this.userContentHandle(sl, "characters");
+        });
+        sl.userGoToCharacters.addEventListener("click", e => {
+            e.preventDefault();
+            this.userContentHandle(sl, "notifications");
         });
         sl.loginButton.addEventListener("click", (e) => {
             let login = sl.loginInputNick.value.trim();
@@ -456,6 +502,27 @@ class view {
                 }, 500);
             }, 500);
             return;
+        }
+    }
+    userContentHandle(sl, currentContent) {
+        if (currentContent == "characters") {
+            sl.userCharactersContent.classList.toggle(sl.userCharactersContent.classList[0] + this.#active);
+            setTimeout(() => {
+                sl.userCharactersContent.classList.toggle(sl.userCharactersContent.classList[0] + this.#hidden);
+                sl.userNotificationsContent.classList.toggle(sl.userNotificationsContent.classList[0] + this.#hidden);
+                setTimeout(() => {
+                    sl.userNotificationsContent.classList.toggle(sl.userNotificationsContent.classList[0] + this.#active);
+                });
+            }, 300);
+        } else if (currentContent == "notifications") {
+            sl.userNotificationsContent.classList.toggle(sl.userNotificationsContent.classList[0] + this.#active);
+            setTimeout(() => {
+                sl.userNotificationsContent.classList.toggle(sl.userNotificationsContent.classList[0] + this.#hidden);
+                sl.userCharactersContent.classList.toggle(sl.userCharactersContent.classList[0] + this.#hidden);
+                setTimeout(() => {
+                    sl.userCharactersContent.classList.toggle(sl.userCharactersContent.classList[0] + this.#active);
+                });
+            }, 300);
         }
     }
 }
