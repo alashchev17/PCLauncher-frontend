@@ -1,4 +1,3 @@
-
 console.log("view.js loaded");
 
 
@@ -358,6 +357,10 @@ class view {
             }
         });
 
+        ipcRenderer.on("notification", (event, data) => {
+
+        });
+
         sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
         sl.downloadButton.addEventListener("click", () => {
             // this.update = 1;
@@ -410,13 +413,12 @@ class view {
         sl.loginButton.addEventListener("click", (e) => {
             let login = sl.loginInputNick.value.trim();
             let password = sl.loginInputPass.value.trim();
-            let check = sl.loginCheck.checked;
             let twofactor = sl.loginInput2FA.value.trim() == '' ? 0 : new Number(sl.loginInput2FA.value.trim());
             if (login.length == 0 || password.length == 0 || (sl.loginInput2FA.hasAttribute("required") && twofactor == '')) {
                 return;
             }
             e.preventDefault();
-            ipcRenderer.send("login", login, password, check, twofactor);
+            ipcRenderer.send("login", login, password, twofactor);
         
         });
 

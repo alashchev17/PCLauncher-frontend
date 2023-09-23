@@ -223,6 +223,7 @@ export class WebSocketConnection {
 
 
     private Notification(data: NotificationRequest) {
+        Window.main.webContents.send("notification", data);
     }
 
     

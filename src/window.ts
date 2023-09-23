@@ -21,7 +21,7 @@ export class Window {
 
     Window.main.loadFile('./frontend/index.html');
 
-    Window.main.webContents.openDevTools();
+    //Window.main.webContents.openDevTools();
 
     Window.main.on('system-context-menu', (event, _point) => {
       event.preventDefault();
