@@ -33,9 +33,13 @@ class view {
         errorReason: 'error__reason',
         errorReasonText: 'error__reason-text',
         errorWaitingPoints: 'points',
+        // Tip Blocks
         errorTipBlock: 'error__tip',
         errorTipTitle: 'error__tip-title',
         errorTipText: 'error__tip-text',
+        preloaderTipBlock: 'preloader__tip',
+        preloaderTipTitle: 'preloader__tip-title',
+        preloaderTipText: 'preloader__tip-text',
         preloaderTitle: 'preloader__heading',
         //Pages
         loginPage: 'login',
@@ -172,6 +176,7 @@ class view {
         ipcRenderer.on("login-success", (event, data) => {
             if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Подключение установлено";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
@@ -180,6 +185,7 @@ class view {
                         sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
                         setTimeout(() => {
                             this.page = 'main';
+                            this.count = 0;
                             setTimeout(() => {
                                 sl.mainPage.classList.remove(sl.mainPage.classList[0] + this.#hidden);
                             }, 100);
@@ -234,10 +240,10 @@ class view {
                 sl.reconnectionTimer.textContent = data;
                 if (typeof data === "number" && data % 3 === 0) {
                     if (this.count != this.tipTexts.length) {
-                        this.errorTipHandle(this.tipTexts[this.count], sl);
+                        this.tipHandle(sl, this.tipTexts[this.count], this.page_name);
                         this.count++;
                     } else {
-                        this.errorTipHandle(this.tipTexts[0], sl);
+                        this.tipHandle(sl, this.tipTexts[0], this.page_name);
                         this.count = 1;
                     }
                 }
@@ -247,6 +253,15 @@ class view {
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Проблемы с подключением, переподключаемся...";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                    if (typeof data === "number" && data % 3 === 0) {
+                        if (this.count != this.tipTexts.length) {
+                            this.tipHandle(sl, this.tipTexts[this.count], this.page_name);
+                            this.count++;
+                        } else {
+                            this.tipHandle(sl, this.tipTexts[0], this.page_name);
+                            this.count = 1;
+                        }
+                    }
                 }, 300);
                 return;
             }
@@ -316,11 +331,13 @@ class view {
         ipcRenderer.on("session_not_found", (event, data) => {
             if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Подключение установлено";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
                     setTimeout(() => {
                         this.page = 'login';
+                        this.count = 0;
                     }, 1500);
                 }, 300);
             }
@@ -415,14 +432,31 @@ class view {
                 break;
         }
     }
-    errorTipHandle(text, sl) {
-        sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
-        setTimeout(() => {
-            sl.errorTipTitle.textContent = text.title;
-            sl.errorTipText.textContent = text.text;
+    tipHandle(sl, text, page_name) {
+        if (page_name == "error") {
+            if (sl.errorTipBlock.classList.contains(sl.errorTipBlock.classList[0] + this.#active)) {
+                sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
+            }
             setTimeout(() => {
-                sl.errorTipBlock.classList.add(sl.errorTipBlock.classList[0] + this.#active);
+                sl.errorTipTitle.textContent = text.title;
+                sl.errorTipText.textContent = text.text;
+                setTimeout(() => {
+                    sl.errorTipBlock.classList.add(sl.errorTipBlock.classList[0] + this.#active);
+                }, 500);
             }, 500);
-        }, 500);
+            return;
+        } else if (page_name == "preloader") {
+            if (sl.preloaderTipBlock.classList.contains(sl.preloaderTipBlock.classList[0] + this.#active)) {
+                sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
+            }
+            setTimeout(() => {
+                sl.preloaderTipTitle.textContent = text.title;
+                sl.preloaderTipText.textContent = text.text;
+                setTimeout(() => {
+                    sl.preloaderTipBlock.classList.add(sl.preloaderTipBlock.classList[0] + this.#active);
+                }, 500);
+            }, 500);
+            return;
+        }
     }
 }
