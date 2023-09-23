@@ -176,10 +176,10 @@ class view {
         ipcRenderer.on("login-success", (event, data) => {
             if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Подключение установлено";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
-                    sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                     setTimeout(() => {
                         sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
                         sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
@@ -331,10 +331,10 @@ class view {
         ipcRenderer.on("session_not_found", (event, data) => {
             if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Подключение установлено";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
-                    sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                     setTimeout(() => {
                         this.page = 'login';
                         this.count = 0;
