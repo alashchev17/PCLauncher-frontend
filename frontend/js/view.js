@@ -165,7 +165,6 @@ class view {
                     this.errorBlockHandle(sl, "Неверный код двухфакторной аутентификации", 105);
                     break;
                 case 106:
-                    this.page = 'login';
                     break;
                 case 107:
                     // text: "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад."
@@ -365,7 +364,7 @@ class view {
         sl.loginButton.addEventListener("click", (e) => {
             let login = sl.loginInputNick.value.trim();
             let password = sl.loginInputPass.value.trim();
-            let check = false;
+            let check = sl.loginCheck.checked;
             let twofactor = sl.loginInput2FA.value.trim() == '' ? 0 : new Number(sl.loginInput2FA.value.trim());
             if (login.length == 0 || password.length == 0 || (sl.loginInput2FA.hasAttribute("required") && twofactor == '')) {
                 return;
