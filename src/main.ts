@@ -12,7 +12,7 @@ export class Main {
     static Session = new SessionManager();
     static Config = new SettingsManager();
     private IPCMethods = {
-        'login': (e:any, login: string, password: string, save: boolean, twofactor: number) =>{ Main.Session.authorize(login, password, save, twofactor); },
+        'login': (e:any, login: string, password: string, twofactor: number) =>{ Main.Session.authorize(login, password, twofactor); },
         'logout': (e:any) => { Main.Session.logout(); } 
     }
     constructor() {

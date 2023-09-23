@@ -46,12 +46,13 @@ export class WebSocketConnection {
 
     public reconnectionCount: number = 0;
 
+
     private errorListeners: ((error: any) => void)[] = [];
 
     private methodsMessage: { [key: number]: string } = {
         1: 'Authorization',
         2: 'Notification',
-        3: 'Logout'
+        3: 'Logout',
     }
  
     constructor() {
@@ -75,6 +76,14 @@ export class WebSocketConnection {
     }
  
     private onOpen(event: WebSocket.Event) {
+        if(this.token != ''){
+            if(Main.Config.Settings.session != '')
+            {
+                Main.Session.authorizeByToken();
+            } else {
+                Window.main.webContents.send("logout");
+            }
+        }
         console.log('WebSocket connection opened:');
     }
  
@@ -109,7 +118,6 @@ export class WebSocketConnection {
     }
  
     private onClose(event:  WebSocket.CloseEvent) {
-        console.log('WebSocket connection closed:');
         if(this.reconnectionCount == 0) {
             this.Reconnect();
         }
@@ -140,8 +148,7 @@ export class WebSocketConnection {
     }
  
     private onError(event: WebSocket.ErrorEvent) {
-        console.error('WebSocket error:', event); 
-        this.emitError(event);
+        //this.emitError(event);
     }
 
     public async send(message: string) {
@@ -201,19 +208,17 @@ export class WebSocketConnection {
 
 
     private Authorization(data: AuthorizationRequest) {
-        let token = Main.WS.token;
         let type = 'login-success';
         if (data.token == '') {
             type = 'login-twofactor';
+            
         } else {
             Main.WS.token = data.token;
             if(data.session_token != '') {
                 Main.Session.saveSession(data.session_token);
             }
         }
-        if(token == '') {
             Window.main.webContents.send(type, data);
-        }
     }
 
 
