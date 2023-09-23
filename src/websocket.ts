@@ -3,7 +3,42 @@ import { Main } from './main'
 
 import { Window } from './window';
 
-export class WebSocketConnection {  // Придумать таймаут. Если в течении времени не выполнено - выдавать окно.
+interface SendRequest {
+    launcher: number;
+    type: number;
+    token: string;
+    data : any;    
+}
+//Интерфейсы для входящих запросов
+
+interface IncomingRequest {
+    type: number;
+    response: {
+        error: number;
+        error_message: string;
+    };
+}
+
+interface AuthorizationRequest {
+    user_id : number;
+    user_login: string;
+    characters: any[];
+    session_token: string;
+    two_factor: number;
+    token: string;
+    launcher_update: boolean;
+}
+
+interface NotificationRequest {
+    character_name: string;
+    date: number;
+    status: number;
+    text: string;
+    account_id: number;
+}
+
+
+export class WebSocketConnection {  
     private ws: WebSocket | null = null;
     private method;
 
@@ -45,12 +80,19 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
  
     private onMessage(event: WebSocket.MessageEvent) {
         console.log(event.data.toString());
-        const obj = JSON.parse(event.data.toString());
+        const obj : IncomingRequest = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
             if(obj.response.error == 2 && Main.WS.token != '') {
-                //Пытаемся авторизоваться через сохраненный ключ если есть, если нет - выкидываем на авторизацию.
+                if(Main.Config.Settings.session != '') {
+                    Main.Session.authorizeByToken();
+                    return;
+                }
                 Window.main.webContents.send("logout");
                 Main.WS.token = '';
+            } else if(obj.response.error == 102 && Main.WS.token == '') {
+                Window.main.webContents.send("session_not_found");
+            } else if(obj.response.error == 102 && Main.WS.token != '') {
+                Window.main.webContents.send("logout");
             }
             Window.main.webContents.send('error-method', obj.response);
             return;
@@ -90,7 +132,7 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
     }
  
     private onError(event: WebSocket.ErrorEvent) {
-        console.error('WebSocket error:', event); // Обработка ошибок сокета, переподключение если это возможно
+        console.error('WebSocket error:', event); 
         this.emitError(event);
     }
 
@@ -123,11 +165,12 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
         }
     }
     public sendRequest(key:number, data: any) {
-        let obj  = {
-            type: key,
-            data: data,
+        let obj : SendRequest = {
+            launcher: 1,
             token: this.token,
-        }; 
+            type : key,
+            data : data
+        };
         let jsonObj = JSON.stringify(obj);
         console.log(jsonObj);
         this.ws.send(jsonObj);
@@ -137,9 +180,8 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
  class WebSocketMethods {
     [key: string]: (...object: any[]) => any;
 
-    constructor() {
+    constructor() {}
 
-    }
     CallFunction(key: string, data: any) {
         const fn = this[key]
         if (typeof fn === 'function') {
@@ -149,21 +191,26 @@ export class WebSocketConnection {  // Придумать таймаут. Есл
         }
     }
 
-    private Authorization(data: any) {
+
+    private Authorization(data: AuthorizationRequest) {
         let type = 'login-success';
         if (data.token == '') {
             type = 'login-twofactor';
         } else {
             Main.WS.token = data.token;
-            if(data.save) {
-                Main.Session.saveSession(data);
+            if(data.session_token != '') {
+                Main.Session.saveSession(data.session_token);
             }
         }
         Window.main.webContents.send(type, data);
     }
-    private Notification(data: any) {
+
+
+    private Notification(data: NotificationRequest) {
     }
-    private Logout(data: any) {
+
+    
+    private Logout(data: string) {
         if(data == 'reset') {
             Main.WS.token = "";
             Window.main.webContents.send('logout');
