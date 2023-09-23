@@ -26,13 +26,13 @@ export class SessionManager {
     public checkSession() {
         this.authorizeByToken()
     }
-    public authorize(login: string, password: string, save:boolean, twofactor: number) {
+    public authorize(login: string, password: string, twofactor: number) {
         let hashPassword = crypto.createHash('sha256').update(password).digest('hex');
         let data : Authorize = {
             login:login, 
             password:hashPassword, 
             code:0, 
-            save:save}
+            save:true}
         if(twofactor != 0) {
             data.code = twofactor;
         };     
