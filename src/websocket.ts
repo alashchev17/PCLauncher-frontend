@@ -131,7 +131,7 @@ export class WebSocketConnection {
         this.reconnectionCount++;
         let inetrvalReconnect : any;
         inetrvalReconnect =  setInterval(() => {
-            if(Main.WS.ws.readyState === WebSocket.OPEN) {
+            if(this.isConnected()) { 
                 if(Main.WS.reconnectionCount > 1) {
                     console.log("Recconected");                    
                 }
@@ -163,7 +163,7 @@ export class WebSocketConnection {
     }
 
     public isConnected(): boolean {
-        return this.ws.readyState == WebSocket.OPEN;
+        return this.ws.readyState == WebSocket.OPEN; // Иногда выдает ошибку, нужно понять почему
     }
 
     private emitError(error: any) {
