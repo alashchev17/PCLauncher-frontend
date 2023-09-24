@@ -26,7 +26,6 @@ class view {
         loginInputNick: 'login__nick',
         loginInputPass: 'login__password',
         loginInput2FA: 'login__twofactor',
-        loginCheck: 'login__checkbox',
         errorMsgBlock: 'error-block',
         errorMsgBlockText: 'error-block__name',
         reconnectionTimer: 'reconnection-timer',
@@ -44,6 +43,7 @@ class view {
         // User Block (Characters & Notifications)
         userBlock: 'user',
         userLogout: 'user__logout',
+        userCharactersList: 'user__characters',
         userGoToNotifications: 'user__link--notifications',
         userGoToCharacters: 'user__link--characters',
         userCharacters: 'user__characters-item',
@@ -162,10 +162,45 @@ class view {
                     this.errorBlockHandle(sl, "Заполните все поля", 101);
                     break;
                 case 102:
-                    if (this.page_name == 'preloader') {
-                        this.page = 'login';
+                    // if (this.page_name == 'preloader') {
+                    //     this.page = 'login';
+                    // }
+                    if (this.page_name == 'error') {
+                        sl.userCharactersList.innerHTML = "";
+                        sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
+                        if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
+                            sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
+                        }
+                        sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
+                        setTimeout(() => {
+                            sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
+                            sl.reconnectionTimer.textContent = "";
+                            sl.errorWaitingPoints.textContent = "";
+                            sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
+                            setTimeout(() => {
+                                this.page.classList.add(this.page.classList[0] + this.#hidden);
+                                setTimeout(() => {
+                                    this.page = 'login';
+                                    setTimeout(() => {
+                                        sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
+                                        sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                                        this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
+                                        this.count = 0;
+                                    }, 100);
+                                }, 500);
+                                if (sl.loginInput2FA.hasAttribute("required")) {
+                                    sl.loginInput2FA.value = "";
+                                    sl.loginInput2FA.classList.add(sl.loginInput2FA.classList[0] + this.#hidden);
+                                    setTimeout(() => {
+                                        sl.loginInput2FA.classList.remove(sl.loginInput2FA.classList[0] + this.#active);
+                                        sl.loginInput2FA.removeAttribute("required");
+                                    }, 300);
+                                }
+                            }, 1000);
+                        }, 300);
+                    } else {
+                        this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
                     }
-                    this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
                     break;
                 case 103:
                     // text: "Вы уже авторизованы под этим аккаунтом!"
@@ -188,6 +223,25 @@ class view {
             }
         });
         ipcRenderer.on("login-success", (event, data) => {
+            console.log(data);
+
+            if (data.characters !== null) {
+                for (let i = 0; i != data.characters.length; i++) {
+                    sl.userCharactersList.innerHTML += `
+                        <li class="user__characters-item${(data.characters[i].game === false) ? " user__characters-item--disabled" : ""}${(data.characters[i].status == "Отклонен") ? " user__characters-item--denied" : ""}" data-game=${data.characters[i].game}>
+                            <div class="user__characters-image skin" data-skin=${data.characters[i].skin}></div>
+                            <div class="user__characters-info">
+                                <span class="user__characters-nickname">${data.characters[i].name}</span>
+                                <span class="user__characters-status">${data.characters[i].status}</span>
+                            </div>
+                            <!-- /.user__characters-info -->
+                        </li>
+                    `;
+                }
+            }
+            let userCharactersNew = [].slice.call(document.querySelectorAll('.user__characters-item'));
+            console.log(userCharactersNew);
+
             if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
                 sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
@@ -208,6 +262,29 @@ class view {
                 }, 300);
                 return;
             }
+            if (this.page_name == 'error') {
+                if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
+                    sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
+                }
+                sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
+                    sl.reconnectionTimer.textContent = "";
+                    sl.errorWaitingPoints.textContent = "";
+                    sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
+                    setTimeout(() => {
+                        this.page.classList.add(this.page.classList[0] + this.#hidden);
+                        setTimeout(() => {
+                            this.page = this.lastPage;
+                            setTimeout(() => {
+                                this.page.classList.remove(this.page.classList[0] + this.#hidden);
+                                this.count = 0;
+                            }, 300);
+                        }, 500);
+                    }, 1000);
+                }, 300);
+                return;
+            }
             sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
             sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
             setTimeout(() => {
@@ -220,12 +297,17 @@ class view {
         ipcRenderer.on("login-twofactor", (event, data) => {
             sl.loginInput2FA.classList.remove(sl.loginInput2FA.classList[0] + this.#hidden);
             setTimeout(() => {
+                sl.loginInput2FA.focus();
                 sl.loginInput2FA.classList.add(sl.loginInput2FA.classList[0] + this.#active);
                 sl.loginInput2FA.setAttribute("required", "required");
             }, 300);
         });
 
         ipcRenderer.on("logout", (event, data) => {
+            if (this.page_name = 'error') {
+                return;   
+            }
+            sl.userCharactersList.innerHTML = "";
             sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
             setTimeout(() => {
                 this.page = 'login';
@@ -279,6 +361,7 @@ class view {
                 }, 300);
                 return;
             }
+            sl.userCharactersList.innerHTML = "";
             sl.errorReasonText.textContent = "Переподключение ";
             sl.reconnectionTimer.textContent = "1";
             sl.errorWaitingPoints.textContent = "...";
@@ -305,43 +388,6 @@ class view {
             // Обновляем страницу при первом переподключении
         });
 
-        ipcRenderer.on("reconnected", (event, data) => {
-            if (this.lastPage !== "preloader" && this.lastPage !== undefined) {
-                if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
-                    sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
-                }
-                sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
-                setTimeout(() => {
-                    sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
-                    sl.reconnectionTimer.textContent = "";
-                    sl.errorWaitingPoints.textContent = "";
-                    sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
-                    setTimeout(() => {
-                        if (this.lastPage == 'login') {
-                            this.page.classList.add(this.page.classList[0] + this.#hidden);
-                            setTimeout(() => {
-                                this.page = this.lastPage;
-                                setTimeout(() => {
-                                    sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
-                                    sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
-                                    this.count = 0;
-                                }, 100);
-                            }, 500);
-                            return;
-                        }
-                        this.page.classList.add(this.page.classList[0] + this.#hidden);
-                        setTimeout(() => {
-                            this.page = this.lastPage;
-                            setTimeout(() => {
-                                this.page.classList.remove(this.page.classList[0] + this.#hidden);
-                                this.count = 0;
-                            }, 300);
-                        }, 500);
-                    }, 1000);
-                }, 300);
-            }
-        });
-        
         ipcRenderer.on("session_not_found", (event, data) => {
             if (this.page_name == 'preloader') {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
@@ -378,17 +424,29 @@ class view {
         sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
         sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
         sl.profileButton.addEventListener("click", () => {
-            sl.profileButton.classList.toggle(sl.profileButton.classList[1] + this.#active);
             if (!sl.userCharactersContent.classList.contains(sl.userCharactersContent.classList[0] + this.#active)) {
                 this.userContentHandle(sl, "notifications");
             }
-            sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#active);
+            if (sl.userBlock.classList.contains(sl.userBlock.classList[0] + this.#hidden)) {
+                sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#hidden);
+                setTimeout(() => {
+                    sl.profileButton.classList.toggle(sl.profileButton.classList[1] + this.#active);
+                    sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#active);
+                }, 100);
+            } else {
+                sl.profileButton.classList.toggle(sl.profileButton.classList[1] + this.#active);
+                sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#hidden);
+                }, 300);
+            }
         });
         sl.userLogout.addEventListener("click", e => {
             e.preventDefault();
             sl.profileButton.classList.toggle(sl.profileButton.classList[1] + this.#active);
             sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#active);
             setTimeout(() => {
+                sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#hidden);
                 ipcRenderer.send('logout');
             }, 300);
         });
