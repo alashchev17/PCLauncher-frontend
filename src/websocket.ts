@@ -81,7 +81,7 @@ export class WebSocketConnection {
             {
                 Main.Session.authorizeByToken();
             } else {
-                Window.main.webContents.send("logout");
+                Window.main.webContents.send("session_not_found");
                 console.log("Send logout");
             }
         }
@@ -132,9 +132,6 @@ export class WebSocketConnection {
         let inetrvalReconnect : any;
         inetrvalReconnect =  setInterval(() => {
             if(this.isConnected()) { 
-                if(Main.WS.reconnectionCount > 1) {
-                    console.log("Recconected");                    
-                }
                 this.reconnectionCount = 0;
                 clearInterval(inetrvalReconnect);
                 return;

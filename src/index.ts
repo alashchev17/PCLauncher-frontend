@@ -4,7 +4,7 @@ import { Main } from './main'
 
 
 if (require('electron-squirrel-startup')) {
-  app.quit();
+    app.quit();
 }
 
 new Main();
