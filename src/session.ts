@@ -44,6 +44,7 @@ export class SessionManager {
         if (session == '') {
             this.checked = true;
             Window.main.webContents.send('session_not_found')
+            console.log("Send Session Not Found");
             return;
         }
         let data : AuthorizeToken = {

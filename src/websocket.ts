@@ -82,6 +82,7 @@ export class WebSocketConnection {
                 Main.Session.authorizeByToken();
             } else {
                 Window.main.webContents.send("logout");
+                console.log("Send logout");
             }
         }
         console.log('WebSocket connection opened:');
@@ -97,6 +98,7 @@ export class WebSocketConnection {
                     return;
                 }
                 Window.main.webContents.send("logout");
+                console.log("Send logout");
                 Main.WS.token = '';
                 return;
             } 
@@ -110,8 +112,10 @@ export class WebSocketConnection {
                 Main.Config.Settings.session = "";
                 Main.Config.saveSettings();
                 Window.main.webContents.send(type);
+                console.log("Send", type);
             }
             Window.main.webContents.send('error-method', obj.response);
+            console.log("Send error-method");
             return;
         }
         this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
@@ -131,6 +135,7 @@ export class WebSocketConnection {
                 if(Main.WS.reconnectionCount > 1) {
                     console.log("Recconected");
                     Window.main.webContents.send('reconnected');
+                    
                 }
                 this.reconnectionCount = 0;
                 clearInterval(inetrvalReconnect);
@@ -219,11 +224,14 @@ export class WebSocketConnection {
             }
         }
             Window.main.webContents.send(type, data);
+            console.log("Send", type);
     }
 
 
     private Notification(data: NotificationRequest) {
         Window.main.webContents.send("notification", data);
+        console.log("Send notification");
+        
     }
 
     
@@ -233,6 +241,7 @@ export class WebSocketConnection {
             Main.Config.Settings.session = "";
             Main.Config.saveSettings();
             Window.main.webContents.send('logout');
+            console.log("Send logout");
         }
     }
  }
