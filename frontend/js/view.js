@@ -304,7 +304,7 @@ class view {
         });
 
         ipcRenderer.on("logout", (event, data) => {
-            if (this.page_name = 'error') {
+            if (this.page_name == 'error') {
                 return;   
             }
             sl.userCharactersList.innerHTML = "";
