@@ -76,7 +76,7 @@ export class WebSocketConnection {
     }
  
     private onOpen(event: WebSocket.Event) {
-        if(this.token != ''){
+        if(Main.Initialized) {
             if(Main.Config.Settings.session != '')
             {
                 Main.Session.authorizeByToken();
@@ -133,9 +133,7 @@ export class WebSocketConnection {
         inetrvalReconnect =  setInterval(() => {
             if(Main.WS.ws.readyState === WebSocket.OPEN) {
                 if(Main.WS.reconnectionCount > 1) {
-                    console.log("Recconected");
-                    Window.main.webContents.send('reconnected');
-                    
+                    console.log("Recconected");                    
                 }
                 this.reconnectionCount = 0;
                 clearInterval(inetrvalReconnect);

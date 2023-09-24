@@ -10,6 +10,7 @@ import { SettingsManager } from './settings';
 export class Main {
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
+    static Initialized : boolean;
     static Config = new SettingsManager();
     private IPCMethods = {
         'login': (e:any, login: string, password: string, twofactor: number) =>{ Main.Session.authorize(login, password, twofactor); },
@@ -40,6 +41,7 @@ export class Main {
         
         const endTime = performance.now();
         console.log(`Application initialized in ${endTime - startTime} ms`)
+        Main.Initialized = true;
     }
     errorHandler(error: any) {
         console.log(error);
