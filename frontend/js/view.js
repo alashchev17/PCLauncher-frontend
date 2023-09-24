@@ -1,60 +1,58 @@
 console.log("view.js loaded");
 
-
 class view {
     #selectors = {
-        burgerButton: 'button__burger',
-        burgerMenu: 'burger__menu',
-        downloadButton: 'mainpage__button',
-        downloadBlock: 'mainpage__download',
-        downloadInfo: 'mainpage__info',
-        mainpageSlider: 'mainpage__update-slider',
-        progressBlock: 'mainpage__progress',
-        progressHover: 'mainpage__blur-hover',
-        progressBar: 'mainpage__progress-bar',
-        progressRing: 'progress-ring__circle',
-        onlineBlock: 'mainpage__online',
-        hideButton: 'mainpage__tray-button--hide',
-        closeButton: 'mainpage__tray-button--close',
-        settingButton: 'mainpage__tray-button--settings',
-        settingBlock: 'settings',
-        profileButton: 'button__profile',
-        infoBlock: 'info-block',
-        loginLogo: 'login__logotype',
-        loginAside: 'login__aside',
-        loginButton: 'login__button',
-        loginInputNick: 'login__nick',
-        loginInputPass: 'login__password',
-        loginInput2FA: 'login__twofactor',
-        errorMsgBlock: 'error-block',
-        errorMsgBlockText: 'error-block__name',
-        reconnectionTimer: 'reconnection-timer',
-        errorReason: 'error__reason',
-        errorReasonText: 'error__reason-text',
-        errorWaitingPoints: 'points',
+        burgerButton: "button__burger",
+        burgerMenu: "burger__menu",
+        downloadButton: "mainpage__button",
+        downloadBlock: "mainpage__download",
+        downloadInfo: "mainpage__info",
+        mainpageSlider: "mainpage__update-slider",
+        progressBlock: "mainpage__progress",
+        progressHover: "mainpage__blur-hover",
+        progressBar: "mainpage__progress-bar",
+        progressRing: "progress-ring__circle",
+        onlineBlock: "mainpage__online",
+        hideButton: "mainpage__tray-button--hide",
+        closeButton: "mainpage__tray-button--close",
+        settingButton: "mainpage__tray-button--settings",
+        settingBlock: "settings",
+        profileButton: "button__profile",
+        infoBlock: "info-block",
+        loginLogo: "login__logotype",
+        loginAside: "login__aside",
+        loginButton: "login__button",
+        loginInputNick: "login__nick",
+        loginInputPass: "login__password",
+        loginInput2FA: "login__twofactor",
+        errorMsgBlock: "error-block",
+        errorMsgBlockText: "error-block__name",
+        reconnectionTimer: "reconnection-timer",
+        errorReason: "error__reason",
+        errorReasonText: "error__reason-text",
+        errorWaitingPoints: "points",
         // Tip Blocks
-        errorTipBlock: 'error__tip',
-        errorTipTitle: 'error__tip-title',
-        errorTipText: 'error__tip-text',
-        preloaderTipBlock: 'preloader__tip',
-        preloaderTipTitle: 'preloader__tip-title',
-        preloaderTipText: 'preloader__tip-text',
-        preloaderTitle: 'preloader__heading',
+        errorTipBlock: "error__tip",
+        errorTipTitle: "error__tip-title",
+        errorTipText: "error__tip-text",
+        preloaderTipBlock: "preloader__tip",
+        preloaderTipTitle: "preloader__tip-title",
+        preloaderTipText: "preloader__tip-text",
+        preloaderTitle: "preloader__heading",
         // User Block (Characters & Notifications)
-        userBlock: 'user',
-        userLogout: 'user__logout',
-        userCharactersList: 'user__characters',
-        userGoToNotifications: 'user__link--notifications',
-        userGoToCharacters: 'user__link--characters',
-        userCharacters: 'user__characters-item',
-        userCharactersContent: 'user__content--characters',
-        userNotificationsContent: 'user__content--notifications',
+        userBlock: "user",
+        userLogout: "user__logout",
+        userCharactersList: "user__characters",
+        userGoToNotifications: "user__link--notifications",
+        userGoToCharacters: "user__link--characters",
+        userCharacters: "user__characters-item",
+        userCharactersContent: "user__content--characters",
+        userNotificationsContent: "user__content--notifications",
         //Pages
-        loginPage: 'login',
-        mainPage: 'main',
-        preloaderPage: 'preloader',
-        errorPage: 'error',
-
+        loginPage: "login",
+        mainPage: "main",
+        preloaderPage: "preloader",
+        errorPage: "error",
     };
     #active = "--active";
     #hidden = "--hidden";
@@ -92,29 +90,26 @@ class view {
     ];
 
     count = 0;
-  
+
     constructor() {
         for (var key in this.#selectors) {
-            if (key != 'userCharacters') {
+            if (key != "userCharacters") {
                 let selectr = document.querySelector("." + this.#selectors[key]);
                 this.#selectors[key] = selectr;
             } else {
-                let selectr = document.querySelectorAll('.' + this.#selectors[key]);
+                let selectr = document.querySelectorAll("." + this.#selectors[key]);
                 this.#selectors[key] = selectr;
             }
-            
         }
-        let sl = this.#selectors; 
+        let sl = this.#selectors;
         //events
         this.events(sl);
-  
+
         //Circle
         this.radius = sl.progressRing.r.baseVal.value;
         this.circumference = 2 * Math.PI * this.radius;
         sl.progressRing.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
         sl.progressRing.style.strokeDashoffset = this.circumference;
-        
-
     }
     set progressCircle(percent) {
         let sl = this.#selectors;
@@ -140,19 +135,19 @@ class view {
         }
     }
     set page(p) {
-        let sl = this.#selectors[p + 'Page'];
-        if(p != this.page_name) {
-          this.page = this.page_name;
+        let sl = this.#selectors[p + "Page"];
+        if (p != this.page_name) {
+            this.page = this.page_name;
         }
         sl.classList.toggle(sl.classList[0] + this.#active);
         this.lastPage = this.page_name;
         this.page_name = p;
     }
     get page() {
-        return this.#selectors[this.page_name + 'Page'];
+        return this.#selectors[this.page_name + "Page"];
     }
     get pageLast() {
-        return this.#selectors[this.lastPage + 'Page'];
+        return this.#selectors[this.lastPage + "Page"];
     }
     events(sl) {
         ipcRenderer.on("error-method", (event, data) => {
@@ -162,10 +157,7 @@ class view {
                     this.errorBlockHandle(sl, "Заполните все поля", 101);
                     break;
                 case 102:
-                    // if (this.page_name == 'preloader') {
-                    //     this.page = 'login';
-                    // }
-                    if (this.page_name == 'error') {
+                    if (this.page_name == "error") {
                         sl.userCharactersList.innerHTML = "";
                         sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
                         if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
@@ -180,7 +172,7 @@ class view {
                             setTimeout(() => {
                                 this.page.classList.add(this.page.classList[0] + this.#hidden);
                                 setTimeout(() => {
-                                    this.page = 'login';
+                                    this.page = "login";
                                     setTimeout(() => {
                                         sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
                                         sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
@@ -218,17 +210,26 @@ class view {
                     break;
                 case 107:
                     // text: "Произошла ошибка отправки кода. Возможно вы уже отправляли его менее минуты назад."
-                    this.errorBlockHandle(sl, "Произошла ошибка отправки кода. Возможно, вы уже отправляли его менее минуты назад", 107);
+                    this.errorBlockHandle(
+                        sl,
+                        "Произошла ошибка отправки кода. Возможно, вы уже отправляли его менее минуты назад",
+                        107
+                    );
                     break;
             }
         });
+
         ipcRenderer.on("login-success", (event, data) => {
             console.log(data);
 
             if (data.characters !== null) {
                 for (let i = 0; i != data.characters.length; i++) {
                     sl.userCharactersList.innerHTML += `
-                        <li class="user__characters-item${(data.characters[i].game === false) ? " user__characters-item--disabled" : ""}${(data.characters[i].status == "Отклонен") ? " user__characters-item--denied" : ""}" data-game=${data.characters[i].game}>
+                        <li class="user__characters-item${
+                            data.characters[i].game === false ? " user__characters-item--disabled" : ""
+                        }${
+                        data.characters[i].status == "Отклонен" ? " user__characters-item--denied" : ""
+                    }" data-game=${data.characters[i].game}>
                             <div class="user__characters-image skin" data-skin=${data.characters[i].skin}></div>
                             <div class="user__characters-info">
                                 <span class="user__characters-nickname">${data.characters[i].name}</span>
@@ -239,10 +240,10 @@ class view {
                     `;
                 }
             }
-            let userCharactersNew = [].slice.call(document.querySelectorAll('.user__characters-item'));
+            let userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
             console.log(userCharactersNew);
 
-            if (this.page_name == 'preloader') {
+            if (this.page_name == "preloader") {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
                 sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                 setTimeout(() => {
@@ -252,7 +253,7 @@ class view {
                         sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
                         sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
                         setTimeout(() => {
-                            this.page = 'main';
+                            this.page = "main";
                             this.count = 0;
                             setTimeout(() => {
                                 sl.mainPage.classList.remove(sl.mainPage.classList[0] + this.#hidden);
@@ -262,7 +263,7 @@ class view {
                 }, 300);
                 return;
             }
-            if (this.page_name == 'error') {
+            if (this.page_name == "error") {
                 if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
                     sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
                 }
@@ -288,12 +289,13 @@ class view {
             sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
             sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
             setTimeout(() => {
-                this.page = 'main';
+                this.page = "main";
                 setTimeout(() => {
                     sl.mainPage.classList.remove(sl.mainPage.classList[0] + this.#hidden);
                 }, 100);
             }, 300);
-        })
+        });
+
         ipcRenderer.on("login-twofactor", (event, data) => {
             sl.loginInput2FA.classList.remove(sl.loginInput2FA.classList[0] + this.#hidden);
             setTimeout(() => {
@@ -304,12 +306,13 @@ class view {
         });
 
         ipcRenderer.on("logout", (event, data) => {
-            if (this.page_name == 'error') return;
-            
+            if (this.page_name == "error") {
+                return;
+            }
             sl.userCharactersList.innerHTML = "";
             sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
             setTimeout(() => {
-                this.page = 'login';
+                this.page = "login";
                 setTimeout(() => {
                     sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
                     sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
@@ -330,7 +333,7 @@ class view {
         });
 
         ipcRenderer.on("reconnection", (event, data) => {
-            if (this.page_name == 'error') {
+            if (this.page_name == "error") {
                 //Просто выводим количество переподключений (data)
                 sl.reconnectionTimer.textContent = data;
                 if (typeof data === "number" && data % 3 === 0) {
@@ -343,7 +346,7 @@ class view {
                     }
                 }
                 return;
-            } else if (this.page_name == 'preloader') {
+            } else if (this.page_name == "preloader") {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Проблемы с подключением, переподключаемся...";
@@ -364,9 +367,9 @@ class view {
             sl.errorReasonText.textContent = "Переподключение ";
             sl.reconnectionTimer.textContent = "1";
             sl.errorWaitingPoints.textContent = "...";
-            if (this.page_name == 'login') {
+            if (this.page_name == "login") {
                 setTimeout(() => {
-                    this.page = 'error';
+                    this.page = "error";
                     setTimeout(() => {
                         sl.loginLogo.classList.add(sl.loginLogo.classList[1] + this.#hidden);
                         sl.loginAside.classList.add(sl.loginAside.classList[0] + this.#hidden);
@@ -379,7 +382,7 @@ class view {
             }
             this.page.classList.add(this.page.classList[0] + this.#hidden);
             setTimeout(() => {
-                this.page = 'error';
+                this.page = "error";
                 setTimeout(() => {
                     this.page.classList.remove(this.page.classList[0] + this.#hidden);
                 }, 500);
@@ -388,40 +391,77 @@ class view {
         });
 
         ipcRenderer.on("session_not_found", (event, data) => {
-            if (this.page_name == 'preloader') {
+            if (this.page_name == "preloader") {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
                 sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
                 setTimeout(() => {
                     sl.preloaderTitle.textContent = "Подключение установлено";
                     sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
                     setTimeout(() => {
-                        this.page = 'login';
+                        this.page = "login";
                         this.count = 0;
                     }, 1500);
+                }, 300);
+            } else if (this.page_name == "error") {
+                if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
+                    sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
+                }
+                sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
+                    sl.reconnectionTimer.textContent = "";
+                    sl.errorWaitingPoints.textContent = "";
+                    sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
+                    setTimeout(() => {
+                        this.page.classList.add(this.page.classList[0] + this.#hidden);
+                        setTimeout(() => {
+                            this.page = "login";
+                            setTimeout(() => {
+                                sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
+                                sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                                this.count = 0;
+                            }, 100);
+                        }, 500);
+                    }, 1000);
                 }, 300);
             }
         });
 
-        ipcRenderer.on("notification", (event, data) => {
+        ipcRenderer.on("notification", (event, data) => {});
 
+        sl.burgerButton.addEventListener("click", () => {
+            this.selectors_toggle([sl.burgerButton, sl.burgerMenu]);
         });
 
-        sl.burgerButton.addEventListener('click', () => { this.selectors_toggle([sl.burgerButton, sl.burgerMenu]); });
         sl.downloadButton.addEventListener("click", () => {
             // this.update = 1;
             /* УДАЛИТЬ КОД 96-99 строк на проде, снять комментарий с 94-ой строки */
             this.percent_update(1);
         });
-        sl.downloadButton.addEventListener("mouseenter", () => { sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active); })
-        sl.downloadButton.addEventListener("mouseleave", () => { sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active); })
+
+        sl.downloadButton.addEventListener("mouseenter", () => {
+            sl.progressHover.classList.add(sl.progressHover.classList[0] + this.#active);
+        });
+
+        sl.downloadButton.addEventListener("mouseleave", () => {
+            sl.progressHover.classList.remove(sl.progressHover.classList[0] + this.#active);
+        });
+
         sl.settingButton.addEventListener("click", () => {
-            if (this.page_name == 'preloader' || this.page_name == 'login' || this.page_name == 'error') {
+            if (this.page_name == "preloader" || this.page_name == "login" || this.page_name == "error") {
                 return;
             }
-            this.selectors_toggle([sl.settingButton, sl.settingBlock]); 
+            this.selectors_toggle([sl.settingButton, sl.settingBlock]);
         });
-        sl.hideButton.addEventListener("click", () => { ipcRenderer.send("minimize") });
-        sl.closeButton.addEventListener("click", () => { ipcRenderer.send("window-all-closed") });
+
+        sl.hideButton.addEventListener("click", () => {
+            ipcRenderer.send("minimize");
+        });
+
+        sl.closeButton.addEventListener("click", () => {
+            ipcRenderer.send("window-all-closed");
+        });
+
         sl.profileButton.addEventListener("click", () => {
             if (!sl.userCharactersContent.classList.contains(sl.userCharactersContent.classList[0] + this.#active)) {
                 this.userContentHandle(sl, "notifications");
@@ -440,18 +480,20 @@ class view {
                 }, 300);
             }
         });
+
         sl.userLogout.addEventListener("click", e => {
             e.preventDefault();
             sl.profileButton.classList.toggle(sl.profileButton.classList[1] + this.#active);
             sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#active);
             setTimeout(() => {
                 sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#hidden);
-                ipcRenderer.send('logout');
+                ipcRenderer.send("logout");
             }, 300);
         });
+
         sl.userCharacters.forEach(userCharacter => {
-            userCharacter.addEventListener('click', () => {
-                if  (
+            userCharacter.addEventListener("click", () => {
+                if (
                     !userCharacter.classList.contains(userCharacter.classList[0] + this.#disabled) &&
                     !userCharacter.classList.contains(userCharacter.classList[0] + this.#denied)
                 ) {
@@ -459,44 +501,53 @@ class view {
                 }
             });
         });
+
         sl.userGoToNotifications.addEventListener("click", e => {
             e.preventDefault();
             this.userContentHandle(sl, "characters");
         });
+
         sl.userGoToCharacters.addEventListener("click", e => {
             e.preventDefault();
             this.userContentHandle(sl, "notifications");
         });
-        sl.loginButton.addEventListener("click", (e) => {
+
+        sl.loginButton.addEventListener("click", e => {
             let login = sl.loginInputNick.value.trim();
             let password = sl.loginInputPass.value.trim();
-            let twofactor = sl.loginInput2FA.value.trim() == '' ? 0 : new Number(sl.loginInput2FA.value.trim());
-            if (login.length == 0 || password.length == 0 || (sl.loginInput2FA.hasAttribute("required") && twofactor == '')) {
+            let twofactor = sl.loginInput2FA.value.trim() == "" ? 0 : new Number(sl.loginInput2FA.value.trim());
+            if (
+                login.length == 0 ||
+                password.length == 0 ||
+                (sl.loginInput2FA.hasAttribute("required") && twofactor == "")
+            ) {
                 return;
             }
             e.preventDefault();
             ipcRenderer.send("login", login, password, twofactor);
-        
         });
 
         document.querySelectorAll("a[target='_blank']").forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                const href = link.getAttribute('href');
+            link.addEventListener("click", e => {
+                e.preventDefault();
+                const href = link.getAttribute("href");
                 ipcRenderer.send("open-link", href);
             });
         });
-
     }
+
     selectors_toggle(selectors) {
         selectors.forEach(selector => {
             selector.classList.toggle(selector.classList[0] + this.#active);
         });
     }
+
     percent_update(percent) {
         if (percent <= 100) {
             this.update = percent;
-            setTimeout(() => { this.percent_update(percent + 1) }, 100);
+            setTimeout(() => {
+                this.percent_update(percent + 1);
+            }, 100);
         } else {
             return;
         }
@@ -521,7 +572,7 @@ class view {
         setTimeout(() => {
             sl.errorMsgBlock.classList.toggle(sl.errorMsgBlock.classList[0] + this.#active);
         }, 3000);
-        switch(type) {
+        switch (type) {
             case 102:
             case 103:
                 sl.loginInputNick.value = "";
@@ -536,6 +587,7 @@ class view {
                 break;
         }
     }
+
     tipHandle(sl, text, page_name) {
         if (page_name == "error") {
             if (sl.errorTipBlock.classList.contains(sl.errorTipBlock.classList[0] + this.#active)) {
@@ -563,6 +615,7 @@ class view {
             return;
         }
     }
+
     userContentHandle(sl, currentContent) {
         if (currentContent == "characters") {
             sl.userCharactersContent.classList.toggle(sl.userCharactersContent.classList[0] + this.#active);
@@ -570,7 +623,9 @@ class view {
                 sl.userCharactersContent.classList.toggle(sl.userCharactersContent.classList[0] + this.#hidden);
                 sl.userNotificationsContent.classList.toggle(sl.userNotificationsContent.classList[0] + this.#hidden);
                 setTimeout(() => {
-                    sl.userNotificationsContent.classList.toggle(sl.userNotificationsContent.classList[0] + this.#active);
+                    sl.userNotificationsContent.classList.toggle(
+                        sl.userNotificationsContent.classList[0] + this.#active
+                    );
                 });
             }, 300);
         } else if (currentContent == "notifications") {
