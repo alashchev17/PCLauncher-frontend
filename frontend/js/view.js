@@ -43,6 +43,7 @@ class view {
         userBlock: "user",
         userLogout: "user__logout",
         userCharactersList: "user__characters",
+        userNotificationsList: "user__notifications",
         userGoToNotifications: "user__link--notifications",
         userGoToCharacters: "user__link--characters",
         userCharacters: "user__characters-item",
@@ -56,11 +57,13 @@ class view {
     };
 
     #userCharactersNew;
+    #userNotificationsNew;
 
     #active = "--active";
     #hidden = "--hidden";
     #disabled = "--disabled";
     #denied = "--denied";
+    #notification = "--notification";
     #play_button = `
     <button class="mainpage__button mainpage__button--ready">
         Запустить
@@ -151,6 +154,22 @@ class view {
     }
     get pageLast() {
         return this.#selectors[this.lastPage + "Page"];
+    }
+    timeConverter(UNIX_timestamp) {
+        let a = new Date(UNIX_timestamp * 1000);
+        let months = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
+        let year = a.getFullYear();
+        let month = months[a.getMonth()];
+        let date = a.getDate();
+        let hour = a.getHours();
+        let min = a.getMinutes();
+        let sec = a.getSeconds();
+        // формируем строку со временем по формату "00 мес 0000 00:00:00"
+        let time = `${date} ${month} ${year} `;
+        time += (hour < 10 ? "0" : "") + hour;
+        time += (min < 10 ? ":0" : ":") + min;
+        time += (sec < 10 ? ":0" : ":") + sec;
+        return time;
     }
     events(sl) {
         ipcRenderer.on("error-method", (event, data) => {
@@ -244,37 +263,40 @@ class view {
                         </li>
                     `;
                 }
-            }
-            this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
-            console.log(this.#userCharactersNew);
+                this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
+                console.log(this.#userCharactersNew);
 
-            let userCharacters = this.#userCharactersNew;
-            let activeCharacter = null;
-            let activeNickname = null;
+                let userCharacters = this.#userCharactersNew;
+                let activeCharacter = null;
+                let activeNickname = null;
 
-            userCharacters.forEach(userCharacter => {
-                userCharacter.addEventListener("click", () => {
-                    if (
-                        !userCharacter.classList.contains(userCharacter.classList[0] + this.#disabled) &&
-                        !userCharacter.classList.contains(userCharacter.classList[0] + this.#denied)
-                    ) {
-                        if (activeCharacter) {
-                            // Удаляем активный класс с предыдущего активного элемента
-                            activeCharacter.classList.remove(activeCharacter.classList[0] + this.#active);
+                userCharacters.forEach(userCharacter => {
+                    userCharacter.addEventListener("click", () => {
+                        if (
+                            !userCharacter.classList.contains(userCharacter.classList[0] + this.#disabled) &&
+                            !userCharacter.classList.contains(userCharacter.classList[0] + this.#denied)
+                        ) {
+                            if (activeCharacter) {
+                                // Удаляем активный класс с предыдущего активного элемента
+                                activeCharacter.classList.remove(activeCharacter.classList[0] + this.#active);
+                            }
+                            if (activeCharacter == userCharacter) {
+                                // Уведомляем пользователя о том, что персонаж уже выбран
+                                this.errorBlockHandle(sl, "Вы уже выбрали данного персонажа", 200);
+                            }
+                            // Добавляем активный класс к текущему элементу
+                            userCharacter.classList.add(userCharacter.classList[0] + this.#active);
+                            activeNickname = userCharacter.querySelector(".user__characters-nickname").textContent;
+                            activeCharacter = userCharacter;
+                        } else {
+                            this.errorBlockHandle(sl, "Данный персонаж недоступен для игры", 403);
                         }
-                        if (activeCharacter == userCharacter) {
-                            // Уведомляем пользователя о том, что персонаж уже выбран
-                            this.errorBlockHandle(sl, "Вы уже выбрали данного персонажа", 200);
-                        }
-                        // Добавляем активный класс к текущему элементу
-                        userCharacter.classList.add(userCharacter.classList[0] + this.#active);
-                        activeNickname = userCharacter.querySelector(".user__characters-nickname").textContent;
-                        activeCharacter = userCharacter;
-                    } else {
-                        this.errorBlockHandle(sl, "Данный персонаж недоступен для игры", 403);
-                    }
+                    });
                 });
-            });
+            } else {
+                sl.userCharactersList.innerHTML =
+                    '<h2 class="user__title">Персонажей нет</h2><p class="user__characters-empty">Добавьте персонажа в своём <a href="https://gambit-rp.ru/account/profile" target="_blank" class="user__link">Личном Кабинете</a></p>';
+            }
 
             if (this.page_name == "preloader") {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
@@ -343,6 +365,7 @@ class view {
                 return;
             }
             sl.userCharactersList.innerHTML = "";
+            sl.userNotificationsList.innerHTML = "";
             sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
             setTimeout(() => {
                 this.page = "login";
@@ -434,6 +457,7 @@ class view {
                 return;
             }
             sl.userCharactersList.innerHTML = "";
+            sl.userNotificationsList.innerHTML = "";
             sl.errorReasonText.textContent = "Переподключение ";
             sl.reconnectionTimer.textContent = "1";
             sl.errorWaitingPoints.textContent = "...";
@@ -460,7 +484,43 @@ class view {
             // Обновляем страницу при первом переподключении
         });
 
-        ipcRenderer.on("notification", (event, data) => {});
+        ipcRenderer.on("notification", (event, data) => {
+            if (data.messages !== null) {
+                if (sl.userNotificationsList.hasChildNodes()) {
+                    sl.userNotificationsList.removeChild(sl.userNotificationsList.childNodes[0]);
+                }
+                for (let i = 0; i != data.messages.length; i++) {
+                    let date = this.timeConverter(data.messages[i].date);
+                    let classes = `user__notifications-item${
+                        data.messages[i].status == -1 ? " user__notifications-item--active" : ""
+                    }`;
+
+                    let card = document.createElement("li");
+                    card.className = `${classes}`;
+                    card.innerHTML = `
+                        <span class="user__notifications-date">${date}</span>
+                        <p class="user__notifications-info">${data.messages[i].text}</p>
+                    `;
+                    sl.userNotificationsList.prepend(card);
+                }
+
+                if (data.messages.some(item => item.status == -1)) {
+                    // Какая-то логика для индикации непрочитанных уведомлений
+                    sl.profileButton.classList.add(sl.profileButton.classList[1] + this.#notification);
+                    sl.userGoToNotifications.classList.add(sl.userGoToNotifications.classList[0] + this.#active);
+                } else {
+                    // Какая-то логика для удаления индикации непрочитанных уведомлений
+                    sl.profileButton.classList.remove(sl.profileButton.classList[1] + this.#notification);
+                    sl.userGoToNotifications.classList.remove(sl.userGoToNotifications.classList[0] + this.#active);
+                }
+
+                this.#userNotificationsNew = [].slice.call(document.querySelectorAll(".user__notifications-item"));
+                this.notificationsHandler(sl, this.#userNotificationsNew);
+            } else {
+                console.log("Список уведомлений пуст.");
+                sl.userNotificationsList.innerHTML = "<h2 class='user__title'>Уведомлений нет</h2>";
+            }
+        });
 
         sl.burgerButton.addEventListener("click", () => {
             this.selectors_toggle([sl.burgerButton, sl.burgerMenu]);
@@ -664,5 +724,22 @@ class view {
                 });
             }, 300);
         }
+    }
+
+    notificationsHandler(sl, notificationsArray) {
+        if (notificationsArray.some(item => item.classList.contains(item.classList[0] + this.#active))) {
+            // Обновление логики индикации непрочтённых уведомлений
+        }
+        notificationsArray.forEach(item => {
+            item.addEventListener("click", event => {
+                event.preventDefault();
+                item.classList.remove(item.classList[0] + this.#active);
+                if (!notificationsArray.some(item => item.classList.contains(item.classList[0] + this.#active))) {
+                    // Удаление любой индикации непрочтённости уведомлений
+                    sl.profileButton.classList.remove(sl.profileButton.classList[1] + this.#notification);
+                    sl.userGoToNotifications.classList.remove(sl.userGoToNotifications.classList[0] + this.#active);
+                }
+            });
+        });
     }
 }
