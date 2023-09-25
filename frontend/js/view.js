@@ -54,6 +54,9 @@ class view {
         preloaderPage: "preloader",
         errorPage: "error",
     };
+
+    #userCharactersNew;
+
     #active = "--active";
     #hidden = "--hidden";
     #disabled = "--disabled";
@@ -228,7 +231,9 @@ class view {
                         <li class="user__characters-item${
                             data.characters[i].game === false ? " user__characters-item--disabled" : ""
                         }${
-                        data.characters[i].status == "Отклонен" ? " user__characters-item--denied" : ""
+                        data.characters[i].status == "Отклонен" || data.characters[i].status == "На проверке"
+                            ? " user__characters-item--denied"
+                            : ""
                     }" data-game=${data.characters[i].game}>
                             <div class="user__characters-image skin" data-skin=${data.characters[i].skin}></div>
                             <div class="user__characters-info">
@@ -240,8 +245,36 @@ class view {
                     `;
                 }
             }
-            let userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
-            console.log(userCharactersNew);
+            this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
+            console.log(this.#userCharactersNew);
+
+            let userCharacters = this.#userCharactersNew;
+            let activeCharacter = null;
+            let activeNickname = null;
+
+            userCharacters.forEach(userCharacter => {
+                userCharacter.addEventListener("click", () => {
+                    if (
+                        !userCharacter.classList.contains(userCharacter.classList[0] + this.#disabled) &&
+                        !userCharacter.classList.contains(userCharacter.classList[0] + this.#denied)
+                    ) {
+                        if (activeCharacter) {
+                            // Удаляем активный класс с предыдущего активного элемента
+                            activeCharacter.classList.remove(activeCharacter.classList[0] + this.#active);
+                        }
+                        if (activeCharacter == userCharacter) {
+                            // Уведомляем пользователя о том, что персонаж уже выбран
+                            this.errorBlockHandle(sl, "Вы уже выбрали данного персонажа", 200);
+                        }
+                        // Добавляем активный класс к текущему элементу
+                        userCharacter.classList.add(userCharacter.classList[0] + this.#active);
+                        activeNickname = userCharacter.querySelector(".user__characters-nickname").textContent;
+                        activeCharacter = userCharacter;
+                    } else {
+                        this.errorBlockHandle(sl, "Данный персонаж недоступен для игры", 403);
+                    }
+                });
+            });
 
             if (this.page_name == "preloader") {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
@@ -328,6 +361,43 @@ class view {
             }
         });
 
+        ipcRenderer.on("session_not_found", (event, data) => {
+            if (this.page_name == "preloader") {
+                sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
+                sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.preloaderTitle.textContent = "Подключение установлено";
+                    sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
+                    setTimeout(() => {
+                        this.page = "login";
+                        this.count = 0;
+                    }, 1500);
+                }, 300);
+            } else if (this.page_name == "error") {
+                if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
+                    sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
+                }
+                sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
+                setTimeout(() => {
+                    sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
+                    sl.reconnectionTimer.textContent = "";
+                    sl.errorWaitingPoints.textContent = "";
+                    sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
+                    setTimeout(() => {
+                        this.page.classList.add(this.page.classList[0] + this.#hidden);
+                        setTimeout(() => {
+                            this.page = "login";
+                            setTimeout(() => {
+                                sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
+                                sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                                this.count = 0;
+                            }, 100);
+                        }, 500);
+                    }, 1000);
+                }, 300);
+            }
+        });
+
         ipcRenderer.on("page_open", (event, data) => {
             this.page = data;
         });
@@ -388,43 +458,6 @@ class view {
                 }, 500);
             }, 300);
             // Обновляем страницу при первом переподключении
-        });
-
-        ipcRenderer.on("session_not_found", (event, data) => {
-            if (this.page_name == "preloader") {
-                sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
-                sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
-                setTimeout(() => {
-                    sl.preloaderTitle.textContent = "Подключение установлено";
-                    sl.preloaderTitle.classList.add(sl.preloaderTitle.classList[0] + this.#active);
-                    setTimeout(() => {
-                        this.page = "login";
-                        this.count = 0;
-                    }, 1500);
-                }, 300);
-            } else if (this.page_name == "error") {
-                if (sl.errorReason.classList.contains(sl.errorReason.classList[0] + this.#active)) {
-                    sl.errorReason.classList.remove(sl.errorReason.classList[0] + this.#active);
-                }
-                sl.errorTipBlock.classList.remove(sl.errorTipBlock.classList[0] + this.#active);
-                setTimeout(() => {
-                    sl.errorReasonText.textContent = "Подключение восстановлено, перенаправление!";
-                    sl.reconnectionTimer.textContent = "";
-                    sl.errorWaitingPoints.textContent = "";
-                    sl.errorReason.classList.add(sl.errorReason.classList[0] + this.#active);
-                    setTimeout(() => {
-                        this.page.classList.add(this.page.classList[0] + this.#hidden);
-                        setTimeout(() => {
-                            this.page = "login";
-                            setTimeout(() => {
-                                sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
-                                sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
-                                this.count = 0;
-                            }, 100);
-                        }, 500);
-                    }, 1000);
-                }, 300);
-            }
         });
 
         ipcRenderer.on("notification", (event, data) => {});
@@ -489,17 +522,6 @@ class view {
                 sl.userBlock.classList.toggle(sl.userBlock.classList[0] + this.#hidden);
                 ipcRenderer.send("logout");
             }, 300);
-        });
-
-        sl.userCharacters.forEach(userCharacter => {
-            userCharacter.addEventListener("click", () => {
-                if (
-                    !userCharacter.classList.contains(userCharacter.classList[0] + this.#disabled) &&
-                    !userCharacter.classList.contains(userCharacter.classList[0] + this.#denied)
-                ) {
-                    userCharacter.classList.toggle(userCharacter.classList[0] + this.#active);
-                }
-            });
         });
 
         sl.userGoToNotifications.addEventListener("click", e => {
@@ -584,6 +606,10 @@ class view {
             case 105:
             case 107:
                 sl.loginInput2FA.value = "";
+                break;
+            case 200:
+                break;
+            case 403:
                 break;
         }
     }
