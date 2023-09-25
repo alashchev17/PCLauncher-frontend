@@ -295,7 +295,15 @@ class view {
                 });
             } else {
                 sl.userCharactersList.innerHTML =
-                    '<h2 class="user__title">Персонажей нет</h2><p class="user__characters-empty">Добавьте персонажа в своём <a href="https://gambit-rp.ru/account/profile" target="_blank" class="user__link">Личном Кабинете</a></p>';
+                    '<h2 class="user__title">Персонажей нет</h2><p class="user__characters-empty">Добавьте персонажа в своём <a href="gambit-rp.ru/account/profile" target="_blank" class="user__link">Личном Кабинете</a></p>';
+                let emptyCharactersLink = document
+                    .querySelector(".user__characters-empty")
+                    .querySelector(".user__link");
+                emptyCharactersLink.addEventListener("click", e => {
+                    e.preventDefault();
+                    const href = emptyCharactersLink.getAttribute("href");
+                    ipcRenderer.send("open-link", href);
+                });
             }
 
             if (this.page_name == "preloader") {
