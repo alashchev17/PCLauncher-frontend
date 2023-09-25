@@ -250,7 +250,7 @@ class view {
                         <li class="user__characters-item${
                             data.characters[i].game === false ? " user__characters-item--disabled" : ""
                         }${
-                        data.characters[i].status == "Отклонен" || data.characters[i].status == "На проверке"
+                        data.characters[i].status == "Отклонен" || data.characters[i].status == "На одобрении"
                             ? " user__characters-item--denied"
                             : ""
                     }" data-game=${data.characters[i].game}>
