@@ -366,6 +366,8 @@ class view {
             }
             sl.userCharactersList.innerHTML = "";
             sl.userNotificationsList.innerHTML = "";
+            sl.profileButton.classList.remove(sl.profileButton.classList[1] + this.#notification);
+            sl.userGoToNotifications.classList.remove(sl.userGoToNotifications.classList[0] + this.#active);
             sl.mainPage.classList.add(sl.mainPage.classList[0] + this.#hidden);
             setTimeout(() => {
                 this.page = "login";
