@@ -41,6 +41,7 @@ class view {
         preloaderTitle: "preloader__heading",
         // User Block (Characters & Notifications)
         userBlock: "user",
+        userGreeting: "user__greeting",
         userLogout: "user__logout",
         userCharactersList: "user__characters",
         userNotificationsList: "user__notifications",
@@ -243,7 +244,7 @@ class view {
 
         ipcRenderer.on("login-success", (event, data) => {
             console.log(data);
-
+            sl.userGreeting.textContent = `Добро пожаловать, ${data.user_login}!`;
             if (data.characters !== null) {
                 for (let i = 0; i != data.characters.length; i++) {
                     sl.userCharactersList.innerHTML += `
@@ -264,7 +265,6 @@ class view {
                     `;
                 }
                 this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
-                console.log(this.#userCharactersNew);
 
                 let userCharacters = this.#userCharactersNew;
                 let activeCharacter = null;
