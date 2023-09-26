@@ -7,6 +7,9 @@ export class Updater {
     constructor() {
 
         this.download = true;
+
+        autoUpdater.autoDownload = false;
+        autoUpdater.autoInstallOnAppQuit = true;
           
         autoUpdater.checkForUpdates()
 
@@ -39,7 +42,7 @@ export class Updater {
     }
 
     onUpdateError(message : any)  {
-        Window.main.webContents.send("console", "Ошибка");
+        Window.main.webContents.send("console", message);
         console.error('There was a problem updating the application')
         console.error(message)
     }

@@ -442,6 +442,10 @@ class view {
             }
         });
 
+        ipcRenderer.on("console", (event, data) => {
+            console.log(data);
+        })
+
         ipcRenderer.on("page_open", (event, data) => {
             this.page = data;
         });
