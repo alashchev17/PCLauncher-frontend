@@ -8,7 +8,7 @@ export class Updater {
           
         autoUpdater.checkForUpdates()
 
-        Window.main.webContents.send("console", autoUpdater.checkForUpdates());
+       // Window.main.webContents.send("console", autoUpdater.checkForUpdates());
 
         autoUpdater.on('checking-for-update', this.onCheckingForUpdate.bind(this));
         autoUpdater.on('update-not-available', this.onUpdateNotAvailable.bind(this));
