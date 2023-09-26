@@ -41,6 +41,7 @@ class view {
         preloaderTitle: "preloader__heading",
         // User Block (Characters & Notifications)
         userBlock: "user",
+        userGreeting: "user__greeting",
         userLogout: "user__logout",
         userCharactersList: "user__characters",
         userNotificationsList: "user__notifications",
@@ -198,7 +199,11 @@ class view {
                                     setTimeout(() => {
                                         sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
                                         sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
-                                        this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
+                                        this.errorBlockHandle(
+                                            sl,
+                                            "Такого пользователя не существует или сессия истекла",
+                                            102
+                                        );
                                         this.count = 0;
                                     }, 100);
                                 }, 500);
@@ -213,7 +218,7 @@ class view {
                             }, 1000);
                         }, 300);
                     } else {
-                        this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
+                        this.errorBlockHandle(sl, "Такого пользователя не существует или сессия истекла", 102);
                     }
                     break;
                 case 103:
@@ -243,7 +248,7 @@ class view {
 
         ipcRenderer.on("login-success", (event, data) => {
             console.log(data);
-
+            sl.userGreeting.textContent = `Добро пожаловать, ${data.user_login}!`;
             if (data.characters !== null) {
                 for (let i = 0; i != data.characters.length; i++) {
                     sl.userCharactersList.innerHTML += `
@@ -264,7 +269,6 @@ class view {
                     `;
                 }
                 this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
-                console.log(this.#userCharactersNew);
 
                 let userCharacters = this.#userCharactersNew;
                 let activeCharacter = null;
@@ -299,6 +303,9 @@ class view {
                 let emptyCharactersLink = document
                     .querySelector(".user__characters-empty")
                     .querySelector(".user__link");
+                emptyCharactersLink.ondragstart = function () {
+                    return false;
+                };
                 emptyCharactersLink.addEventListener("click", e => {
                     e.preventDefault();
                     const href = emptyCharactersLink.getAttribute("href");
@@ -622,9 +629,20 @@ class view {
         document.querySelectorAll("a[target='_blank']").forEach(link => {
             link.addEventListener("click", e => {
                 e.preventDefault();
+                alert("Выдаём атрибуты");
+                link.ondragstart = function () {
+                    return false;
+                };
                 const href = link.getAttribute("href");
+
                 ipcRenderer.send("open-link", href);
             });
+        });
+
+        document.querySelectorAll("a").forEach(link => {
+            link.ondragstart = function () {
+                return false;
+            };
         });
     }
 
