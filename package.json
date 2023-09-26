@@ -1,18 +1,22 @@
 {
-  "name": "gambit-pc-launcher",
-  "productName": "gambit-pc-launcher",
+  "name": "com.gambitrp.launcher",
+  "productName": "Gambit Launcher",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Лаунчер проекта Gambit Role Play",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx .",
+    "build": "electron-packager . --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --icon=./icon"
   },
   "keywords": [],
-  "author": "f0Re3t <vlad.f0Re3t@yandex.by> Volk <volk@volkdev.su> GitHub <lashchev.dev@gmail.com>",
+  "author": {
+    "name": "Gambit Role Play",
+    "email": "noreply@gambit-rp.ru"
+  },
   "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^6.4.2",
