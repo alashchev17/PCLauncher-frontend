@@ -1,7 +1,7 @@
 {
   "name": "com.gambitrp.launcher",
   "productName": "Gambit Launcher",
-  "version": "0.2.1",
+  "version": "0.1.1",
   "description": "Лаунчер проекта Gambit Role Play",
   "main": ".webpack/main",
   "scripts": {
@@ -59,7 +59,7 @@
     "appId": "com.gambitrp.launcher",
     "productName": "Gambit Launcher",
     "win": {
-      "artifactName": "Gambit Launcher(${version}).${ext}",
+      "artifactName": "${name}-setup-${version}.${ext}",
       "icon": "./icon.ico"
     }
   }
