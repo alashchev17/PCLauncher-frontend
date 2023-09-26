@@ -629,12 +629,7 @@ class view {
         document.querySelectorAll("a[target='_blank']").forEach(link => {
             link.addEventListener("click", e => {
                 e.preventDefault();
-                alert("Выдаём атрибуты");
-                link.ondragstart = function () {
-                    return false;
-                };
                 const href = link.getAttribute("href");
-
                 ipcRenderer.send("open-link", href);
             });
         });
