@@ -5,6 +5,8 @@ import { Window } from './window';
 export class Updater {
     public download: boolean;
     constructor() {
+
+        this.download = true;
           
         autoUpdater.checkForUpdates()
 
