@@ -199,7 +199,11 @@ class view {
                                     setTimeout(() => {
                                         sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
                                         sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
-                                        this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
+                                        this.errorBlockHandle(
+                                            sl,
+                                            "Такого пользователя не существует или сессия истекла",
+                                            102
+                                        );
                                         this.count = 0;
                                     }, 100);
                                 }, 500);
@@ -214,7 +218,7 @@ class view {
                             }, 1000);
                         }, 300);
                     } else {
-                        this.errorBlockHandle(sl, "Такого пользователя не существует", 102);
+                        this.errorBlockHandle(sl, "Такого пользователя не существует или сессия истекла", 102);
                     }
                     break;
                 case 103:
@@ -299,6 +303,9 @@ class view {
                 let emptyCharactersLink = document
                     .querySelector(".user__characters-empty")
                     .querySelector(".user__link");
+                emptyCharactersLink.ondragstart = function () {
+                    return false;
+                };
                 emptyCharactersLink.addEventListener("click", e => {
                     e.preventDefault();
                     const href = emptyCharactersLink.getAttribute("href");
@@ -622,9 +629,20 @@ class view {
         document.querySelectorAll("a[target='_blank']").forEach(link => {
             link.addEventListener("click", e => {
                 e.preventDefault();
+                alert("Выдаём атрибуты");
+                link.ondragstart = function () {
+                    return false;
+                };
                 const href = link.getAttribute("href");
+
                 ipcRenderer.send("open-link", href);
             });
+        });
+
+        document.querySelectorAll("a").forEach(link => {
+            link.ondragstart = function () {
+                return false;
+            };
         });
     }
 
