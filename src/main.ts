@@ -7,6 +7,8 @@ import { ipcMain } from 'electron';
 import { Window } from './window';
 import { SettingsManager } from './settings';
 
+import { Updater } from './updater';
+
 export class Main {
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
@@ -20,6 +22,7 @@ export class Main {
         this.init();
     }
     async init() {
+        let updater = new Updater()
         const startTime = performance.now();
         console.log("Starting");
         
@@ -30,7 +33,7 @@ export class Main {
         Window.create();
         
         Main.WS.addErrorListener(this.errorSocketHandler);
-        while (!Main.WS.isConnected() || !Window.DomLoad) {
+        while (!Main.WS.isConnected() || !Window.DomLoad || !updater.download) {
             if(Main.WS.reconnectionCount == 0) {
                 Main.WS.Reconnect();
             }
