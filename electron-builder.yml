@@ -1,0 +1,4 @@
+appId: com.gambitrp.launcher
+publish:
+  provider: github
+  token: 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
