@@ -1,7 +1,7 @@
 {
   "name": "com.gambitrp.launcher",
   "productName": "Gambit Launcher",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Лаунчер проекта Gambit Role Play",
   "main": ".webpack/main",
   "scripts": {
@@ -31,7 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vercel/webpack-asset-relocator-loader": "^1.7.3",
-    "bufferutil": "^6.0.0",
+    "bufferutil": "^4.0.1",
     "css-loader": "^6.8.1",
     "electron": "26.2.1",
     "eslint": "^8.49.0",
@@ -45,28 +45,22 @@
     "utf-8-validate": "^5.0.10"
   },
   "dependencies": {
+    "electron-updater": "^6.1.5",
     "electron-squirrel-startup": "^1.0.0",
     "ws": "^8.14.1"
+  },
+  "repository": "https://github.com/asfhjfwdsfwegwrgregfr/hshsggafasfas",
+  "publish": 
+  {
+      "provider": "github",
+      "releaseType": "release"
   },
   "build": {
     "appId": "com.gambitrp.launcher",
     "productName": "Gambit Launcher",
     "win": {
       "artifactName": "Gambit Launcher(${version}).${ext}",
-      "target": "nsis",
       "icon": "./icon.ico"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "asfhjfwdsfwegwrgregfr",
-        "repo": "hshsggafasfas",
-        "releaseType": "draft"
-      }
-    ]
-  },
-  "repository": {
-    "type" : "git",
-    "url" : "https://github.com/asfhjfwdsfwegwrgregfr/hshsggafasfas.git"
+    }
   }
 }

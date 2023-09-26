@@ -1,3 +1,4 @@
+
 console.log("view.js loaded");
 
 class view {
@@ -268,6 +269,9 @@ class view {
                         </li>
                     `;
                 }
+                ipcRenderer.on('console', (event, data) => {
+                    console.log(data);
+                })
                 this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
 
                 let userCharacters = this.#userCharactersNew;
