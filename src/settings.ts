@@ -2,6 +2,8 @@ import { app } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { Main } from './main';
+
 
 interface Settings {
     session: string;
@@ -32,7 +34,6 @@ export class SettingsManager {
             this.Settings = this.Settings;
             return;
         }
-        console.log("no create settings from", this.file_settings)
         let file =  fs.readFileSync(this.file_settings, 'utf-8');
         this.Settings = JSON.parse(file);
 
@@ -41,7 +42,7 @@ export class SettingsManager {
     public saveSettings() {
         let json = JSON.stringify(this.Settings);
         fs.writeFileSync(this.file_settings, json, 'utf-8');
-        console.log("Create settings from", this.file_settings)
+        Main.Logger.info("[APP] Update settings from", this.file_settings)
     }
 
    /* public loadAdvice() {

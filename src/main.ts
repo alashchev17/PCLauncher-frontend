@@ -10,24 +10,25 @@ import { Window } from './window';
 import { SettingsManager } from './settings';
 
 export class Main {
-    static isProduction : boolean = true;
+    static isProduction : boolean = false;
 
 
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
     static Initialized : boolean;
     static Config = new SettingsManager();
+    static Logger = require('electron-log');
     private updateChecked : boolean;
     private IPCMethods = {
         'login': (e:any, login: string, password: string, twofactor: number) =>{ Main.Session.authorize(login, password, twofactor); },
         'logout': (e:any) => { Main.Session.logout(); } 
     }
     constructor() {
+        this.logger();
         this.init();
     }
     async init() {
         const startTime = performance.now();
-        console.log("Starting");
         
         for (const [key, value] of Object.entries(this.IPCMethods)) {
             ipcMain.on(key, value);
@@ -37,7 +38,6 @@ export class Main {
 
         this.updater();
         
-        Main.WS.addErrorListener(this.errorSocketHandler);
         while (!Main.WS.isConnected() || !Window.DomLoad || !this.updateChecked) {
             if(Main.WS.reconnectionCount == 0) {
                 Main.WS.Reconnect();
@@ -47,14 +47,8 @@ export class Main {
         Main.Session.checkSession();
         
         const endTime = performance.now();
-        console.log(`Application initialized in ${endTime - startTime} ms`)
+        Main.Logger.info(`[APP] Application initialized in ${endTime - startTime} ms`)
         Main.Initialized = true;
-    }
-    errorHandler(error: any) {
-        Window.main.webContents.send("console", error);
-    }
-    errorSocketHandler(error: any) {
-        console.log(error);
     }
 
     updater() {
@@ -67,14 +61,36 @@ export class Main {
           
         autoUpdater.checkForUpdates();
 
+        Main.Logger.info("[UPDATES] Checking for updates");
+
 
         autoUpdater.on('update-not-available', () => {
+            Main.Logger.info("[UPDATES] No updates");
             this.updateChecked = true;
         });;
         autoUpdater.on('update-downloaded', () => {
+            Main.Logger.info("[UPDATES] Installing updates");
             autoUpdater.quitAndInstall()
         });
-        autoUpdater.on('error', this.errorHandler)
+        autoUpdater.on('error', (error) => {
+            Main.Logger.error(error);
+        });
+    }
+    logger() {
+        let format = '{d}.{m}.{y} {h}:{i}:{s} {text}';
+        Main.Logger.transports.file.level = true; 
+        Main.Logger.transports.console.level = true;
+
+        Main.Logger.transports.file.format = format;
+
+        Main.Logger.transports.console.format = format;
+
+        Main.Logger.transports.file.rotate = true;
+        Main.Logger.transports.file.maxSize = 5 * 1024 * 1024;
+
+        Main.Logger.info("[APP] Logger is working");
+
+        Main.Logger.catchErrors();
     }
     
 }

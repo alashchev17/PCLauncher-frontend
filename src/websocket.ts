@@ -65,7 +65,6 @@ export class WebSocketConnection {
         this.ws.onmessage = this.onMessage.bind(this);
         this.ws.onerror = this.onError.bind(this);
         this.ws.onclose = (event) => {
-            console.log(event);
             this.onClose(event);
             this.ws.onclose = this.onClose.bind(this);
         };
@@ -82,14 +81,13 @@ export class WebSocketConnection {
                 Main.Session.authorizeByToken();
             } else {
                 Window.main.webContents.send("session_not_found");
-                console.log("Send logout");
             }
         }
-        console.log('WebSocket connection opened:');
+        Main.Logger.info('[SOCKET] WebSocket connection opened');
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
-        console.log(event.data.toString());
+        Main.Logger.info(`[SOCKET] Received: ${event.data.toString()}`);
         const obj : IncomingRequest = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
             if(obj.response.error == 2 && Main.WS.token != '') { // Access denied
@@ -98,7 +96,6 @@ export class WebSocketConnection {
                     return;
                 }
                 Window.main.webContents.send("logout");
-                console.log("Send logout");
                 Main.WS.token = '';
                 return;
             } 
@@ -112,10 +109,8 @@ export class WebSocketConnection {
                 Main.Config.Settings.session = "";
                 Main.Config.saveSettings();
                 Window.main.webContents.send(type);
-                console.log("Send", type);
             }
             Window.main.webContents.send('error-method', obj.response);
-            console.log("Send error-method");
             return;
         }
         this.method.CallFunction(this.methodsMessage[obj.type], obj.response);
@@ -137,9 +132,8 @@ export class WebSocketConnection {
                 return;
             }
 
-            Window.main.webContents.send('reconnection', Main.WS.reconnectionCount);
+            Main.Logger.info(`[SOCKET] reconnecting ${Main.WS.reconnectionCount}`);
 
-            console.log(`reconnecting ${Main.WS.reconnectionCount}`);
            
             Main.WS.connect();
 
@@ -148,36 +142,15 @@ export class WebSocketConnection {
     }
  
     private onError(event: WebSocket.ErrorEvent) {
-        //this.emitError(event);
+        Main.Logger.error("[SOCKET]"+event.message);
     }
 
     public async send(message: string) {
-        if (this.ws) {
-            this.ws.send(message);
-        } else {
-            this.emitError('WebSocket connection is not established');
-        }
+         this.ws.send(message);
     }
 
     public isConnected(): boolean {
         return this.ws.readyState == WebSocket.OPEN; // Иногда выдает ошибку, нужно понять почему
-    }
-
-    private emitError(error: any) {
-        for (const listener of this.errorListeners) {
-            listener(error);
-        }
-    }
-
-    public addErrorListener(listener: (error: any) => void) {
-        this.errorListeners.push(listener);
-    }
-
-    public removeErrorListener(listener: (error: any) => void) {
-        const index = this.errorListeners.indexOf(listener);
-        if (index !== -1) {
-            this.errorListeners.splice(index, 1);
-        }
     }
     public sendRequest(key:number, data: any) {
         let obj : SendRequest = {
@@ -187,7 +160,7 @@ export class WebSocketConnection {
             data : data
         };
         let jsonObj = JSON.stringify(obj);
-        console.log(jsonObj);
+        Main.Logger.info(`[SOCKET] Sending: ${jsonObj}`);
         this.ws.send(jsonObj);
     }
 }
@@ -219,13 +192,11 @@ export class WebSocketConnection {
             }
         }
             Window.main.webContents.send(type, data);
-            console.log("Send", type);
     }
 
 
     private Notification(data: NotificationRequest) {
         Window.main.webContents.send("notification", data);
-        console.log("Send notification");
         
     }
 
@@ -236,7 +207,6 @@ export class WebSocketConnection {
             Main.Config.Settings.session = "";
             Main.Config.saveSettings();
             Window.main.webContents.send('logout');
-            console.log("Send logout");
         }
     }
  }
