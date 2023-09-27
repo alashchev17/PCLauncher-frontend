@@ -1,6 +1,5 @@
 import WebSocket from 'ws';
 import { Main } from './main'
-
 import { Window } from './window';
 
 interface SendRequest {
@@ -134,6 +133,8 @@ export class WebSocketConnection {
 
             Main.Logger.info(`[SOCKET] reconnecting ${Main.WS.reconnectionCount}`);
 
+            Window.main.webContents.send("reconnection", Main.WS.reconnectionCount)
+
            
             Main.WS.connect();
 
@@ -142,7 +143,7 @@ export class WebSocketConnection {
     }
  
     private onError(event: WebSocket.ErrorEvent) {
-        Main.Logger.error("[SOCKET]"+event.message);
+        Main.Logger.error("[SOCKET] "+event.message);
     }
 
     public async send(message: string) {

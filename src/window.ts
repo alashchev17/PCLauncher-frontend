@@ -1,4 +1,6 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { Main } from './main';
+import * as path from 'path';
 
 
 export class Window {
@@ -42,7 +44,10 @@ export class Window {
     });
     ipcMain.on('open-link', (e, link) => {
         shell.openExternal(`https://${link}`);
-      });
+    });
+    ipcMain.on('open_logs', () => {
+        shell.openExternal(path.join(Main.appData, 'logs/main.log'))
+    });
   }
 
   static create(): void {

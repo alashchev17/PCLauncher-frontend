@@ -1,7 +1,5 @@
 import { Main } from './main'
-
 import * as crypto from 'crypto';
-
 import { Window } from './window';
 
 interface Authorize {

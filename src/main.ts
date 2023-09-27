@@ -1,18 +1,18 @@
+import { app } from 'electron';
 import { WebSocketConnection } from './websocket'
-
 import { autoUpdater } from 'electron-updater'
-
 import { SessionManager } from './session'
-
 import { ipcMain } from 'electron';
-
 import { Window } from './window';
 import { SettingsManager } from './settings';
+import * as path from 'path';
+
 
 export class Main {
     static isProduction : boolean = false;
 
-
+    static appData = path.join(app.getPath("appData"), app.getName());
+    
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
     static Initialized : boolean;
@@ -21,7 +21,7 @@ export class Main {
     private updateChecked : boolean;
     private IPCMethods = {
         'login': (e:any, login: string, password: string, twofactor: number) =>{ Main.Session.authorize(login, password, twofactor); },
-        'logout': (e:any) => { Main.Session.logout(); } 
+        'logout': (e:any) => { Main.Session.logout(); },
     }
     constructor() {
         this.logger();

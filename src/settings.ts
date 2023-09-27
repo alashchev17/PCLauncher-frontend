@@ -1,7 +1,5 @@
-import { app } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
-
 import { Main } from './main';
 
 
@@ -18,9 +16,8 @@ interface Advice {
 
 export class SettingsManager {
     public Advice: string[];
-    private appData = path.join(app.getPath("appData"), app.getName());
-    private file_settings = path.join(this.appData, 'settings.json');
-    private file_advice = path.join(this.appData, 'advice.json')
+    private file_settings = path.join(Main.appData, 'settings.json');
+    private file_advice = path.join(Main.appData, 'advice.json')
     public Settings : Settings = {
         session: '',
         launcher: {},
@@ -44,6 +41,7 @@ export class SettingsManager {
         fs.writeFileSync(this.file_settings, json, 'utf-8');
         Main.Logger.info("[APP] Update settings from", this.file_settings)
     }
+    
 
    /* public loadAdvice() {
         if (!fs.existsSync(this.file_advice)) {
