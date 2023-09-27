@@ -1,4 +1,3 @@
-
 console.log("view.js loaded");
 
 class view {
@@ -18,6 +17,7 @@ class view {
         closeButton: "mainpage__tray-button--close",
         settingButton: "mainpage__tray-button--settings",
         settingBlock: "settings",
+        settingLogButton: "settings__button--logs",
         profileButton: "button__profile",
         infoBlock: "info-block",
         loginLogo: "login__logotype",
@@ -269,9 +269,9 @@ class view {
                         </li>
                     `;
                 }
-                ipcRenderer.on('console', (event, data) => {
+                ipcRenderer.on("console", (event, data) => {
                     console.log(data);
-                })
+                });
                 this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
 
                 let userCharacters = this.#userCharactersNew;
@@ -444,7 +444,7 @@ class view {
 
         ipcRenderer.on("console", (event, data) => {
             console.log(data);
-        })
+        });
 
         ipcRenderer.on("page_open", (event, data) => {
             this.page = data;
@@ -570,6 +570,11 @@ class view {
                 return;
             }
             this.selectors_toggle([sl.settingButton, sl.settingBlock]);
+        });
+
+        sl.settingLogButton.addEventListener("click", e => {
+            e.preventDefault();
+            ipcRenderer.send("open_logs");
         });
 
         sl.hideButton.addEventListener("click", () => {

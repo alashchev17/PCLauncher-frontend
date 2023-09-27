@@ -501,38 +501,7 @@
                     <h2 class="settings__title">Настройки</h2>
                     <form action="#" class="settings__form">
                         <div class="settings__wrapper">
-                            <div class="settings__item">
-                                Язык
-                                <div class="custom-select" style="width: 191px">
-                                    <select>
-                                        <option value="ru">Русский</option>
-                                        <option value="ru">Русский</option>
-                                        <option value="uk">Українська</option>
-                                        <option value="en">English</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <label class="settings__label" for="hideTray"
-                                >Свернуть в трей
-                                <input
-                                    type="checkbox"
-                                    id="hideTray"
-                                    class="settings__checkbox settings__checkbox--hidden"
-                                />
-                                <div class="settings__checkbox settings__checkbox--real">
-                                    <svg
-                                        class="settings__checkmark"
-                                        width="12"
-                                        height="9"
-                                        viewBox="0 0 12 9"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
-                                    </svg>
-                                </div>
-                            </label>
-                            <label class="settings__label" for="launchOnLoad"
+                            <label class="settings__label"
                                 >Запустить при включении компьютера
                                 <input
                                     type="checkbox"
@@ -552,11 +521,11 @@
                                     </svg>
                                 </div>
                             </label>
-                            <label class="settings__label" for="debugLog"
-                                >Включить ведение журнала отладки
+                            <label class="settings__label">
+                                Запуск в широкоэкранном режиме
                                 <input
                                     type="checkbox"
-                                    id="debugLog"
+                                    id="wideScreen"
                                     class="settings__checkbox settings__checkbox--hidden"
                                 />
                                 <div class="settings__checkbox settings__checkbox--real">
@@ -573,10 +542,30 @@
                                 </div>
                             </label>
                             <label class="settings__label">
-                                Включить облачные сохранения
+                                Запуск в окне
                                 <input
                                     type="checkbox"
-                                    id="cloudSave"
+                                    id="windowScreen"
+                                    class="settings__checkbox settings__checkbox--hidden"
+                                />
+                                <div class="settings__checkbox settings__checkbox--real">
+                                    <svg
+                                        class="settings__checkmark"
+                                        width="12"
+                                        height="9"
+                                        viewBox="0 0 12 9"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
+                                    </svg>
+                                </div>
+                            </label>
+                            <label class="settings__label"
+                                >Включить ведение журнала отладки
+                                <input
+                                    type="checkbox"
+                                    id="debugLog"
                                     class="settings__checkbox settings__checkbox--hidden"
                                 />
                                 <div class="settings__checkbox settings__checkbox--real">
@@ -599,12 +588,10 @@
                                     КБ/с
                                 </div>
                             </div>
-                            <div class="settings__item">
-                                <a onclick="openlogs()">Открыть логи</a> <!-- (!) Сделай нормально, просто не успеваю -->
-                            </div>
                         </div>
                         <!-- /.settings__wrapper -->
                         <div class="settings__buttons">
+                            <a class="settings__button settings__button--logs" href="#">Открыть логи</a>
                             <button class="settings__button settings__button--primary" type="submit">
                                 Сохранить изменения
                             </button>
@@ -650,9 +637,6 @@
 
         <script>
             const ipcRenderer = require("electron").ipcRenderer;
-        function openlogs() {
-            ipcRenderer.send("open_logs"); // (!)
-        }
         </script>
         <!-- <script src="./js/swiper-bundle.min.js"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
