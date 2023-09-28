@@ -91,7 +91,7 @@ export class Main {
         Main.Logger.transports.file.rotate = true;
         Main.Logger.transports.file.maxSize = 5 * 1024 * 1024;
 
-        Main.Logger.info("[APP] Logger is working");
+        Main.Logger.info(`[APP] Start ${app.getName()} v${app.getVersion()}`);
 
         Main.Logger.catchErrors();
     }
