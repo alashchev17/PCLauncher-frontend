@@ -1,5 +1,6 @@
 {
-  "name": "com.gambitrp.launcher",
+  "name": "gambit-launcher",
+  "appId": "com.gambitrp.launcher",
   "productName": "Gambit Launcher",
   "version": "0.1.3",
   "description": "Лаунчер проекта Gambit Role Play",
@@ -10,7 +11,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
-    "build": "npx electron-builder"
+    "build": "npx electron-builder --win nsis"
   },
   "keywords": [],
   "author": {
@@ -60,7 +61,13 @@
     "productName": "Gambit Launcher",
     "win": {
       "artifactName": "${name}-setup-${version}.${ext}",
+      "target": "nsis",
       "icon": "./icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
     }
   }
 }
