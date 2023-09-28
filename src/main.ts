@@ -9,7 +9,7 @@ import * as path from 'path';
 
 
 export class Main {
-    static isProduction : boolean = false;
+    static isProduction : boolean = true;
 
     static appData = path.join(app.getPath("appData"), app.getName());
     
@@ -22,6 +22,7 @@ export class Main {
     private IPCMethods = {
         'login': (e:any, login: string, password: string, twofactor: number) =>{ Main.Session.authorize(login, password, twofactor); },
         'logout': (e:any) => { Main.Session.logout(); },
+        'saveSettings': (e:any, data: any) => { Main.Config.updateSettings(data) }
     }
     constructor() {
         this.logger();
@@ -45,6 +46,8 @@ export class Main {
             await new Promise(resolve => setTimeout(resolve, 500)); 
         }
         Main.Session.checkSession();
+
+        Main.Config.send();
         
         const endTime = performance.now();
         Main.Logger.info(`[APP] Application initialized in ${endTime - startTime} ms`)

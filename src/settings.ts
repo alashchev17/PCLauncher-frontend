@@ -1,13 +1,19 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Main } from './main';
+import { Window } from './window';
 
+
+interface SettingsLauncher {
+    widescreen: boolean;
+    window: boolean;
+    debug_log: boolean;
+    internet: number;
+}
 
 interface Settings {
     session: string;
-    launcher: {
-        // settings
-    }
+    launcher: SettingsLauncher
 }
 
 interface Advice {
@@ -20,7 +26,12 @@ export class SettingsManager {
     private file_advice = path.join(Main.appData, 'advice.json')
     public Settings : Settings = {
         session: '',
-        launcher: {},
+        launcher: {
+            widescreen: false,
+            window: false,
+            debug_log: false,
+            internet: 10000,
+        },
     }
     constructor() {
         this.loadSettings()
@@ -40,6 +51,19 @@ export class SettingsManager {
         let json = JSON.stringify(this.Settings);
         fs.writeFileSync(this.file_settings, json, 'utf-8');
         Main.Logger.info("[APP] Update settings from", this.file_settings)
+    }
+
+    public updateSettings(data: SettingsLauncher) {
+        if(data == undefined) {
+            return;
+        }
+        this.Settings.launcher = data;
+        this.saveSettings();
+
+    }
+
+    public send() {
+        Window.main.webContents.send("settings", this.Settings.launcher);
     }
     
 
