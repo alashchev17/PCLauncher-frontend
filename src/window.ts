@@ -48,14 +48,25 @@ export class Window {
     ipcMain.on('open_logs', () => {
         shell.openExternal(path.join(Main.appData, 'logs/main.log'))
     });
+
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        if (Window.main.isMinimized()) Window.main.restore();
+        Window.main.focus();
+    });
   }
 
   static create(): void {
+
+    if (!app.requestSingleInstanceLock()) {
+      app.quit();
+    }
     app.on('ready', Window.createWindow);
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
         Window.createWindow();
+      } else {
+        Window.main.show();
       }
     });
   }
