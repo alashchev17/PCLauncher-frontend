@@ -2,13 +2,15 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Main } from './main';
 import { Window } from './window';
+import { app } from 'electron';
 
 
 interface SettingsLauncher {
-    widescreen: boolean;
-    window: boolean;
-    debug_log: boolean;
-    internet: number;
+    launchOnLoad: boolean;
+    wideScreen: boolean;
+    windowScreen: boolean;
+    debugLog: boolean;
+    maxDownloadSpeed: number;
 }
 
 interface Settings {
@@ -16,21 +18,17 @@ interface Settings {
     launcher: SettingsLauncher
 }
 
-interface Advice {
-    advice : string[];
-}
-
 export class SettingsManager {
     public Advice: string[];
     private file_settings = path.join(Main.appData, 'settings.json');
-    private file_advice = path.join(Main.appData, 'advice.json')
     public Settings : Settings = {
         session: '',
         launcher: {
-            widescreen: false,
-            window: false,
-            debug_log: false,
-            internet: 10000,
+            launchOnLoad: false,
+            wideScreen: false,
+            windowScreen: false,
+            debugLog: true,
+            maxDownloadSpeed: 10000,
         },
     }
     constructor() {
@@ -50,15 +48,31 @@ export class SettingsManager {
     public saveSettings() {
         let json = JSON.stringify(this.Settings);
         fs.writeFileSync(this.file_settings, json, 'utf-8');
-        Main.Logger.info("[APP] Update settings from", this.file_settings)
+        Main.Logger.info("[APP] Save settings from", this.file_settings)
     }
 
     public updateSettings(data: SettingsLauncher) {
+        let relaunch : boolean;
         if(data == undefined) {
             return;
         }
+        if(this.Settings.launcher.launchOnLoad != data.launchOnLoad) {
+            app.setLoginItemSettings({
+                openAtLogin: data.launchOnLoad    
+            }) 
+        }
+        if(this.Settings.launcher.debugLog != data.debugLog) {
+            Main.Logger.info(`[APP] Disabling debug logging`)
+            relaunch = true;
+        }
         this.Settings.launcher = data;
-        this.saveSettings();
+
+        this.saveSettings()
+
+        if(relaunch) {
+            app.relaunch();
+            app.quit();
+        }
 
     }
 
@@ -66,21 +80,4 @@ export class SettingsManager {
         Window.main.webContents.send("settings", this.Settings.launcher);
     }
     
-
-   /* public loadAdvice() {
-        if (!fs.existsSync(this.file_advice)) {
-            this.Advice = [];
-            //Нет подсказок, может грузить с бека?
-        }
-        let file =  fs.readFileSync(this.file_settings, 'utf-8');
-        let obj : Advice = JSON.parse(file);
-        this.Advice = obj.advice;
-    }*/
-    /*set advice(array: string[]) {
-        let obj : Advice = {
-            advice: array
-        }
-        let json = JSON.stringify(obj);
-        fs.writeFileSync(this.file_advice, json, 'utf-8');
-    }*/
 }

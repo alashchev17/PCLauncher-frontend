@@ -1,3 +1,4 @@
+
 console.log("view.js loaded");
 
 class view {
@@ -296,6 +297,7 @@ class view {
                 ipcRenderer.on("console", (event, data) => {
                     console.log(data);
                 });
+
                 this.#userCharactersNew = [].slice.call(document.querySelectorAll(".user__characters-item"));
 
                 let userCharacters = this.#userCharactersNew;
@@ -402,6 +404,17 @@ class view {
                 sl.loginInput2FA.setAttribute("required", "required");
             }, 300);
         });
+
+        ipcRenderer.on("settings", (event, data) => {
+            selectorsID.settingCheckboxLaunchOnLoad.checked = data.launchOnLoad;
+            selectorsID.settingCheckboxWideScreen.checked = data.wideScreen;
+            selectorsID.settingCheckboxWindowScreen.checked = data.windowScreen;
+            selectorsID.settingCheckboxDebugLog.checked = data.debugLog;
+            selectorsID.settingCheckboxMaxDownloadSpeed.value = data.maxDownloadSpeed;
+            if (data.debugLog == true) {
+                sl.settingLogButton.classList.remove(sl.settingLogButton.classList[0] + this.#hidden);
+            }
+        }) 
 
         ipcRenderer.on("logout", (event, data) => {
             if (this.page_name == "error") {
@@ -603,41 +616,32 @@ class view {
 
         sl.settingSubmitButton.addEventListener("click", e => {
             e.preventDefault();
-            this.selectors_toggle([sl.settingButton, sl.settingBlock]);
+           //this.selectors_toggle([sl.settingButton, sl.settingBlock]);
             setTimeout(() => {
-                let launchOnLoad, wideScreen, debugLog, windowScreen, maxDownloadSpeed;
 
-                launchOnLoad = selectorsID.settingCheckboxLaunchOnLoad.checked;
-                wideScreen = selectorsID.settingCheckboxWideScreen.checked;
-                windowScreen = selectorsID.settingCheckboxWindowScreen.checked;
-                debugLog = selectorsID.settingCheckboxDebugLog.checked;
+                let speed = selectorsID.settingCheckboxMaxDownloadSpeed.value;
 
-                if (debugLog) {
+                speed = speed < 1000 || speed == "" ? 1000 : speed;
+
+                selectorsID.settingCheckboxMaxDownloadSpeed.value = speed;
+
+                let object = {
+                    launchOnLoad: selectorsID.settingCheckboxLaunchOnLoad.checked,
+                    wideScreen: selectorsID.settingCheckboxWideScreen.checked,
+                    windowScreen: selectorsID.settingCheckboxWindowScreen.checked,
+                    debugLog: selectorsID.settingCheckboxDebugLog.checked,
+                    maxDownloadSpeed: speed,
+                }
+
+                /*if (object.debugLog) {
                     if (sl.settingLogButton.classList.contains(sl.settingLogButton.classList[0] + this.#hidden)) {
                         sl.settingLogButton.classList.remove(sl.settingLogButton.classList[0] + this.#hidden);
                     }
                 } else {
                     sl.settingLogButton.classList.add(sl.settingLogButton.classList[0] + this.#hidden);
-                }
-
-                if (
-                    selectorsID.settingCheckboxMaxDownloadSpeed.value == "" ||
-                    selectorsID.settingCheckboxMaxDownloadSpeed.value < 0
-                ) {
-                    selectorsID.settingCheckboxMaxDownloadSpeed.value = 0;
-                    maxDownloadSpeed = selectorsID.settingCheckboxMaxDownloadSpeed.value;
-                } else {
-                    maxDownloadSpeed = selectorsID.settingCheckboxMaxDownloadSpeed.value;
-                }
-
-                console.log("launchOnLoad: " + launchOnLoad);
-                console.log("wideScreen: " + wideScreen);
-                console.log("windowScreen: " + windowScreen);
-                console.log("debugLog: " + debugLog);
-                console.log("maxDownloadSpeed: " + maxDownloadSpeed);
-
-                // Отправка данных на сервер снизу
-                // ipcRenderer.send("save-settings", launchOnLoad, wideScreen, windowScreen, debugLog, maxDownloadSpeed);
+                }*/
+                
+                 ipcRenderer.send("saveSettings", object);
             }, 300);
         });
 

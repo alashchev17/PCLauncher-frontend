@@ -8,14 +8,17 @@ import { SettingsManager } from "./settings";
 import * as path from "path";
 
 export class Main {
+
+    public startTime = performance.now();
     static isProduction: boolean = false;
 
     static appData = path.join(app.getPath("appData"), app.getName());
 
+
+    static Config = new SettingsManager();
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
     static Initialized: boolean;
-    static Config = new SettingsManager();
     static Logger = require("electron-log");
     private updateChecked: boolean;
     private IPCMethods = {
@@ -30,11 +33,10 @@ export class Main {
         },
     };
     constructor() {
-        this.logger();
+        this.LoggerSetup(Main.Config.Settings.launcher.debugLog);
         this.init();
     }
     async init() {
-        const startTime = performance.now();
 
         for (const [key, value] of Object.entries(this.IPCMethods)) {
             ipcMain.on(key, value);
@@ -55,7 +57,7 @@ export class Main {
         Main.Config.send();
 
         const endTime = performance.now();
-        Main.Logger.info(`[APP] Application initialized in ${endTime - startTime} ms`);
+        Main.Logger.info(`[APP] Application initialized in ${endTime - this.startTime} ms`);
         Main.Initialized = true;
     }
 
@@ -83,20 +85,20 @@ export class Main {
             Main.Logger.error(error);
         });
     }
-    logger() {
+    LoggerSetup(status : boolean) {
+
         let format = "{d}.{m}.{y} {h}:{i}:{s} {text}";
-        Main.Logger.transports.file.level = true;
-        Main.Logger.transports.console.level = true;
+
+        Main.Logger.transports.file.level = status;
+        Main.Logger.transports.console.level = status;
 
         Main.Logger.transports.file.format = format;
-
         Main.Logger.transports.console.format = format;
 
         Main.Logger.transports.file.rotate = true;
         Main.Logger.transports.file.maxSize = 5 * 1024 * 1024;
 
         Main.Logger.info(`[APP] Start ${app.getName()} v${app.getVersion()}`);
-
         Main.Logger.catchErrors();
     }
 }
