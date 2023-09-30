@@ -15,11 +15,17 @@ class view {
         onlineBlock: "mainpage__online",
         hideButton: "mainpage__tray-button--hide",
         closeButton: "mainpage__tray-button--close",
+        // Settings
         settingButton: "mainpage__tray-button--settings",
         settingBlock: "settings",
         settingLogButton: "settings__button--logs",
+        // Settings checkboxes
+        settingCheckboxLaunchOnLoad: "launchOnLoad",
+        settingCheckboxWideScreen: "wideScreen",
+        settingCheckboxWindowScreen: "windowScreen",
+        settingCheckboxDebugLog: "debugLog",
+        // Login
         profileButton: "button__profile",
-        infoBlock: "info-block",
         loginLogo: "login__logotype",
         loginAside: "login__aside",
         loginButton: "login__button",
@@ -51,11 +57,15 @@ class view {
         userCharacters: "user__characters-item",
         userCharactersContent: "user__content--characters",
         userNotificationsContent: "user__content--notifications",
+        // Crashreports Page
+        crashButton: "crash__button",
+        crashCode: "crash__code",
         //Pages
         loginPage: "login",
         mainPage: "main",
         preloaderPage: "preloader",
         errorPage: "error",
+        crashPage: "crash",
     };
 
     #userCharactersNew;
@@ -108,8 +118,13 @@ class view {
                 let selectr = document.querySelectorAll("." + this.#selectors[key]);
                 this.#selectors[key] = selectr;
             }
+            if (key.indexOf("settingCheckbox", 0) == 0) {
+                let selectr = document.querySelector("#" + this.#selectors[key]);
+                this.#selectors[key] = selectr;
+            }
         }
         let sl = this.#selectors;
+        console.log(sl);
         //events
         this.events(sl);
 
@@ -637,6 +652,11 @@ class view {
             }
             e.preventDefault();
             ipcRenderer.send("login", login, password, twofactor);
+        });
+
+        sl.crashButton.addEventListener("click", e => {
+            e.preventDefault();
+            ipcRenderer.send("window-all-closed");
         });
 
         document.querySelectorAll("a[target='_blank']").forEach(link => {
