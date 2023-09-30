@@ -18,12 +18,8 @@ class view {
         // Settings
         settingButton: "mainpage__tray-button--settings",
         settingBlock: "settings",
+        settingSubmitButton: "settings__button--primary",
         settingLogButton: "settings__button--logs",
-        // Settings checkboxes
-        settingCheckboxLaunchOnLoad: "launchOnLoad",
-        settingCheckboxWideScreen: "wideScreen",
-        settingCheckboxWindowScreen: "windowScreen",
-        settingCheckboxDebugLog: "debugLog",
         // Login
         profileButton: "button__profile",
         loginLogo: "login__logotype",
@@ -66,6 +62,14 @@ class view {
         preloaderPage: "preloader",
         errorPage: "error",
         crashPage: "crash",
+    };
+    #selectorsID = {
+        // Settings checkboxes (with IDs)
+        settingCheckboxLaunchOnLoad: "launchOnLoad",
+        settingCheckboxWideScreen: "wideScreen",
+        settingCheckboxWindowScreen: "windowScreen",
+        settingCheckboxDebugLog: "debugLog",
+        settingCheckboxMaxDownloadSpeed: "maxDownloadSpeed",
     };
 
     #userCharactersNew;
@@ -118,15 +122,20 @@ class view {
                 let selectr = document.querySelectorAll("." + this.#selectors[key]);
                 this.#selectors[key] = selectr;
             }
-            if (key.indexOf("settingCheckbox", 0) == 0) {
-                let selectr = document.querySelector("#" + this.#selectors[key]);
-                this.#selectors[key] = selectr;
-            }
         }
+
+        for (let key in this.#selectorsID) {
+            let selectr = document.querySelector("#" + this.#selectorsID[key]);
+            this.#selectorsID[key] = selectr;
+        }
+
         let sl = this.#selectors;
-        console.log(sl);
+        let selectorsID = this.#selectorsID;
+
+        console.log(selectorsID);
+
         //events
-        this.events(sl);
+        this.events(sl, selectorsID);
 
         //Circle
         this.radius = sl.progressRing.r.baseVal.value;
@@ -188,7 +197,7 @@ class view {
         time += (sec < 10 ? ":0" : ":") + sec;
         return time;
     }
-    events(sl) {
+    events(sl, selectorsID) {
         ipcRenderer.on("error-method", (event, data) => {
             switch (data.error) {
                 case 101:
@@ -590,6 +599,46 @@ class view {
         sl.settingLogButton.addEventListener("click", e => {
             e.preventDefault();
             ipcRenderer.send("open_logs");
+        });
+
+        sl.settingSubmitButton.addEventListener("click", e => {
+            e.preventDefault();
+            this.selectors_toggle([sl.settingButton, sl.settingBlock]);
+            setTimeout(() => {
+                let launchOnLoad, wideScreen, debugLog, windowScreen, maxDownloadSpeed;
+
+                launchOnLoad = selectorsID.settingCheckboxLaunchOnLoad.checked;
+                wideScreen = selectorsID.settingCheckboxWideScreen.checked;
+                windowScreen = selectorsID.settingCheckboxWindowScreen.checked;
+                debugLog = selectorsID.settingCheckboxDebugLog.checked;
+
+                if (debugLog) {
+                    if (sl.settingLogButton.classList.contains(sl.settingLogButton.classList[0] + this.#hidden)) {
+                        sl.settingLogButton.classList.remove(sl.settingLogButton.classList[0] + this.#hidden);
+                    }
+                } else {
+                    sl.settingLogButton.classList.add(sl.settingLogButton.classList[0] + this.#hidden);
+                }
+
+                if (
+                    selectorsID.settingCheckboxMaxDownloadSpeed.value == "" ||
+                    selectorsID.settingCheckboxMaxDownloadSpeed.value < 0
+                ) {
+                    selectorsID.settingCheckboxMaxDownloadSpeed.value = 0;
+                    maxDownloadSpeed = selectorsID.settingCheckboxMaxDownloadSpeed.value;
+                } else {
+                    maxDownloadSpeed = selectorsID.settingCheckboxMaxDownloadSpeed.value;
+                }
+
+                console.log("launchOnLoad: " + launchOnLoad);
+                console.log("wideScreen: " + wideScreen);
+                console.log("windowScreen: " + windowScreen);
+                console.log("debugLog: " + debugLog);
+                console.log("maxDownloadSpeed: " + maxDownloadSpeed);
+
+                // Отправка данных на сервер снизу
+                // ipcRenderer.send("save-settings", launchOnLoad, wideScreen, windowScreen, debugLog, maxDownloadSpeed);
+            }, 300);
         });
 
         sl.hideButton.addEventListener("click", () => {

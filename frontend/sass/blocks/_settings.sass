@@ -85,6 +85,11 @@
     color: #D4D4D2
     text-align: center
     padding: 10px
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none
+      margin: 0
   &__buttons
     display: flex
     align-items: center

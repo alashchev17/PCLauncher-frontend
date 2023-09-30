@@ -584,14 +584,16 @@
                             <div class="settings__item">
                                 Ограничение загрузки в килобайтах в секунду
                                 <div class="settings__block">
-                                    <input type="text" class="settings__input" value="10000" />
+                                    <input type="number" class="settings__input" id="maxDownloadSpeed" value="10000" />
                                     КБ/с
                                 </div>
                             </div>
                         </div>
                         <!-- /.settings__wrapper -->
                         <div class="settings__buttons">
-                            <a class="settings__button settings__button--logs" href="#">Открыть логи</a>
+                            <a class="settings__button settings__button--logs settings__button--hidden" href="#"
+                                >Открыть логи</a
+                            >
                             <button class="settings__button settings__button--primary" type="submit">
                                 Сохранить изменения
                             </button>
