@@ -20,6 +20,7 @@ class view {
         settingBlock: "settings",
         settingSubmitButton: "settings__button--primary",
         settingLogButton: "settings__button--logs",
+        settingVersion: "settings__version",
         // Login
         profileButton: "button__profile",
         loginLogo: "login__logotype",
@@ -404,7 +405,9 @@ class view {
             }, 300);
         });
 
-        ipcRenderer.on("settings", (event, data) => {
+        ipcRenderer.on("settings", (event, data, version) => {
+            console.log();
+            sl.settingVersion.textContent = version;
             selectorsID.settingCheckboxLaunchOnLoad.checked = data.launchOnLoad;
             selectorsID.settingCheckboxWideScreen.checked = data.wideScreen;
             selectorsID.settingCheckboxWindowScreen.checked = data.windowScreen;
