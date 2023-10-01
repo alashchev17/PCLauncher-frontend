@@ -77,7 +77,7 @@ export class SettingsManager {
     }
 
     public send() {
-        let version = `${app.getName()} ${app.getVersion()}`;
+        let version = `${app.getName()} v${app.getVersion()}`;
         Window.main.webContents.send("settings", this.Settings.launcher, version);
     }
     
