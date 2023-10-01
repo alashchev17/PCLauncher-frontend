@@ -1,4 +1,3 @@
-
 console.log("view.js loaded");
 
 class view {
@@ -414,7 +413,7 @@ class view {
             if (data.debugLog == true) {
                 sl.settingLogButton.classList.remove(sl.settingLogButton.classList[0] + this.#hidden);
             }
-        }) 
+        });
 
         ipcRenderer.on("logout", (event, data) => {
             if (this.page_name == "error") {
@@ -603,7 +602,7 @@ class view {
         });
 
         sl.settingButton.addEventListener("click", () => {
-            if (this.page_name == "preloader" || this.page_name == "login" || this.page_name == "error") {
+            if (this.page_name == "preloader" || this.page_name == "error") {
                 return;
             }
             this.selectors_toggle([sl.settingButton, sl.settingBlock]);
@@ -616,33 +615,25 @@ class view {
 
         sl.settingSubmitButton.addEventListener("click", e => {
             e.preventDefault();
-           //this.selectors_toggle([sl.settingButton, sl.settingBlock]);
+            //this.selectors_toggle([sl.settingButton, sl.settingBlock]);
+            let speed = selectorsID.settingCheckboxMaxDownloadSpeed.value;
+
+            speed = speed < 1000 || speed == "" ? 1000 : speed;
+
+            selectorsID.settingCheckboxMaxDownloadSpeed.value = speed;
+
+            let object = {
+                launchOnLoad: selectorsID.settingCheckboxLaunchOnLoad.checked,
+                wideScreen: selectorsID.settingCheckboxWideScreen.checked,
+                windowScreen: selectorsID.settingCheckboxWindowScreen.checked,
+                debugLog: selectorsID.settingCheckboxDebugLog.checked,
+                maxDownloadSpeed: speed,
+            };
+
+            this.errorBlockHandle(sl, "Настройки были сохранены успешно", "saveSettings");
             setTimeout(() => {
-
-                let speed = selectorsID.settingCheckboxMaxDownloadSpeed.value;
-
-                speed = speed < 1000 || speed == "" ? 1000 : speed;
-
-                selectorsID.settingCheckboxMaxDownloadSpeed.value = speed;
-
-                let object = {
-                    launchOnLoad: selectorsID.settingCheckboxLaunchOnLoad.checked,
-                    wideScreen: selectorsID.settingCheckboxWideScreen.checked,
-                    windowScreen: selectorsID.settingCheckboxWindowScreen.checked,
-                    debugLog: selectorsID.settingCheckboxDebugLog.checked,
-                    maxDownloadSpeed: speed,
-                }
-
-                /*if (object.debugLog) {
-                    if (sl.settingLogButton.classList.contains(sl.settingLogButton.classList[0] + this.#hidden)) {
-                        sl.settingLogButton.classList.remove(sl.settingLogButton.classList[0] + this.#hidden);
-                    }
-                } else {
-                    sl.settingLogButton.classList.add(sl.settingLogButton.classList[0] + this.#hidden);
-                }*/
-                
-                 ipcRenderer.send("saveSettings", object);
-            }, 300);
+                ipcRenderer.send("saveSettings", object);
+            }, 3000);
         });
 
         sl.hideButton.addEventListener("click", () => {
@@ -759,10 +750,21 @@ class view {
 
     errorBlockHandle(sl, text, type) {
         sl.errorMsgBlockText.textContent = text;
+        if (type == "saveSettings") {
+            if (!sl.errorMsgBlock.classList.contains(sl.errorMsgBlock.classList[0] + "--access")) {
+                sl.errorMsgBlock.classList.add(sl.errorMsgBlock.classList[0] + "--access");
+            }
+        } else {
+            if (sl.errorMsgBlock.classList.contains(sl.errorMsgBlock.classList[0] + "--access")) {
+                sl.errorMsgBlock.classList.remove(sl.errorMsgBlock.classList[0] + "--access");
+            }
+        }
+
         sl.errorMsgBlock.classList.toggle(sl.errorMsgBlock.classList[0] + this.#active);
         setTimeout(() => {
             sl.errorMsgBlock.classList.toggle(sl.errorMsgBlock.classList[0] + this.#active);
         }, 3000);
+
         switch (type) {
             case 102:
             case 103:
