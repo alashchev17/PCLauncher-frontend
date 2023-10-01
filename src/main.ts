@@ -10,7 +10,7 @@ import * as path from "path";
 export class Main {
 
     public startTime = performance.now();
-    static isProduction: boolean = true;
+    static isProduction: boolean = false;
 
     static appData = path.join(app.getPath("appData"), app.getName());
 

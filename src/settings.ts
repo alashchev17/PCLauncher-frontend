@@ -31,6 +31,7 @@ export class SettingsManager {
             maxDownloadSpeed: 10000,
         },
     }
+    public relaunch : string[] = ['debugLog'];
     constructor() {
         this.loadSettings()
     
@@ -56,29 +57,40 @@ export class SettingsManager {
         if(data == undefined) {
             return;
         }
-        if(this.Settings.launcher.launchOnLoad != data.launchOnLoad) {
-            app.setLoginItemSettings({
-                openAtLogin: data.launchOnLoad    
-            }) 
-        }
-        if(this.Settings.launcher.debugLog != data.debugLog) {
-            Main.Logger.info(`[APP] Disabling debug logging`)
-            relaunch = true;
+        for (const k in this.Settings.launcher) {
+            let key = k as keyof SettingsLauncher;
+            if (this.Settings.launcher[key] != data[key]) {
+                if(this.relaunch.includes(key)) {
+                    relaunch = true;
+                }
+
+                switch (key) {
+                    case "launchOnLoad": 
+                        app.setLoginItemSettings({openAtLogin: data[key]});
+                        break;
+                }
+
+                Main.Logger.info(`[SETTINGS] ${key}: ${data[key]} `);
+            }
         }
         this.Settings.launcher = data;
 
-        this.saveSettings()
+        this.saveSettings();
 
         if(relaunch) {
             app.relaunch();
-            app.quit();
+            setTimeout(() => {
+                Main.Logger.info(`[SETTINGS] Restarting the application`);
+                app.relaunch();
+                app.quit();
+            }, 3000);
         }
 
     }
 
     public send() {
         let version = `${app.getName()} v${app.getVersion()}`;
-        Window.main.webContents.send("settings", this.Settings.launcher, version);
+        Window.main.webContents.send("settings", this.Settings.launcher, this.relaunch, version);
     }
     
 }

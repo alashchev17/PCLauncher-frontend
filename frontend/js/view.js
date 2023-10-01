@@ -75,6 +75,8 @@ class view {
 
     #userCharactersNew;
     #userNotificationsNew;
+    #settings = {};
+    #relaunchSettings = [];
 
     #active = "--active";
     #hidden = "--hidden";
@@ -405,7 +407,9 @@ class view {
             }, 300);
         });
 
-        ipcRenderer.on("settings", (event, data, version) => {
+        ipcRenderer.on("settings", (event, data, relaunch, version) => {
+            this.#relaunchSettings = relaunch;
+            this.#settings = data;
             console.log();
             sl.settingVersion.textContent = version;
             selectorsID.settingCheckboxLaunchOnLoad.checked = data.launchOnLoad;
@@ -633,10 +637,15 @@ class view {
                 maxDownloadSpeed: speed,
             };
 
-            this.errorBlockHandle(sl, "Настройки были сохранены успешно", "saveSettings");
-            setTimeout(() => {
-                ipcRenderer.send("saveSettings", object);
-            }, 3000);
+            let message = "Настройки были сохранены успешно";
+
+            for (const key in object ) {
+                if(object[key] != this.#settings[key] && this.#relaunchSettings.includes(key)) {
+                    message = "Настройки успешно сохранены. Приложение будет перезапущено."
+                }
+            }
+            this.errorBlockHandle(sl, message, "saveSettings");
+            ipcRenderer.send("saveSettings", object);
         });
 
         sl.hideButton.addEventListener("click", () => {
