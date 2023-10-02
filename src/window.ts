@@ -58,6 +58,7 @@ export class Window {
   static create(): void {
 
     if (!app.requestSingleInstanceLock()) {
+      Main.Log('APP', "The window is already open. Close the application.")
       app.quit();
     }
     app.on('ready', Window.createWindow);
