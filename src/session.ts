@@ -18,6 +18,7 @@ export class SessionManager {
     public checked: boolean = false;
 
     constructor() {
+        
     }
     
     

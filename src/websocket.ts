@@ -74,7 +74,7 @@ export class WebSocketConnection {
     }
  
     private onOpen(event: WebSocket.Event) {
-        if(Main.Initialized) {
+        if(Main.InitializedStatus == 2) {
             if(Main.Config.Settings.session != '')
             {
                 Main.Session.authorizeByToken();
@@ -82,11 +82,11 @@ export class WebSocketConnection {
                 Window.main.webContents.send("session_not_found");
             }
         }
-        Main.Logger.info('[SOCKET] WebSocket connection opened');
+        Main.Log("SOCKET", 'WebSocket connection opened');
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
-        Main.Logger.info(`[SOCKET] Received: ${event.data.toString()}`);
+        Main.Log('SOCKET', `Received: ${event.data.toString()}`); //Удалить токен из лога
         const obj : IncomingRequest = JSON.parse(event.data.toString());
         if(obj.response.error != undefined) {
             if(obj.response.error == 2 && Main.WS.token != '') { // Access denied
@@ -131,7 +131,7 @@ export class WebSocketConnection {
                 return;
             }
 
-            Main.Logger.info(`[SOCKET] reconnecting ${Main.WS.reconnectionCount}`);
+            Main.Log('SOCKET', `Reconnecting ${Main.WS.reconnectionCount}`);
 
             Window.main.webContents.send("reconnection", Main.WS.reconnectionCount)
 
@@ -143,7 +143,7 @@ export class WebSocketConnection {
     }
  
     private onError(event: WebSocket.ErrorEvent) {
-        Main.Logger.error("[SOCKET] "+event.message);
+        Main.Log("info", "[SOCKET] "+event.message);
     }
 
     public async send(message: string) {
@@ -161,7 +161,7 @@ export class WebSocketConnection {
             data : data
         };
         let jsonObj = JSON.stringify(obj);
-        Main.Logger.info(`[SOCKET] Sending: ${jsonObj}`);
+        Main.Log('SOCKET', `Sending: ${jsonObj}`); //Удалить пароль из лога
         this.ws.send(jsonObj);
     }
 }

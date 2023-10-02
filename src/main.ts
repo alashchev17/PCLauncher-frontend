@@ -14,12 +14,13 @@ export class Main {
 
     static appData = path.join(app.getPath("appData"), app.getName());
 
+    static Logger = require("electron-log")
+    static crypto = require("crypto");
 
     static Config = new SettingsManager();
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
-    static Initialized: boolean;
-    static Logger = require("electron-log");
+    static InitializedStatus: number;
     private updateChecked: boolean;
     private IPCMethods = {
         login: (e: any, login: string, password: string, twofactor: number) => {
@@ -33,7 +34,8 @@ export class Main {
         },
     };
     constructor() {
-        this.LoggerSetup(Main.Config.Settings.launcher.debugLog);
+        Main.InitializedStatus++;
+        Main.Log('APP', `Start ${app.getName()} v${app.getVersion()}`);
         this.init();
     }
     async init() {
@@ -57,8 +59,8 @@ export class Main {
         Main.Config.send();
 
         const endTime = performance.now();
-        Main.Logger.info(`[APP] Application initialized in ${endTime - this.startTime} ms`);
-        Main.Initialized = true;
+        Main.Log('APP', `Application initialized in ${endTime - this.startTime} ms`);
+        Main.InitializedStatus++;
     }
 
     updater() {
@@ -71,34 +73,41 @@ export class Main {
 
         autoUpdater.checkForUpdates();
 
-        Main.Logger.info("[UPDATES] Checking for updates");
+        Main.Log('UPDATE', "Checking for updates");
 
         autoUpdater.on("update-not-available", () => {
-            Main.Logger.info("[UPDATES] No updates");
+            Main.Log('UPDATE', "No updates");
             this.updateChecked = true;
         });
         autoUpdater.on("update-downloaded", () => {
-            Main.Logger.info("[UPDATES] Installing updates");
+            Main.Log('UPDATE', "Installing updates");
             autoUpdater.quitAndInstall();
         });
         autoUpdater.on("error", error => {
             Main.Logger.error(error);
         });
+        
     }
-    LoggerSetup(status : boolean) {
+    static Log(type: string, message: string) {
+        if (Main.Logger.transports.file.level == 'silly') {
+            let format = "{d}.{m}.{y} {h}:{i}:{s} {text}";
+            let status = Main.Config.Settings.launcher.debugLog
 
-        let format = "{d}.{m}.{y} {h}:{i}:{s} {text}";
+            Main.Logger.transports.file.level = status;
+            Main.Logger.transports.console.level = status;
+            Main.Logger.transports.file.format = format;
+            Main.Logger.transports.console.format = format;
+            Main.Logger.transports.file.rotate = true;
+            
+            Main.Logger.transports.file.maxSize = 5 * 1024 * 1024;
+            Main.Logger.catchErrors();
+        }
 
-        Main.Logger.transports.file.level = status;
-        Main.Logger.transports.console.level = status;
+        message = message.replace(/("token"|"session"|"password"|"session_token"):"[^"]+"/g, '$1:"hidden"');
+        Main.Logger.debug(`[${type}] ${message}`);
+    }
 
-        Main.Logger.transports.file.format = format;
-        Main.Logger.transports.console.format = format;
-
-        Main.Logger.transports.file.rotate = true;
-        Main.Logger.transports.file.maxSize = 5 * 1024 * 1024;
-
-        Main.Logger.info(`[APP] Start ${app.getName()} v${app.getVersion()}`);
-        Main.Logger.catchErrors();
+    public GetInitializedStatus(): number {
+        return Main.InitializedStatus;
     }
 }

@@ -3,6 +3,7 @@ import * as path from 'path';
 import { Main } from './main';
 import { Window } from './window';
 import { app } from 'electron';
+import { machineIdSync  } from 'node-machine-id'
 
 
 interface SettingsLauncher {
@@ -20,7 +21,9 @@ interface Settings {
 
 export class SettingsManager {
     public Advice: string[];
-    private file_settings = path.join(Main.appData, 'settings.json');
+
+    private cryptoKey = Buffer.from("YbmQdD5T", 'utf-8').toString('hex')
+    public file_settings = path.join(Main.appData, '.session');
     public Settings : Settings = {
         session: '',
         launcher: {
@@ -41,15 +44,25 @@ export class SettingsManager {
             this.Settings = this.Settings;
             return;
         }
-        let file =  fs.readFileSync(this.file_settings, 'utf-8');
-        this.Settings = JSON.parse(file);
+        let data =  fs.readFileSync(this.file_settings, 'utf-8');
+        try {
+            this.Settings = JSON.parse(this.decrypted(data));
+        } catch (e) {
+            fs.unlink(this.file_settings, (err) => {
+                if (err) {
+                    Main.Logger.error(err);
+                } else {
+                    this.loadSettings();
+                }
+            });
+        }
 
     }
 
     public saveSettings() {
-        let json = JSON.stringify(this.Settings);
+        let json = this.encrypted(JSON.stringify(this.Settings));
         fs.writeFileSync(this.file_settings, json, 'utf-8');
-        Main.Logger.info("[APP] Save settings from", this.file_settings)
+        Main.Log('APP', `Save settings from ${this.file_settings}`)
     }
 
     public updateSettings(data: SettingsLauncher) {
@@ -70,7 +83,7 @@ export class SettingsManager {
                         break;
                 }
 
-                Main.Logger.info(`[SETTINGS] ${key}: ${data[key]} `);
+                Main.Log('SETTING', `${key}: ${data[key]} `);
             }
         }
         this.Settings.launcher = data;
@@ -80,7 +93,7 @@ export class SettingsManager {
         if(relaunch) {
             app.relaunch();
             setTimeout(() => {
-                Main.Logger.info(`[SETTINGS] Restarting the application`);
+                Main.Log('SETTING', `Restarting the application`);
                 app.relaunch();
                 app.quit();
             }, 3000);
@@ -92,5 +105,18 @@ export class SettingsManager {
         let version = `${app.getName()} v${app.getVersion()}`;
         Window.main.webContents.send("settings", this.Settings.launcher, this.relaunch, version);
     }
+
+    private encrypted(data : string) {
+        const cipher = Main.crypto.createCipheriv('aes-256-cbc', machineIdSync().slice(32, 64), this.cryptoKey);
+        let encryptedData = cipher.update(data, 'utf8', 'base64');
+        encryptedData += cipher.final('base64');
+        return encryptedData;
+    }
     
+    private decrypted(encryptedData : string) {
+        const decipher = Main.crypto.createDecipheriv('aes-256-cbc', machineIdSync().slice(32, 64), this.cryptoKey);
+        let decryptedData = decipher.update(encryptedData, 'base64', 'utf8');
+        decryptedData += decipher.final('utf8');
+        return decryptedData
+    }
 }
