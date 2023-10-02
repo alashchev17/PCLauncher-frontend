@@ -270,6 +270,8 @@ class view {
                         107
                     );
                     break;
+                case 109:
+                    this.errorBlockHandle(sl,"Данный аккаунт заблокирован",109);
             }
         });
 
@@ -789,6 +791,8 @@ class view {
             case 105:
             case 107:
                 sl.loginInput2FA.value = "";
+                break;
+            case 109:
                 break;
             case 200:
                 break;
