@@ -108,14 +108,14 @@ export class SettingsManager {
 
     private encrypted(data : string) {
         const cipher = Main.crypto.createCipheriv('aes-256-cbc', machineIdSync().slice(32, 64), this.cryptoKey);
-        let encryptedData = cipher.update(data, 'utf8', 'base64');
-        encryptedData += cipher.final('base64');
+        let encryptedData = cipher.update(data, 'utf8', 'binary');
+        encryptedData += cipher.final('binary');
         return encryptedData;
     }
     
     private decrypted(encryptedData : string) {
         const decipher = Main.crypto.createDecipheriv('aes-256-cbc', machineIdSync().slice(32, 64), this.cryptoKey);
-        let decryptedData = decipher.update(encryptedData, 'base64', 'utf8');
+        let decryptedData = decipher.update(encryptedData, 'binary', 'utf8');
         decryptedData += decipher.final('utf8');
         return decryptedData
     }
