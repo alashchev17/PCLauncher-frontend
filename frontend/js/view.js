@@ -76,7 +76,6 @@ class view {
     #userCharactersNew;
     #userNotificationsNew;
     #settings = {};
-    #relaunchSettings = [];
 
     #active = "--active";
     #hidden = "--hidden";
@@ -408,9 +407,9 @@ class view {
         });
 
         ipcRenderer.on("settings", (event, data, relaunch, version) => {
-            this.#relaunchSettings = relaunch;
-            this.#settings = data;
-            console.log();
+            this.#settings.data = data;
+            this.#settings.relaunch = relaunch
+
             sl.settingVersion.textContent = version;
             selectorsID.settingCheckboxLaunchOnLoad.checked = data.launchOnLoad;
             selectorsID.settingCheckboxWideScreen.checked = data.wideScreen;
@@ -640,12 +639,13 @@ class view {
             let message = "Настройки были сохранены успешно";
 
             for (const key in object ) {
-                if(object[key] != this.#settings[key] && this.#relaunchSettings.includes(key)) {
+                if(object[key] != this.#settings.data[key] && this.#settings.relaunch.includes(key)) {
                     message = "Настройки успешно сохранены. Приложение будет перезапущено."
                 }
             }
             this.errorBlockHandle(sl, message, "saveSettings");
             ipcRenderer.send("saveSettings", object);
+            this.#settings = object;
         });
 
         sl.hideButton.addEventListener("click", () => {
