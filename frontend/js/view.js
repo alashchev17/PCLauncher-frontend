@@ -408,7 +408,7 @@ class view {
 
         ipcRenderer.on("settings", (event, data, relaunch, version) => {
             this.#settings.data = data;
-            this.#settings.relaunch = relaunch
+            this.#settings.relaunch = relaunch;
 
             sl.settingVersion.textContent = version;
             selectorsID.settingCheckboxLaunchOnLoad.checked = data.launchOnLoad;
@@ -638,14 +638,14 @@ class view {
 
             let message = "Настройки были сохранены успешно";
 
-            for (const key in object ) {
-                if(object[key] != this.#settings.data[key] && this.#settings.relaunch.includes(key)) {
-                    message = "Настройки успешно сохранены. Приложение будет перезапущено."
+            for (const key in object) {
+                if (object[key] != this.#settings.data[key] && this.#settings.relaunch.includes(key)) {
+                    message = "Настройки успешно сохранены. Приложение будет перезапущено.";
                 }
             }
             this.errorBlockHandle(sl, message, "saveSettings");
             ipcRenderer.send("saveSettings", object);
-            this.#settings = object;
+            this.#settings.data = object;
         });
 
         sl.hideButton.addEventListener("click", () => {
