@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as os from 'os';
 import { Main } from './main';
 import { Window } from './window';
 import { app } from 'electron';
@@ -119,7 +120,15 @@ export class SettingsManager {
         return decryptedData
     }
     private getCryptoParams() {
-        let machine = machineIdSync();
-        return [machine.slice(32, 64), machine.slice(10, 26)];
+        const kLen = 32;
+        const vLen = 16;
+        const machine = machineIdSync();
+        const l = Math.round(os.userInfo().username.slice(0, 16).length*0.9);
+        const c = (os.cpus()[0].speed*l)%33;
+        const lc = l+c;
+        const hash = Main.crypto.createHash('sha256');
+        hash.update(c.toString());
+        const hashHex = hash.digest('hex').toString();
+        return [machine.slice(c, c+kLen), hashHex.slice(lc, lc+vLen)]; 
     }
 }
