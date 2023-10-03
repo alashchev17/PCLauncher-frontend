@@ -123,12 +123,12 @@ export class SettingsManager {
         const kLen = 32;
         const vLen = 16;
         const machine = machineIdSync();
-        const l = Math.round(os.userInfo().username.slice(0, 16).length*0.9);
-        const c = (os.cpus()[0].speed*l)%33;
-        const lc = l+c;
+        const userNameLen = Math.round(os.userInfo().username.slice(0, 16).length * 0.9);
+        const cpuSpeed = (os.cpus()[0].speed * userNameLen)%33;
+        const sum = userNameLen + cpuSpeed;
         const hash = Main.crypto.createHash('sha256');
-        hash.update(c.toString());
+        hash.update(cpuSpeed.toString());
         const hashHex = hash.digest('hex').toString();
-        return [machine.slice(c, c+kLen), hashHex.slice(lc, lc+vLen)]; 
+        return [machine.slice(cpuSpeed, cpuSpeed + kLen), hashHex.slice(sum, sum + vLen)]; 
     }
 }
