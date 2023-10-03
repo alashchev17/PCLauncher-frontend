@@ -37,6 +37,7 @@ interface NotificationRequest {
 }
 
 
+
 export class WebSocketConnection {  
     private ws: WebSocket | null = null;
     private method;
@@ -44,6 +45,8 @@ export class WebSocketConnection {
     public token = '';
 
     public reconnectionCount: number = 0;
+
+    public typeName = ['none', 'authorization', 'notification', 'logout'];
 
 
     private errorListeners: ((error: any) => void)[] = [];
@@ -86,8 +89,14 @@ export class WebSocketConnection {
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
-        Main.Log('SOCKET', `Received: ${event.data.toString()}`); //Удалить токен из лога
         const obj : IncomingRequest = JSON.parse(event.data.toString());
+        let log =  `Received ${this.typeName[obj.type]}: `;
+        if(Main.isProduction) {
+            log += `${obj.response.error != undefined ? obj.response.error_message : "success"}`;
+        } else {
+            log += `${event.data.toString()}}`;
+        }
+        Main.Log('SOCKET', log); 
         if(obj.response.error != undefined) {
             if(obj.response.error == 2 && Main.WS.token != '') { // Access denied
                 if(Main.Config.Settings.session != '') {
@@ -161,7 +170,9 @@ export class WebSocketConnection {
             data : data
         };
         let jsonObj = JSON.stringify(obj);
-        Main.Log('SOCKET', `Sending: ${jsonObj}`); //Удалить пароль из лога
+        let log = `Sending ${this.typeName[key]}`;
+        log += Main.isProduction ? '' : jsonObj;
+        Main.Log('SOCKET', log); 
         this.ws.send(jsonObj);
     }
 }
