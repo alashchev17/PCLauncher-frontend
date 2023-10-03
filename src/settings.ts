@@ -62,7 +62,6 @@ export class SettingsManager {
     public saveSettings() {
         let json = this.encrypted(JSON.stringify(this.Settings));
         fs.writeFileSync(this.file_settings, json, 'utf-8');
-        Main.Log('APP', `Save settings from ${this.file_settings}`)
     }
 
     public updateSettings(data: SettingsLauncher) {
