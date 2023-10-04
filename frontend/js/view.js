@@ -559,7 +559,10 @@ class view {
         });
 
         ipcRenderer.on("widgets", (event, data) => {
-            //Все указано в websocket.ts WidgetRequest
+            //Все параметры в websocket.ts WidgetRequest
+            //display(1 - Скролл меню, 2 - слайдер, 3 - два блока)
+            //type(1 - Сообщество, 2 - Мероприятие... Функционально, возможно добавим или изменим)
+            //Остальное думаю понятно. Если header и description некуда выводить(в случае 2 и 3 дисплея), просто не отображай их.
         });
 
         ipcRenderer.on("notification", (event, data) => {
