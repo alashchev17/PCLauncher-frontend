@@ -20,6 +20,7 @@ export class Window {
         contextIsolation: false,
       },
     });
+    
 
     Window.main.loadFile('./frontend/index.html');
 
@@ -56,11 +57,6 @@ export class Window {
   }
 
   static create(): void {
-
-    if (!app.requestSingleInstanceLock()) {
-      Main.Log('APP', "The window is already open. Close the application.")
-      app.quit();
-    }
     app.on('ready', Window.createWindow);
 
     app.on('activate', () => {

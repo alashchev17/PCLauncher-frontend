@@ -20,7 +20,7 @@ export class Main {
     static Config = new SettingsManager();
     static WS = new WebSocketConnection();
     static Session = new SessionManager();
-    static InitializedStatus: number;
+    static InitializedStatus: boolean;
     private updateChecked: boolean;
     private IPCMethods = {
         login: (e: any, login: string, password: string, twofactor: number) => {
@@ -34,7 +34,6 @@ export class Main {
         },
     };
     constructor() {
-        Main.InitializedStatus++;
         Main.Log('APP', `Start ${app.getName()} v${app.getVersion()}`);
         this.init();
     }
@@ -60,7 +59,7 @@ export class Main {
 
         const endTime = performance.now();
         Main.Log('APP', `Application initialized in ${endTime - this.startTime} ms`);
-        Main.InitializedStatus++;
+        Main.InitializedStatus = true;
     }
 
     updater() {
@@ -107,7 +106,7 @@ export class Main {
         Main.Logger.debug(`[${type}] ${message}`);
     }
 
-    public GetInitializedStatus(): number {
+    public GetInitializedStatus(): boolean {
         return Main.InitializedStatus;
     }
 }

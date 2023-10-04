@@ -1,10 +1,11 @@
-import {app } from 'electron';
+import { app } from 'electron';
 
 import { Main } from './main'
 
-if (require('electron-squirrel-startup')) {
+if (require('electron-squirrel-startup') || !app.requestSingleInstanceLock()) {
     app.quit();
+} else {
+    let mainProccess = new Main();
 }
 
-let mainProccess = new Main();
 

@@ -61,9 +61,9 @@ export class WebSocketConnection {
         this.method = new WebSocketMethods();
         this.connect();
     }
- 
     private async connect() {
-        this.ws = new WebSocket("ws://45.90.219.11:4327/launcher" );
+        this.ws = new WebSocket("wss://backend.dev-gambit.ru/launcher/" );
+        //this.ws = new WebSocket("ws://45.90.219.11:4327/launcher" );
         this.ws.onmessage = this.onMessage.bind(this);
         this.ws.onerror = this.onError.bind(this);
         this.ws.onclose = (event) => {
@@ -77,7 +77,7 @@ export class WebSocketConnection {
     }
  
     private onOpen(event: WebSocket.Event) {
-        if(Main.InitializedStatus == 2) {
+        if(Main.InitializedStatus) {
             if(Main.Config.Settings.session != '')
             {
                 Main.Session.authorizeByToken();
@@ -89,6 +89,9 @@ export class WebSocketConnection {
     }
  
     private onMessage(event: WebSocket.MessageEvent) {
+        if(event.data == '') {
+            return;
+        }
         const obj : IncomingRequest = JSON.parse(event.data.toString());
         let log =  `Received ${this.typeName[obj.type]}: `;
         if(Main.isProduction) {
