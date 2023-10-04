@@ -57,6 +57,8 @@ export class Main {
 
         Main.Config.send();
 
+        Main.WS.sendRequest(4, {}); // Получение виджетов
+
         const endTime = performance.now();
         Main.Log('APP', `Application initialized in ${endTime - this.startTime} ms`);
         Main.InitializedStatus = true;

@@ -46,15 +46,14 @@ export class WebSocketConnection {
 
     public reconnectionCount: number = 0;
 
-    public typeName = ['none', 'authorization', 'notification', 'logout'];
+    public typeName = ['none', 'authorization', 'notification', 'logout', 'widget'];
 
-
-    private errorListeners: ((error: any) => void)[] = [];
 
     private methodsMessage: { [key: number]: string } = {
         1: 'Authorization',
         2: 'Notification',
         3: 'Logout',
+        4: 'Widget',
     }
  
     constructor() {
@@ -223,5 +222,9 @@ export class WebSocketConnection {
             Main.Config.saveSettings();
             Window.main.webContents.send('logout');
         }
+    }
+
+    private Widget(data: string) {
+        Window.main.webContents.send("widgets");
     }
  }
