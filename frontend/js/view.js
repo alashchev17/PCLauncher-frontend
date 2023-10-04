@@ -15,6 +15,7 @@ class view {
         onlineBlock: "mainpage__online",
         hideButton: "mainpage__tray-button--hide",
         closeButton: "mainpage__tray-button--close",
+        onlineCounter: "mainpage__online-number",
         // Settings
         settingButton: "mainpage__tray-button--settings",
         settingBlock: "settings",
@@ -551,6 +552,14 @@ class view {
                 }, 500);
             }, 300);
             // Обновляем страницу при первом переподключении
+        });
+
+        ipcRenderer.on("online", (event, data) => {
+            sl.onlineCounter.innerHTML = data;
+        });
+
+        ipcRenderer.on("widgets", (event, data) => {
+            //Все указано в websocket.ts WidgetRequest
         });
 
         ipcRenderer.on("notification", (event, data) => {

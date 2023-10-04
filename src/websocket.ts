@@ -36,6 +36,15 @@ interface NotificationRequest {
     account_id: number;
 }
 
+interface WidgetRequest {
+    type: number;
+    url: string;
+    header: string;
+    description: string;
+    display: number;
+    image: string;
+}
+
 
 
 export class WebSocketConnection {  
@@ -224,7 +233,7 @@ export class WebSocketConnection {
         }
     }
 
-    private Widget(data: string) {
-        Window.main.webContents.send("widgets");
+    private Widget(data: WidgetRequest) {
+        Window.main.webContents.send("widgets", data);
     }
  }

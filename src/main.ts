@@ -6,6 +6,17 @@ import { ipcMain } from "electron";
 import { Window } from "./window";
 import { SettingsManager } from "./settings";
 import * as path from "path";
+import fetch, { Response } from 'node-fetch';
+
+interface Online {
+    response : {
+        last_update: number;
+        players: number;
+        max_players: number;
+    }
+}
+
+
 
 export class Main {
 
@@ -58,6 +69,7 @@ export class Main {
         Main.Config.send();
 
         Main.WS.sendRequest(4, {}); // Получение виджетов
+        this.updateOnline();
 
         const endTime = performance.now();
         Main.Log('APP', `Application initialized in ${endTime - this.startTime} ms`);
@@ -111,4 +123,19 @@ export class Main {
     public GetInitializedStatus(): boolean {
         return Main.InitializedStatus;
     }
+
+    private async updateOnline() {
+        const url = 'https://api.volkdev.su/v1/server/online?id=grp';
+        let response : Response;
+        try {
+            response = await fetch(url);
+            const jsonData = await response.json() as Online;
+            Window.main.webContents.send("online", jsonData.response.players);
+
+            setTimeout(() => this.updateOnline(), 60000);
+        } catch (error) {
+            Main.Log("ONLINE", `Error ${error.message}`);   
+        }
+    }
+      
 }
