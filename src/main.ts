@@ -9,7 +9,7 @@ import * as path from "path";
 import fetch, { Response } from 'node-fetch';
 
 interface Online {
-    response : {
+    response? : {
         last_update: number;
         players: number;
         max_players: number;

@@ -108,7 +108,7 @@ export class WebSocketConnection {
             log += `${event.data.toString()}}`;
         }
         Main.Log('SOCKET', log); 
-        if(obj.response.error != undefined) {
+        if(obj.response != null && obj.response.error != undefined) {
             if(obj.response.error == 2 && Main.WS.token != '') { // Access denied
                 if(Main.Config.Settings.session != '') {
                     Main.Session.authorizeByToken();
