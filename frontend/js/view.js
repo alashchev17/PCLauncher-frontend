@@ -565,61 +565,116 @@ class view {
 
         ipcRenderer.on("widgets", (event, data) => {
             console.log(data);
-
-            let firstDisplayElements = data.filter(item => item.display == 1);
-            let secondDisplayElements = data.filter(item => item.display == 2);
-            let thirdDisplayElements = data.filter(item => item.display == 3);
-
-            console.log(firstDisplayElements);
-            console.log(secondDisplayElements);
-            console.log(thirdDisplayElements);
+            let firstDisplayElements, secondDisplayElements, thirdDisplayElements;
+            if (data == null) {
+                firstDisplayElements = [];
+                secondDisplayElements = [];
+                thirdDisplayElements = [];
+            } else {
+                firstDisplayElements = data.filter(item => item.display == 1);
+                secondDisplayElements = data.filter(item => item.display == 2);
+                thirdDisplayElements = data.filter(item => item.display == 3);
+            }
 
             let types = ["none", "Cообщество", "Мероприятие"];
 
-            for (let i = 0; i != firstDisplayElements.length; i++) {
-                this.#selectorsID.mainpageRegularNews.innerHTML += `
-                <a href="${firstDisplayElements[i].url}" title="${
-                    firstDisplayElements[i].header
-                }" target="_blank" class="mainpage__update-link">
-                    <img src="${firstDisplayElements[i].image}" alt="${
-                    firstDisplayElements[i].header
-                }" class="mainpage__update-image" />
-                    <div class="mainpage__update-info">
-                        <h2 class="mainpage__update-title">${firstDisplayElements[i].header}</h2>
-                        <p class="mainpage__update-subtitle">${firstDisplayElements[i].description}</p>
-                        <span class="mainpage__update-date">${this.timeConverter(firstDisplayElements[i].date)}</span>
-                    </div>
-                    <!-- /.mainpage__update-info -->
-                </a>
-                `;
-            }
-            for (let i = 0; i != secondDisplayElements.length; i++) {
-                this.#selectorsID.mainpageSliderNews.innerHTML += `
-                <a href="${secondDisplayElements[i].url}" target="_blank" title="${
-                    secondDisplayElements[i].header
-                }" class="swiper-slide">
-                    <span class="slider__topic">${types[secondDisplayElements[i].type]}</span>
-                    <img class="slider__image" src="${secondDisplayElements[i].image}" alt="${
-                    secondDisplayElements[i].header
-                }" />
-                </a>
-                `;
-            }
-            for (let i = 0; i != thirdDisplayElements.length; i++) {
-                if (i != 2) {
-                    this.#selectorsID.mainpageFixedNews.innerHTML += `
-                    <a href="${thirdDisplayElements[i].url}" title="${
-                        thirdDisplayElements[i].header
-                    }" target="_blank" class="mainpage__update-important">
-                        <span class="mainpage__update-topic">${types[thirdDisplayElements[i].type]}</span>
-                        <img
-                            class="mainpage__update-image"
-                            src="${thirdDisplayElements[i].image}"
-                            alt="${thirdDisplayElements[i].header}"
-                        />
+            if (!firstDisplayElements.length == 0) {
+                for (let i = 0; i != firstDisplayElements.length; i++) {
+                    this.#selectorsID.mainpageRegularNews.innerHTML += `
+                    <a href="${firstDisplayElements[i].url}" title="${
+                        firstDisplayElements[i].header
+                    }" target="_blank" class="mainpage__update-link">
+                        <img src="${firstDisplayElements[i].image}" alt="${
+                        firstDisplayElements[i].header
+                    }" class="mainpage__update-image" />
+                        <div class="mainpage__update-info">
+                            <h2 class="mainpage__update-title">${firstDisplayElements[i].header}</h2>
+                            <p class="mainpage__update-subtitle">${firstDisplayElements[i].description}</p>
+                            <span class="mainpage__update-date">${this.timeConverter(
+                                firstDisplayElements[i].date
+                            )}</span>
+                        </div>
+                        <!-- /.mainpage__update-info -->
                     </a>
                     `;
                 }
+            } else {
+                this.#selectorsID.mainpageRegularNews.classList.add(
+                    this.#selectorsID.mainpageRegularNews.classList[0] + this.#active
+                );
+                this.#selectorsID.mainpageRegularNews.innerHTML = `
+                <span class="mainpage__updates-empty">Информация отсутствует</span>
+                `;
+            }
+
+            if (!secondDisplayElements.length == 0) {
+                for (let i = 0; i != secondDisplayElements.length; i++) {
+                    this.#selectorsID.mainpageSliderNews.innerHTML += `
+                    <a href="${secondDisplayElements[i].url}" target="_blank" title="${
+                        secondDisplayElements[i].header
+                    }" class="swiper-slide">
+                        <span class="slider__topic">${types[secondDisplayElements[i].type]}</span>
+                        <img class="slider__image" src="${secondDisplayElements[i].image}" alt="${
+                        secondDisplayElements[i].header
+                    }" />
+                    </a>
+                    `;
+                }
+                const swiper = new Swiper(".mainpage__update-slider", {
+                    // Optional parameters
+                    direction: "horizontal",
+                    loop: true,
+
+                    autoplay: {
+                        disableOnInteraction: false,
+                        delay: 3500,
+                    },
+
+                    // If we need pagination
+                    pagination: {
+                        el: ".swiper-pagination",
+                    },
+
+                    // Navigation arrows
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                    },
+                });
+            } else {
+                sl.mainpageSlider.classList.add(sl.mainpageSlider.classList[1] + this.#active);
+                sl.mainpageSlider.innerHTML = `
+                <span class="mainpage__updates-empty">Нет данных</span>
+                `;
+            }
+
+            if (!thirdDisplayElements.length == 0) {
+                for (let i = 0; i != thirdDisplayElements.length; i++) {
+                    if (i != 2) {
+                        this.#selectorsID.mainpageFixedNews.innerHTML += `
+                        <a href="${thirdDisplayElements[i].url}" title="${
+                            thirdDisplayElements[i].header
+                        }" target="_blank" class="mainpage__update-important">
+                            <span class="mainpage__update-topic">${types[thirdDisplayElements[i].type]}</span>
+                            <img
+                                class="mainpage__update-image"
+                                src="${thirdDisplayElements[i].image}"
+                                alt="${thirdDisplayElements[i].header}"
+                            />
+                        </a>
+                        `;
+                    }
+                }
+            } else {
+                this.#selectorsID.mainpageFixedNews.classList.add(
+                    this.#selectorsID.mainpageFixedNews.classList[0] + this.#active
+                );
+                this.#selectorsID.mainpageFixedNews.innerHTML = `
+                <div class="mainpage__update-content mainpage__update-content--active nodrag">
+                    <span class="mainpage__updates-empty">Информация отсутствует</span>
+                </div>
+                <!-- /.mainpage__update-content -->
+                `;
             }
 
             // Открытие ссылок в новой вкладке и отключение драга
@@ -637,27 +692,6 @@ class view {
                 };
             });
 
-            const swiper = new Swiper(".mainpage__update-slider", {
-                // Optional parameters
-                direction: "horizontal",
-                loop: true,
-
-                autoplay: {
-                    disableOnInteraction: false,
-                    delay: 3500,
-                },
-
-                // If we need pagination
-                pagination: {
-                    el: ".swiper-pagination",
-                },
-
-                // Navigation arrows
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
             //Все параметры в websocket.ts WidgetRequest
             //display(1 - Скролл меню, 2 - слайдер, 3 - два блока)
             //type(1 - Сообщество, 2 - Мероприятие... Функционально, возможно добавим или изменим)
