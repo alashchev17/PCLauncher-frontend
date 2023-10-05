@@ -15,7 +15,7 @@ interface IncomingRequest {
     response: {
         error: number;
         error_message: string;
-    };
+    } | null,
 }
 
 interface AuthorizationRequest {
