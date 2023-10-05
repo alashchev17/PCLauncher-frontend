@@ -72,6 +72,10 @@ class view {
         settingCheckboxWindowScreen: "windowScreen",
         settingCheckboxDebugLog: "debugLog",
         settingCheckboxMaxDownloadSpeed: "maxDownloadSpeed",
+        // News blocks
+        mainpageRegularNews: "regularNews",
+        mainpageSliderNews: "sliderNews",
+        mainpageFixedNews: "fixedNews",
     };
 
     #userCharactersNew;
@@ -94,6 +98,7 @@ class view {
     `;
     page_name = "preloader";
     lastPage;
+    widgetsData;
 
     tipTexts = [
         {
@@ -272,7 +277,7 @@ class view {
                     );
                     break;
                 case 109:
-                    this.errorBlockHandle(sl,"Данный аккаунт заблокирован",109);
+                    this.errorBlockHandle(sl, "Данный аккаунт заблокирован", 109);
             }
         });
 
@@ -559,6 +564,100 @@ class view {
         });
 
         ipcRenderer.on("widgets", (event, data) => {
+            console.log(data);
+
+            let firstDisplayElements = data.filter(item => item.display == 1);
+            let secondDisplayElements = data.filter(item => item.display == 2);
+            let thirdDisplayElements = data.filter(item => item.display == 3);
+
+            console.log(firstDisplayElements);
+            console.log(secondDisplayElements);
+            console.log(thirdDisplayElements);
+
+            let types = ["none", "Cообщество", "Мероприятие"];
+
+            for (let i = 0; i != firstDisplayElements.length; i++) {
+                this.#selectorsID.mainpageRegularNews.innerHTML += `
+                <a href="${firstDisplayElements[i].url}" title="${
+                    firstDisplayElements[i].header
+                }" target="_blank" class="mainpage__update-link">
+                    <img src="${firstDisplayElements[i].image}" alt="${
+                    firstDisplayElements[i].header
+                }" class="mainpage__update-image" />
+                    <div class="mainpage__update-info">
+                        <h2 class="mainpage__update-title">${firstDisplayElements[i].header}</h2>
+                        <p class="mainpage__update-subtitle">${firstDisplayElements[i].description}</p>
+                        <span class="mainpage__update-date">${this.timeConverter(firstDisplayElements[i].date)}</span>
+                    </div>
+                    <!-- /.mainpage__update-info -->
+                </a>
+                `;
+            }
+            for (let i = 0; i != secondDisplayElements.length; i++) {
+                this.#selectorsID.mainpageSliderNews.innerHTML += `
+                <a href="${secondDisplayElements[i].url}" target="_blank" title="${
+                    secondDisplayElements[i].header
+                }" class="swiper-slide">
+                    <span class="slider__topic">${types[secondDisplayElements[i].type]}</span>
+                    <img class="slider__image" src="${secondDisplayElements[i].image}" alt="${
+                    secondDisplayElements[i].header
+                }" />
+                </a>
+                `;
+            }
+            for (let i = 0; i != thirdDisplayElements.length; i++) {
+                if (i != 2) {
+                    this.#selectorsID.mainpageFixedNews.innerHTML += `
+                    <a href="${thirdDisplayElements[i].url}" title="${
+                        thirdDisplayElements[i].header
+                    }" target="_blank" class="mainpage__update-important">
+                        <span class="mainpage__update-topic">${types[thirdDisplayElements[i].type]}</span>
+                        <img
+                            class="mainpage__update-image"
+                            src="${thirdDisplayElements[i].image}"
+                            alt="${thirdDisplayElements[i].header}"
+                        />
+                    </a>
+                    `;
+                }
+            }
+
+            // Открытие ссылок в новой вкладке и отключение драга
+            document.querySelectorAll("a[target='_blank']").forEach(link => {
+                link.addEventListener("click", e => {
+                    e.preventDefault();
+                    const href = link.getAttribute("href");
+                    ipcRenderer.send("open-link", href);
+                });
+            });
+
+            document.querySelectorAll("a").forEach(link => {
+                link.ondragstart = function () {
+                    return false;
+                };
+            });
+
+            const swiper = new Swiper(".mainpage__update-slider", {
+                // Optional parameters
+                direction: "horizontal",
+                loop: true,
+
+                autoplay: {
+                    disableOnInteraction: false,
+                    delay: 3500,
+                },
+
+                // If we need pagination
+                pagination: {
+                    el: ".swiper-pagination",
+                },
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            });
             //Все параметры в websocket.ts WidgetRequest
             //display(1 - Скролл меню, 2 - слайдер, 3 - два блока)
             //type(1 - Сообщество, 2 - Мероприятие... Функционально, возможно добавим или изменим)
