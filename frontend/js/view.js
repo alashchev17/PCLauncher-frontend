@@ -581,7 +581,7 @@ class view {
             if (!firstDisplayElements.length == 0) {
                 for (let i = 0; i != firstDisplayElements.length; i++) {
                     this.#selectorsID.mainpageRegularNews.innerHTML += `
-                    <a href="${firstDisplayElements[i].url}" title="${
+                    <a tabindex="-1" href="${firstDisplayElements[i].url}" title="${
                         firstDisplayElements[i].header
                     }" target="_blank" class="mainpage__update-link">
                         <img src="${firstDisplayElements[i].image}" alt="${
@@ -610,7 +610,7 @@ class view {
             if (!secondDisplayElements.length == 0) {
                 for (let i = 0; i != secondDisplayElements.length; i++) {
                     this.#selectorsID.mainpageSliderNews.innerHTML += `
-                    <a href="${secondDisplayElements[i].url}" target="_blank" title="${
+                    <a tabindex="-1" href="${secondDisplayElements[i].url}" target="_blank" title="${
                         secondDisplayElements[i].header
                     }" class="swiper-slide">
                         <span class="slider__topic">${types[secondDisplayElements[i].type]}</span>
@@ -652,7 +652,7 @@ class view {
                 for (let i = 0; i != thirdDisplayElements.length; i++) {
                     if (i != 2) {
                         this.#selectorsID.mainpageFixedNews.innerHTML += `
-                        <a href="${thirdDisplayElements[i].url}" title="${
+                        <a tabindex="-1" href="${thirdDisplayElements[i].url}" title="${
                             thirdDisplayElements[i].header
                         }" target="_blank" class="mainpage__update-important">
                             <span class="mainpage__update-topic">${types[thirdDisplayElements[i].type]}</span>

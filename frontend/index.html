@@ -30,26 +30,27 @@
                 <div class="container">
                     <header class="mainpage__header">
                         <nav class="navigation mainpage__navigation">
-                            <a class="button navigation__button button__burger" style="display: none">
+                            <a tabindex="-1" class="button navigation__button button__burger" style="display: none">
                                 <span class="button__burger-item"></span>
                                 <span class="button__burger-item"></span>
                                 <span class="button__burger-item"></span>
                             </a>
                             <img src="./img/icons/logo.svg" alt="Gambit Logotype" class="logotype mainpage__logotype" />
                             <div class="navigation__links">
-                                <a target="_blank" href="gambit-rp.ru" class="navigation__link">
+                                <a tabindex="-1" target="_blank" href="gambit-rp.ru" class="navigation__link">
                                     <i class="mainpage__icon icon icon__website"></i>
                                     Сайт
                                 </a>
-                                <a target="_blank" href="forum.gambit-rp.ru" class="navigation__link">
+                                <a tabindex="-1" target="_blank" href="forum.gambit-rp.ru" class="navigation__link">
                                     <i class="mainpage__icon icon icon__forum"></i>
                                     Форум
                                 </a>
-                                <a target="_blank" href="vk.com/gambitrp" class="navigation__link">
+                                <a tabindex="-1" target="_blank" href="vk.com/gambitrp" class="navigation__link">
                                     <i class="mainpage__icon icon icon__vkmain"></i>
                                     Сообщество
                                 </a>
                                 <a
+                                    tabindex="-1"
                                     target="_blank"
                                     href="discord.gg/gambit-role-play-samp-812393858884960331"
                                     class="navigation__link"
@@ -59,14 +60,16 @@
                                 </a>
                             </div>
                             <!-- /.navigation__links -->
-                            <a class="button button__profile navigation__button"></a>
+                            <a tabindex="-1" class="button button__profile navigation__button"></a>
                             <div class="user mainpage__user user--hidden">
                                 <h2 class="user__greeting"></h2>
                                 <hr class="user__stroke" />
                                 <div class="user__content user__content--characters user__content--active">
                                     <div class="user__header">
                                         <h2 class="user__title">Список персонажей</h2>
-                                        <a href="#" class="user__link user__link--notifications">Уведомления</a>
+                                        <a tabindex="-1" href="#" class="user__link user__link--notifications"
+                                            >Уведомления</a
+                                        >
                                     </div>
                                     <!-- /.user__header -->
                                     <ul class="user__characters"></ul>
@@ -76,14 +79,16 @@
                                 <div class="user__content user__content--notifications user__content--hidden">
                                     <div class="user__header">
                                         <h2 class="user__title">Список уведомлений</h2>
-                                        <a href="#" class="user__link user__link--characters">Персонажи</a>
+                                        <a tabindex="-1" href="#" class="user__link user__link--characters"
+                                            >Персонажи</a
+                                        >
                                     </div>
                                     <!-- /.user__header -->
                                     <ul class="user__notifications"></ul>
                                 </div>
                                 <!-- /.user__content -->
                                 <hr class="user__stroke" />
-                                <a href="#" class="user__logout">
+                                <a tabindex="-1" href="#" class="user__logout">
                                     <i class="icon icon__logout"></i>
                                     Выйти из аккаунта
                                 </a>
@@ -98,10 +103,10 @@
             </div> -->
                         <!-- /.mainpage__branding -->
                         <!-- <div class="mainpage__links">
-            <a target="_blank" href="gambit-rp.ru" class="mainpage__link"
+            <a tabindex="-1" target="_blank" href="gambit-rp.ru" class="mainpage__link"
                 >Сайт<i class="mainpage__icon icon icon__arrow"></i
             ></a>
-            <a target="_blank" href="forum.gambit-rp.ru" class="mainpage__link"
+            <a tabindex="-1" target="_blank" href="forum.gambit-rp.ru" class="mainpage__link"
                 >Форум<i class="mainpage__icon icon icon__arrow"></i
             ></a>
             </div> -->
@@ -133,7 +138,7 @@
                             </div>
                             <!-- /.mainpage__update -->
                             <div class="mainpage__update" id="fixedNews">
-                                <!-- <a href="gambit-rp.ru/1" target="_blank" class="mainpage__update-important">
+                                <!-- <a tabindex="-1" href="gambit-rp.ru/1" target="_blank" class="mainpage__update-important">
                                     <span class="mainpage__update-topic">Сообщество</span>
                                     <img
                                         class="mainpage__update-image"
@@ -141,7 +146,7 @@
                                         alt="Important News"
                                     />
                                 </a>
-                                <a href="gambit-rp.ru/2" target="_blank" class="mainpage__update-important">
+                                <a tabindex="-1" href="gambit-rp.ru/2" target="_blank" class="mainpage__update-important">
                                     <span class="mainpage__update-topic">Мероприятие</span>
                                     <img
                                         class="mainpage__update-image"
@@ -154,7 +159,7 @@
                         </div>
                         <!-- /.mainpage__updates -->
                         <div class="mainpage__download">
-                            <button class="mainpage__button">
+                            <button tabindex="-1" class="mainpage__button">
                                 Скачать
                                 <svg
                                     class="mainpage__button-icon"
@@ -222,7 +227,7 @@
                                 <img src="./img/gambit-v.png" alt="Gambit V" class="burger__image" />
                                 <div class="burger__item-content">
                                     <span class="burger__subtitle">Gambit V</span>
-                                    <a href="gambit-v.ru" class="burger__link"
+                                    <a tabindex="-1" href="gambit-v.ru" class="burger__link"
                                         >Подробнее<i class="burger__icon icon icon__arrow"></i
                                     ></a>
                                 </div>
@@ -233,7 +238,9 @@
                                 <img src="./img/gambit-craft.png" alt="Gambit Craft" class="burger__image" />
                                 <div class="burger__item-content">
                                     <span class="burger__subtitle">Gambit Craft</span>
-                                    <a class="burger__link">Подробнее<i class="burger__icon icon icon__arrow"></i></a>
+                                    <a tabindex="-1" class="burger__link"
+                                        >Подробнее<i class="burger__icon icon icon__arrow"></i
+                                    ></a>
                                 </div>
                                 <!-- /.burger__item-content -->
                             </div>
@@ -246,10 +253,10 @@
                         <div class="burger__info">информация</div>
                         <!-- /.burger__info -->
                         <div class="burger__social">
-                            <a href="vk.com" target="_blank" class="burger__social-link">
+                            <a tabindex="-1" href="vk.com" target="_blank" class="burger__social-link">
                                 <i class="icon icon__vk"></i>
                             </a>
-                            <a href="instagram.com" target="_blank" class="burger__social-link">
+                            <a tabindex="-1" href="instagram.com" target="_blank" class="burger__social-link">
                                 <i class="icon icon__instagram"></i>
                             </a>
                         </div>
@@ -284,7 +291,11 @@
                             <h1 class="login__title">Войдите в свою учётную запись</h1>
                             <span class="login__registration"
                                 >Нет аккаунта?
-                                <a href="gambit-rp.ru/account/ucp/info" target="_blank" class="login__link"
+                                <a
+                                    tabindex="-1"
+                                    href="gambit-rp.ru/account/ucp/info"
+                                    target="_blank"
+                                    class="login__link"
                                     >Регистрация</a
                                 ></span
                             >
@@ -292,13 +303,21 @@
                         <!-- /.form__block -->
                         <div class="form__block">
                             <input
+                                tabindex="-1"
                                 type="text"
                                 class="login__nick login__input"
                                 placeholder="Имя пользователя"
                                 required
                             />
-                            <input type="password" class="login__password login__input" placeholder="Пароль" required />
                             <input
+                                tabindex="-1"
+                                type="password"
+                                class="login__password login__input"
+                                placeholder="Пароль"
+                                required
+                            />
+                            <input
+                                tabindex="-1"
                                 type="number"
                                 class="login__twofactor login__input login__twofactor--hidden"
                                 placeholder="Код двухфакторной авторизации"
@@ -307,8 +326,10 @@
                         </div>
                         <!-- /.form__block -->
                         <div class="form__block form__block--bottom">
-                            <a href="gambit-rp.ru/login" target="_blank" class="login__link">Забыли пароль?</a>
-                            <button class="login__button" type="submit">
+                            <a tabindex="-1" href="gambit-rp.ru/login" target="_blank" class="login__link"
+                                >Забыли пароль?</a
+                            >
+                            <button tabindex="-1" class="login__button" type="submit">
                                 Войти
                                 <svg
                                     class="login__button-icon"
@@ -340,6 +361,7 @@
                             <label class="settings__label"
                                 >Запустить при включении компьютера
                                 <input
+                                    tabindex="-1"
                                     type="checkbox"
                                     id="launchOnLoad"
                                     class="settings__checkbox settings__checkbox--hidden"
@@ -360,6 +382,7 @@
                             <label class="settings__label">
                                 Запуск в широкоэкранном режиме
                                 <input
+                                    tabindex="-1"
                                     type="checkbox"
                                     id="wideScreen"
                                     class="settings__checkbox settings__checkbox--hidden"
@@ -380,6 +403,7 @@
                             <label class="settings__label">
                                 Запуск в окне
                                 <input
+                                    tabindex="-1"
                                     type="checkbox"
                                     id="windowScreen"
                                     class="settings__checkbox settings__checkbox--hidden"
@@ -400,6 +424,7 @@
                             <label class="settings__label"
                                 >Включить ведение журнала отладки
                                 <input
+                                    tabindex="-1"
                                     type="checkbox"
                                     id="debugLog"
                                     class="settings__checkbox settings__checkbox--hidden"
@@ -420,17 +445,26 @@
                             <div class="settings__item">
                                 Ограничение загрузки в килобайтах в секунду
                                 <div class="settings__block">
-                                    <input type="number" class="settings__input" id="maxDownloadSpeed" value="10000" />
+                                    <input
+                                        tabindex="-1"
+                                        type="number"
+                                        class="settings__input"
+                                        id="maxDownloadSpeed"
+                                        value="10000"
+                                    />
                                     КБ/с
                                 </div>
                             </div>
                         </div>
                         <!-- /.settings__wrapper -->
                         <div class="settings__buttons">
-                            <a class="settings__button settings__button--logs settings__button--hidden" href="#"
+                            <a
+                                tabindex="-1"
+                                class="settings__button settings__button--logs settings__button--hidden"
+                                href="#"
                                 >Открыть логи</a
                             >
-                            <button class="settings__button settings__button--primary" type="submit">
+                            <button tabindex="-1" class="settings__button settings__button--primary" type="submit">
                                 Сохранить изменения
                             </button>
                         </div>
@@ -439,7 +473,9 @@
                 </div>
                 <!-- /.settings__content -->
                 <span class="settings__version"></span>
-                <a href="forum.gambit-rp.ru" target="_blank" class="settings__contact">Сообщить о проблеме</a>
+                <a tabindex="-1" href="forum.gambit-rp.ru" target="_blank" class="settings__contact"
+                    >Сообщить о проблеме</a
+                >
             </section>
             <section class="error error__section error--hidden">
                 <div class="error__content">
@@ -451,8 +487,8 @@
                     </div>
                     <!-- /.error__reason -->
                     <!-- <div class="error__buttons">
-                <button class="error__button">Попробовать опять</button>
-                <button class="error__button">Попробовать снова</button>
+                <button tabindex="-1" class="error__button">Попробовать опять</button>
+                <button tabindex="-1" class="error__button">Попробовать снова</button>
             </div> -->
                     <!-- /.error-section__buttons -->
                     <div class="tip error__tip">
@@ -474,16 +510,18 @@
                     <span class="crash__description">
                         Возникла критическа ошибка, непозволяющая выполнять дальнейшую обработку информации. Если ошибка
                         повторится вновь, обратитесь в
-                        <a href="forum.gambit-rp.ru" class="crash__link" target="_blank">Техническую Поддержку</a>
+                        <a tabindex="-1" href="forum.gambit-rp.ru" class="crash__link" target="_blank"
+                            >Техническую Поддержку</a
+                        >
                     </span>
-                    <a href="#" class="button crash__button crash__button--primary">Закрыть приложение</a>
+                    <a tabindex="-1" href="#" class="button crash__button crash__button--primary">Закрыть приложение</a>
                 </div>
                 <!-- /.crash__popup -->
             </section>
             <div class="mainpage__tray">
-                <button class="mainpage__tray-button mainpage__tray-button--hide"></button>
-                <button class="mainpage__tray-button mainpage__tray-button--settings"></button>
-                <button class="mainpage__tray-button mainpage__tray-button--close"></button>
+                <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--hide"></button>
+                <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--settings"></button>
+                <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--close"></button>
             </div>
         </div>
         <!-- /.mainpage -->
