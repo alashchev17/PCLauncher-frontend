@@ -2,6 +2,10 @@ console.log("view.js loaded");
 
 class view {
     #selectors = {
+        // Simulator buttons
+        reconnectButton: "sim--reconnect",
+        authButton: "sim--auth",
+        // UI Components
         burgerButton: "button__burger",
         burgerMenu: "burger__menu",
         downloadButton: "mainpage__button",
@@ -27,6 +31,7 @@ class view {
         loginLogo: "login__logotype",
         loginAside: "login__aside",
         loginButton: "login__button",
+        loginButtonTest: "login__button-test",
         loginInputNick: "login__nick",
         loginInputPass: "login__password",
         loginInput2FA: "login__twofactor",
@@ -443,6 +448,9 @@ class view {
                 setTimeout(() => {
                     sl.loginLogo.classList.remove(sl.loginLogo.classList[1] + this.#hidden);
                     sl.loginAside.classList.remove(sl.loginAside.classList[0] + this.#hidden);
+                    selectorsID.mainpageRegularNews.innerHTML = "";
+                    selectorsID.mainpageSliderNews.innerHTML = "";
+                    selectorsID.mainpageFixedNews.innerHTML = "";
                 }, 100);
             }, 500);
             if (sl.loginInput2FA.hasAttribute("required")) {
@@ -456,6 +464,9 @@ class view {
         });
 
         ipcRenderer.on("session_not_found", (event, data) => {
+            selectorsID.mainpageRegularNews.innerHTML = "";
+            selectorsID.mainpageSliderNews.innerHTML = "";
+            selectorsID.mainpageFixedNews.innerHTML = "";
             if (this.page_name == "preloader") {
                 sl.preloaderTitle.classList.remove(sl.preloaderTitle.classList[0] + this.#active);
                 sl.preloaderTipBlock.classList.remove(sl.preloaderTipBlock.classList[0] + this.#active);
@@ -786,7 +797,8 @@ class view {
             let message = "Настройки были сохранены успешно";
 
             for (const key in object) {
-                if (object[key] != this.#settings.data[key] && this.#settings.relaunch.includes(key)) {
+                // if (object[key] != this.#settings.data[key] && this.#settings.relaunch.includes(key)) {
+                if (object[key]) {
                     message = "Настройки успешно сохранены. Приложение будет перезапущено.";
                 }
             }
@@ -798,7 +810,22 @@ class view {
         sl.hideButton.addEventListener("click", () => {
             ipcRenderer.send("minimize");
         });
-
+        // SIMULATOR BUTTONS EVENTS START
+        sl.loginButtonTest.addEventListener("click", () => {
+            ipcRenderer.send("loginTestSuccess");
+        });
+        sl.reconnectButton.addEventListener("click", () => {
+            let isReconnecting = sl.reconnectButton.dataset.reconnecting;
+            ipcRenderer.send("reconnection", 1, isReconnecting === "false" ? "start" : "stop");
+            // sl.reconnectButton.setAttribute("disabled", "disabled");
+            sl.reconnectButton.textContent = isReconnecting === "false" ? "Stop Reconnection" : "Initiate Reconnect";
+            sl.reconnectButton.dataset.reconnecting = isReconnecting === "false" ? "true" : "false";
+        });
+        sl.authButton.addEventListener("click", () => {
+            ipcRenderer.send("login-twofactor");
+            sl.authButton.setAttribute("disabled", "disabled");
+        });
+        // SIMULATOR BUTTONS EVENTS END
         sl.closeButton.addEventListener("click", () => {
             ipcRenderer.send("window-all-closed");
         });

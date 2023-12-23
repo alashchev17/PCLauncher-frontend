@@ -10,6 +10,10 @@
         <title>Gambit Launcher</title>
     </head>
     <body>
+        <div class="sim-buttons">
+            <button class="sim sim--reconnect" data-reconnecting="false">Initiate Reconnect</button>
+            <button class="sim sim--auth">Initiate 2FA</button>
+        </div>
         <div class="error-block">
             <svg
                 class="error-block__icon"
@@ -64,7 +68,7 @@
                             <div class="user mainpage__user user--hidden">
                                 <h2 class="user__greeting"></h2>
                                 <hr class="user__stroke" />
-                                <div class="user__content user__content--characters user__content--active">
+                                <div class="user__content user__content--characters user__content--active nodrag">
                                     <div class="user__header">
                                         <h2 class="user__title">Список персонажей</h2>
                                         <a tabindex="-1" href="#" class="user__link user__link--notifications"
@@ -76,7 +80,7 @@
                                     <!-- /.user__characters -->
                                 </div>
                                 <!-- /.user__content -->
-                                <div class="user__content user__content--notifications user__content--hidden">
+                                <div class="user__content user__content--notifications user__content--hidden nodrag">
                                     <div class="user__header">
                                         <h2 class="user__title">Список уведомлений</h2>
                                         <a tabindex="-1" href="#" class="user__link user__link--characters"
@@ -329,7 +333,7 @@
                             <a tabindex="-1" href="gambit-rp.ru/login" target="_blank" class="login__link"
                                 >Забыли пароль?</a
                             >
-                            <button tabindex="-1" class="login__button" type="submit">
+                            <button tabindex="-1" class="login__button login__button-test" type="submit">
                                 Войти
                                 <svg
                                     class="login__button-icon"
