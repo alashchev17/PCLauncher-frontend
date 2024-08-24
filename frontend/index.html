@@ -1,112 +1,96 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="./styles/main.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-        <link rel="shortcut icon" href="./img/icons/logo.svg" />
-        <title>Gambit Launcher</title>
-    </head>
-    <body>
-        <div class="sim-buttons">
-            <button class="sim sim--reconnect" data-reconnecting="false">Initiate Reconnect</button>
-            <button class="sim sim--auth">Initiate 2FA</button>
-        </div>
-        <div class="error-block">
-            <svg
-                class="error-block__icon"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <rect x="10" y="18" width="4" height="4" rx="2" fill="white" />
-                <rect x="10" y="2" width="4" height="13" rx="2" fill="white" />
-            </svg>
-            <span class="error-block__name">Нестабильное интернет соединение</span>
-        </div>
-        <!-- /.error-block -->
-        <div class="mainpage mainpage__wrapper">
-            <section class="main mainpage__content main--hidden">
-                <div class="container">
-                    <header class="mainpage__header">
-                        <nav class="navigation mainpage__navigation">
-                            <a tabindex="-1" class="button navigation__button button__burger" style="display: none">
-                                <span class="button__burger-item"></span>
-                                <span class="button__burger-item"></span>
-                                <span class="button__burger-item"></span>
-                            </a>
-                            <img src="./img/icons/logo.svg" alt="Gambit Logotype" class="logotype mainpage__logotype" />
-                            <div class="navigation__links">
-                                <a tabindex="-1" target="_blank" href="gambit-rp.ru" class="navigation__link">
-                                    <i class="mainpage__icon icon icon__website"></i>
-                                    Сайт
-                                </a>
-                                <a tabindex="-1" target="_blank" href="forum.gambit-rp.ru" class="navigation__link">
-                                    <i class="mainpage__icon icon icon__forum"></i>
-                                    Форум
-                                </a>
-                                <a tabindex="-1" target="_blank" href="vk.com/gambitrp" class="navigation__link">
-                                    <i class="mainpage__icon icon icon__vkmain"></i>
-                                    Сообщество
-                                </a>
-                                <a
-                                    tabindex="-1"
-                                    target="_blank"
-                                    href="discord.gg/gambit-role-play-samp-812393858884960331"
-                                    class="navigation__link"
-                                >
-                                    <i class="mainpage__icon icon icon__discord"></i>
-                                    Дискорд
-                                </a>
-                            </div>
-                            <!-- /.navigation__links -->
-                            <a tabindex="-1" class="button button__profile navigation__button"></a>
-                            <div class="user mainpage__user user--hidden">
-                                <h2 class="user__greeting"></h2>
-                                <hr class="user__stroke" />
-                                <div class="user__content user__content--characters user__content--active nodrag">
-                                    <div class="user__header">
-                                        <h2 class="user__title">Список персонажей</h2>
-                                        <a tabindex="-1" href="#" class="user__link user__link--notifications"
-                                            >Уведомления</a
-                                        >
-                                    </div>
-                                    <!-- /.user__header -->
-                                    <ul class="user__characters"></ul>
-                                    <!-- /.user__characters -->
-                                </div>
-                                <!-- /.user__content -->
-                                <div class="user__content user__content--notifications user__content--hidden nodrag">
-                                    <div class="user__header">
-                                        <h2 class="user__title">Список уведомлений</h2>
-                                        <a tabindex="-1" href="#" class="user__link user__link--characters"
-                                            >Персонажи</a
-                                        >
-                                    </div>
-                                    <!-- /.user__header -->
-                                    <ul class="user__notifications"></ul>
-                                </div>
-                                <!-- /.user__content -->
-                                <hr class="user__stroke" />
-                                <a tabindex="-1" href="#" class="user__logout">
-                                    <i class="icon icon__logout"></i>
-                                    Выйти из аккаунта
-                                </a>
-                            </div>
-                            <!-- /.user -->
-                        </nav>
-                    </header>
-                    <section class="mainpage__section">
-                        <!-- <div class="mainpage__branding">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="shortcut icon" href="./img/icons/logo.svg" />
+    <title>Gambit Launcher</title>
+  </head>
+  <body>
+    <div class="sim-buttons">
+      <button class="sim sim--reconnect" data-reconnecting="false">Initiate Reconnect</button>
+      <button class="sim sim--auth">Initiate 2FA</button>
+    </div>
+    <div class="error-block">
+      <svg class="error-block__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="18" width="4" height="4" rx="2" fill="white" />
+        <rect x="10" y="2" width="4" height="13" rx="2" fill="white" />
+      </svg>
+      <span class="error-block__name">Нестабильное интернет соединение</span>
+    </div>
+    <!-- /.error-block -->
+    <div class="mainpage mainpage__wrapper">
+      <section class="main mainpage__content main--hidden">
+        <div class="container">
+          <header class="mainpage__header">
+            <nav class="navigation mainpage__navigation">
+              <a tabindex="-1" class="button navigation__button button__burger" style="display: none">
+                <span class="button__burger-item"></span>
+                <span class="button__burger-item"></span>
+                <span class="button__burger-item"></span>
+              </a>
+              <img src="./img/icons/logo.svg" alt="Gambit Logotype" class="logotype mainpage__logotype" />
+              <div class="navigation__links">
+                <a tabindex="-1" target="_blank" href="gambit-rp.ru" class="navigation__link">
+                  <i class="mainpage__icon icon icon__website"></i>
+                  Сайт
+                </a>
+                <a tabindex="-1" target="_blank" href="forum.gambit-rp.ru" class="navigation__link">
+                  <i class="mainpage__icon icon icon__forum"></i>
+                  Форум
+                </a>
+                <a tabindex="-1" target="_blank" href="vk.com/gambitrp" class="navigation__link">
+                  <i class="mainpage__icon icon icon__vkmain"></i>
+                  Сообщество
+                </a>
+                <a tabindex="-1" target="_blank" href="discord.gg/gambit-role-play-samp-812393858884960331" class="navigation__link">
+                  <i class="mainpage__icon icon icon__discord"></i>
+                  Дискорд
+                </a>
+              </div>
+              <!-- /.navigation__links -->
+              <a tabindex="-1" class="button button__profile navigation__button"></a>
+              <div class="user mainpage__user user--hidden">
+                <h2 class="user__greeting"></h2>
+                <hr class="user__stroke" />
+                <div class="user__content user__content--characters user__content--active nodrag">
+                  <div class="user__header">
+                    <h2 class="user__title">Список персонажей</h2>
+                    <a tabindex="-1" href="#" class="user__link user__link--notifications">Уведомления</a>
+                  </div>
+                  <!-- /.user__header -->
+                  <ul class="user__characters"></ul>
+                  <!-- /.user__characters -->
+                </div>
+                <!-- /.user__content -->
+                <div class="user__content user__content--notifications user__content--hidden nodrag">
+                  <div class="user__header">
+                    <h2 class="user__title">Список уведомлений</h2>
+                    <a tabindex="-1" href="#" class="user__link user__link--characters">Персонажи</a>
+                  </div>
+                  <!-- /.user__header -->
+                  <ul class="user__notifications"></ul>
+                </div>
+                <!-- /.user__content -->
+                <hr class="user__stroke" />
+                <a tabindex="-1" href="#" class="user__logout">
+                  <i class="icon icon__logout"></i>
+                  Выйти из аккаунта
+                </a>
+              </div>
+              <!-- /.user -->
+            </nav>
+          </header>
+          <section class="mainpage__section">
+            <!-- <div class="mainpage__branding">
             <span class="mainpage__label">gta samp</span>
             <h1 class="mainpage__title">gambit rp</h1>
             </div> -->
-                        <!-- /.mainpage__branding -->
-                        <!-- <div class="mainpage__links">
+            <!-- /.mainpage__branding -->
+            <!-- <div class="mainpage__links">
             <a tabindex="-1" target="_blank" href="gambit-rp.ru" class="mainpage__link"
                 >Сайт<i class="mainpage__icon icon icon__arrow"></i
             ></a>
@@ -114,35 +98,31 @@
                 >Форум<i class="mainpage__icon icon icon__arrow"></i
             ></a>
             </div> -->
-                        <!-- /.mainpage__links -->
-                        <div class="mainpage__updates">
-                            <div class="mainpage__update">
-                                <div class="mainpage__update-content nodrag" id="regularNews"></div>
-                                <!-- /.mainpage__update-content -->
-                            </div>
-                            <!-- /.mainpage__update -->
-                            <div class="mainpage__update">
-                                <div class="swiper slider mainpage__update-slider nodrag">
-                                    <!-- Additional required wrapper -->
-                                    <div class="swiper-wrapper" id="sliderNews">
-                                        <!-- Slides -->
-                                    </div>
-                                    <!-- If we need pagination -->
-                                    <div class="slider__bottom">
-                                        <div
-                                            class="swiper-button-prev nodrag slider__button slider__button--prev"
-                                        ></div>
-                                        <div class="swiper-pagination nodrag slider__pagination"></div>
-                                        <div
-                                            class="swiper-button-next nodrag slider__button slider__button--next"
-                                        ></div>
-                                    </div>
-                                    <!-- /.slider__bottom -->
-                                </div>
-                            </div>
-                            <!-- /.mainpage__update -->
-                            <div class="mainpage__update" id="fixedNews">
-                                <!-- <a tabindex="-1" href="gambit-rp.ru/1" target="_blank" class="mainpage__update-important">
+            <!-- /.mainpage__links -->
+            <div class="mainpage__updates">
+              <div class="mainpage__update">
+                <div class="mainpage__update-content nodrag" id="regularNews"></div>
+                <!-- /.mainpage__update-content -->
+              </div>
+              <!-- /.mainpage__update -->
+              <div class="mainpage__update">
+                <div class="swiper slider mainpage__update-slider nodrag">
+                  <!-- Additional required wrapper -->
+                  <div class="swiper-wrapper" id="sliderNews">
+                    <!-- Slides -->
+                  </div>
+                  <!-- If we need pagination -->
+                  <div class="slider__bottom">
+                    <div class="swiper-button-prev nodrag slider__button slider__button--prev"></div>
+                    <div class="swiper-pagination nodrag slider__pagination"></div>
+                    <div class="swiper-button-next nodrag slider__button slider__button--next"></div>
+                  </div>
+                  <!-- /.slider__bottom -->
+                </div>
+              </div>
+              <!-- /.mainpage__update -->
+              <div class="mainpage__update" id="fixedNews">
+                <!-- <a tabindex="-1" href="gambit-rp.ru/1" target="_blank" class="mainpage__update-important">
                                     <span class="mainpage__update-topic">Сообщество</span>
                                     <img
                                         class="mainpage__update-image"
@@ -158,386 +138,272 @@
                                         alt="Important News"
                                     />
                                 </a> -->
-                            </div>
-                            <!-- /.mainpage__update -->
-                        </div>
-                        <!-- /.mainpage__updates -->
-                        <div class="mainpage__download">
-                            <button tabindex="-1" class="mainpage__button">
-                                Скачать
-                                <svg
-                                    class="mainpage__button-icon"
-                                    width="34"
-                                    height="34"
-                                    viewBox="0 0 34 34"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <rect width="34" height="34" rx="17" fill="white" />
-                                    <path
-                                        d="M15.0267 11.6433C15.0267 10.7357 15.9102 10 17 10C18.0898 10 18.9733 10.7357 18.9733 11.6433V18.2164C18.9733 19.1239 18.0898 19.8597 17 19.8597C15.9102 19.8597 15.0267 19.1239 15.0267 18.2164V11.6433Z"
-                                        fill="#000000"
-                                    />
-                                    <path
-                                        d="M16.1917 24.6495C16.5845 25.1168 17.4155 25.1168 17.8083 24.6495L22.8199 18.6876C23.2777 18.143 22.8099 17.3947 22.0116 17.3947H11.9884C11.1901 17.3947 10.7223 18.143 11.1801 18.6876L16.1917 24.6495Z"
-                                        fill="#000000"
-                                    />
-                                </svg>
-                            </button>
-                            <div class="mainpage__progress">
-                                <svg class="progress-ring" width="80" height="80">
-                                    <circle
-                                        class="progress-ring__circle"
-                                        stroke="#4A2DF9"
-                                        stroke-width="3"
-                                        cx="40"
-                                        cy="40"
-                                        r="34"
-                                        fill="#2A2A2A"
-                                    ></circle>
-                                </svg>
-                            </div>
-                            <div class="mainpage__info info">
-                                <span class="info__status">Проверка целостности файлов...</span>
-                                <div class="info__data">
-                                    <span class="info__speed">
-                                        <span class="info__speed--number">6.44</span> МБ/С
-                                    </span>
-                                    <span class="info__size">
-                                        <span class="info__size--currentNumber">45</span> МБ /
-                                        <span class="info__size--allSIze">2345</span> МБ
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.mainpage__download -->
-                        <span class="mainpage__online"
-                            >Онлайн: <strong class="mainpage__online-number">999</strong></span
-                        >
-                    </section>
-                </div>
-                <!-- /.container -->
-                <div class="mainpage__blur">
-                    <div class="mainpage__blur-hover"></div>
-                    <div class="mainpage__progress-bar"></div>
-                    <div class="mainpage__stroke"></div>
-                </div>
-                <!-- /.mainpage__blur -->
-                <div class="burger__menu">
-                    <div class="container__burger">
-                        <h2 class="burger__title">Наши проекты</h2>
-                        <div class="burger__items">
-                            <div class="burger__item">
-                                <img src="./img/gambit-v.png" alt="Gambit V" class="burger__image" />
-                                <div class="burger__item-content">
-                                    <span class="burger__subtitle">Gambit V</span>
-                                    <a tabindex="-1" href="gambit-v.ru" class="burger__link"
-                                        >Подробнее<i class="burger__icon icon icon__arrow"></i
-                                    ></a>
-                                </div>
-                                <!-- /.burger__item-content -->
-                            </div>
-                            <!-- /.burger__item -->
-                            <div class="burger__item">
-                                <img src="./img/gambit-craft.png" alt="Gambit Craft" class="burger__image" />
-                                <div class="burger__item-content">
-                                    <span class="burger__subtitle">Gambit Craft</span>
-                                    <a tabindex="-1" class="burger__link"
-                                        >Подробнее<i class="burger__icon icon icon__arrow"></i
-                                    ></a>
-                                </div>
-                                <!-- /.burger__item-content -->
-                            </div>
-                            <!-- /.burger__item -->
-                        </div>
-                        <!-- /.burger__items -->
-                    </div>
-                    <!-- /.container -->
-                    <div class="burger__footer">
-                        <div class="burger__info">информация</div>
-                        <!-- /.burger__info -->
-                        <div class="burger__social">
-                            <a tabindex="-1" href="vk.com" target="_blank" class="burger__social-link">
-                                <i class="icon icon__vk"></i>
-                            </a>
-                            <a tabindex="-1" href="instagram.com" target="_blank" class="burger__social-link">
-                                <i class="icon icon__instagram"></i>
-                            </a>
-                        </div>
-                        <!-- /.burger__social -->
-                    </div>
-                    <!-- /.burger__footer -->
-                </div>
-                <!-- /.burger__menu -->
-            </section>
-            <!-- /.mainpage__content -->
-            <section class="preloader preloader__section preloader--active">
-                <div class="container">
-                    <img src="./img/icons/logo.svg" alt="" class="logotype preloader__logotype" />
-                    <span class="preloader__heading preloader__heading--active">Подгружаем обновления...</span>
-                    <div class="mainpage__progress-bar" style="top: 715px; left: 70px"></div>
-                    <div class="mainpage__stroke"></div>
-                    <div class="tip preloader__tip">
-                        <h2 class="tip__title preloader__tip-title">Подсказка</h2>
-                        <p class="tip__text preloader__tip-text">
-                            Чтобы приобрести дом или квартиру, вы можете посетить Центр Купли-Продаж в Сан-Фиерро и
-                            ознакомиться с предлагаемыми вариантами.
-                        </p>
-                    </div>
-                    <!-- /.tip -->
-                </div>
-                <!-- /.container -->
-            </section>
-            <section class="login mainpage__login">
-                <aside class="login__aside">
-                    <form action="#" class="form login__form">
-                        <div class="form__block">
-                            <h1 class="login__title">Войдите в свою учётную запись</h1>
-                            <span class="login__registration"
-                                >Нет аккаунта?
-                                <a
-                                    tabindex="-1"
-                                    href="gambit-rp.ru/account/ucp/info"
-                                    target="_blank"
-                                    class="login__link"
-                                    >Регистрация</a
-                                ></span
-                            >
-                        </div>
-                        <!-- /.form__block -->
-                        <div class="form__block">
-                            <input
-                                tabindex="-1"
-                                type="text"
-                                class="login__nick login__input"
-                                placeholder="Имя пользователя"
-                                required
-                            />
-                            <input
-                                tabindex="-1"
-                                type="password"
-                                class="login__password login__input"
-                                placeholder="Пароль"
-                                required
-                            />
-                            <input
-                                tabindex="-1"
-                                type="number"
-                                class="login__twofactor login__input login__twofactor--hidden"
-                                placeholder="Код двухфакторной авторизации"
-                                size="6"
-                            />
-                        </div>
-                        <!-- /.form__block -->
-                        <div class="form__block form__block--bottom">
-                            <a tabindex="-1" href="gambit-rp.ru/login" target="_blank" class="login__link"
-                                >Забыли пароль?</a
-                            >
-                            <button tabindex="-1" class="login__button login__button-test" type="submit">
-                                Войти
-                                <svg
-                                    class="login__button-icon"
-                                    width="19"
-                                    height="10"
-                                    viewBox="0 0 19 10"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M14.1087 0L12.9689 1.103L16.0075 4.20916H0V5.79084H16.0075L12.9689 8.897L14.1087 10L19 5L14.1087 0Z"
-                                        fill="white"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </form>
-                </aside>
-                <div class="login__content">
-                    <img src="./img/icons/logo.svg" alt="Gambit Logotype" class="logotype login__logotype" />
-                </div>
-                <!-- /.login__content -->
-            </section>
-            <section class="settings settings__section">
-                <div class="settings__content">
-                    <h2 class="settings__title">Настройки</h2>
-                    <form action="#" class="settings__form">
-                        <div class="settings__wrapper">
-                            <label class="settings__label"
-                                >Запустить при включении компьютера
-                                <input
-                                    tabindex="-1"
-                                    type="checkbox"
-                                    id="launchOnLoad"
-                                    class="settings__checkbox settings__checkbox--hidden"
-                                />
-                                <div class="settings__checkbox settings__checkbox--real">
-                                    <svg
-                                        class="settings__checkmark"
-                                        width="12"
-                                        height="9"
-                                        viewBox="0 0 12 9"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
-                                    </svg>
-                                </div>
-                            </label>
-                            <label class="settings__label">
-                                Запуск в широкоэкранном режиме
-                                <input
-                                    tabindex="-1"
-                                    type="checkbox"
-                                    id="wideScreen"
-                                    class="settings__checkbox settings__checkbox--hidden"
-                                />
-                                <div class="settings__checkbox settings__checkbox--real">
-                                    <svg
-                                        class="settings__checkmark"
-                                        width="12"
-                                        height="9"
-                                        viewBox="0 0 12 9"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
-                                    </svg>
-                                </div>
-                            </label>
-                            <label class="settings__label">
-                                Запуск в окне
-                                <input
-                                    tabindex="-1"
-                                    type="checkbox"
-                                    id="windowScreen"
-                                    class="settings__checkbox settings__checkbox--hidden"
-                                />
-                                <div class="settings__checkbox settings__checkbox--real">
-                                    <svg
-                                        class="settings__checkmark"
-                                        width="12"
-                                        height="9"
-                                        viewBox="0 0 12 9"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
-                                    </svg>
-                                </div>
-                            </label>
-                            <label class="settings__label"
-                                >Включить ведение журнала отладки
-                                <input
-                                    tabindex="-1"
-                                    type="checkbox"
-                                    id="debugLog"
-                                    class="settings__checkbox settings__checkbox--hidden"
-                                />
-                                <div class="settings__checkbox settings__checkbox--real">
-                                    <svg
-                                        class="settings__checkmark"
-                                        width="12"
-                                        height="9"
-                                        viewBox="0 0 12 9"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
-                                    </svg>
-                                </div>
-                            </label>
-                            <div class="settings__item">
-                                Ограничение загрузки в килобайтах в секунду
-                                <div class="settings__block">
-                                    <input
-                                        tabindex="-1"
-                                        type="number"
-                                        class="settings__input"
-                                        id="maxDownloadSpeed"
-                                        value="10000"
-                                    />
-                                    КБ/с
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.settings__wrapper -->
-                        <div class="settings__buttons">
-                            <a
-                                tabindex="-1"
-                                class="settings__button settings__button--logs settings__button--hidden"
-                                href="#"
-                                >Открыть логи</a
-                            >
-                            <button tabindex="-1" class="settings__button settings__button--primary" type="submit">
-                                Сохранить изменения
-                            </button>
-                        </div>
-                    </form>
-                    <!-- /.settings__form -->
-                </div>
-                <!-- /.settings__content -->
-                <span class="settings__version"></span>
-                <a tabindex="-1" href="forum.gambit-rp.ru" target="_blank" class="settings__contact"
-                    >Сообщить о проблеме</a
+              </div>
+              <!-- /.mainpage__update -->
+            </div>
+            <!-- /.mainpage__updates -->
+            <div class="mainpage__download">
+              <button tabindex="-1" class="mainpage__button">
+                Скачать
+                <svg
+                  class="mainpage__button-icon"
+                  width="34"
+                  height="34"
+                  viewBox="0 0 34 34"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-            </section>
-            <section class="error error__section error--hidden">
-                <div class="error__content">
-                    <h1 class="error__title">Ошибка подключения</h1>
-                    <div class="error__reason error__reason--active">
-                        <span class="error__reason-text">Переподключение</span>
-                        <span class="reconnection-timer">1</span>
-                        <span class="points">...</span>
-                    </div>
-                    <!-- /.error__reason -->
-                    <!-- <div class="error__buttons">
+                  <rect width="34" height="34" rx="17" fill="white" />
+                  <path
+                    d="M15.0267 11.6433C15.0267 10.7357 15.9102 10 17 10C18.0898 10 18.9733 10.7357 18.9733 11.6433V18.2164C18.9733 19.1239 18.0898 19.8597 17 19.8597C15.9102 19.8597 15.0267 19.1239 15.0267 18.2164V11.6433Z"
+                    fill="#000000"
+                  />
+                  <path
+                    d="M16.1917 24.6495C16.5845 25.1168 17.4155 25.1168 17.8083 24.6495L22.8199 18.6876C23.2777 18.143 22.8099 17.3947 22.0116 17.3947H11.9884C11.1901 17.3947 10.7223 18.143 11.1801 18.6876L16.1917 24.6495Z"
+                    fill="#000000"
+                  />
+                </svg>
+              </button>
+              <div class="mainpage__progress">
+                <svg class="progress-ring" width="80" height="80">
+                  <circle class="progress-ring__circle" stroke="#4A2DF9" stroke-width="3" cx="40" cy="40" r="34" fill="#2A2A2A"></circle>
+                </svg>
+              </div>
+              <div class="mainpage__info info">
+                <span class="info__status">Проверка целостности файлов...</span>
+                <div class="info__data">
+                  <span class="info__speed"> <span class="info__speed--number">6.44</span> МБ/С </span>
+                  <span class="info__size">
+                    <span class="info__size--currentNumber">45</span> МБ / <span class="info__size--allSIze">2345</span> МБ
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- /.mainpage__download -->
+            <span class="mainpage__online">Онлайн: <strong class="mainpage__online-number">999</strong></span>
+          </section>
+        </div>
+        <!-- /.container -->
+        <div class="mainpage__blur">
+          <div class="mainpage__blur-hover"></div>
+          <div class="mainpage__progress-bar"></div>
+          <div class="mainpage__stroke"></div>
+        </div>
+        <!-- /.mainpage__blur -->
+        <div class="burger__menu">
+          <div class="container__burger">
+            <h2 class="burger__title">Наши проекты</h2>
+            <div class="burger__items">
+              <div class="burger__item">
+                <img src="./img/gambit-v.png" alt="Gambit V" class="burger__image" />
+                <div class="burger__item-content">
+                  <span class="burger__subtitle">Gambit V</span>
+                  <a tabindex="-1" href="gambit-v.ru" class="burger__link">Подробнее<i class="burger__icon icon icon__arrow"></i></a>
+                </div>
+                <!-- /.burger__item-content -->
+              </div>
+              <!-- /.burger__item -->
+              <div class="burger__item">
+                <img src="./img/gambit-craft.png" alt="Gambit Craft" class="burger__image" />
+                <div class="burger__item-content">
+                  <span class="burger__subtitle">Gambit Craft</span>
+                  <a tabindex="-1" class="burger__link">Подробнее<i class="burger__icon icon icon__arrow"></i></a>
+                </div>
+                <!-- /.burger__item-content -->
+              </div>
+              <!-- /.burger__item -->
+            </div>
+            <!-- /.burger__items -->
+          </div>
+          <!-- /.container -->
+          <div class="burger__footer">
+            <div class="burger__info">информация</div>
+            <!-- /.burger__info -->
+            <div class="burger__social">
+              <a tabindex="-1" href="vk.com" target="_blank" class="burger__social-link">
+                <i class="icon icon__vk"></i>
+              </a>
+              <a tabindex="-1" href="instagram.com" target="_blank" class="burger__social-link">
+                <i class="icon icon__instagram"></i>
+              </a>
+            </div>
+            <!-- /.burger__social -->
+          </div>
+          <!-- /.burger__footer -->
+        </div>
+        <!-- /.burger__menu -->
+      </section>
+      <!-- /.mainpage__content -->
+      <section class="preloader preloader__section preloader--active">
+        <div class="container">
+          <img src="./img/icons/logo.svg" alt="" class="logotype preloader__logotype" />
+          <span class="preloader__heading preloader__heading--active">Подгружаем обновления...</span>
+          <div class="mainpage__progress-bar" style="top: 715px; left: 70px"></div>
+          <div class="mainpage__stroke"></div>
+          <div class="tip preloader__tip">
+            <h2 class="tip__title preloader__tip-title">Подсказка</h2>
+            <p class="tip__text preloader__tip-text">
+              Чтобы приобрести дом или квартиру, вы можете посетить Центр Купли-Продаж в Сан-Фиерро и ознакомиться с предлагаемыми
+              вариантами.
+            </p>
+          </div>
+          <!-- /.tip -->
+        </div>
+        <!-- /.container -->
+      </section>
+      <section class="login mainpage__login">
+        <aside class="login__aside">
+          <form action="#" class="form login__form">
+            <div class="form__block">
+              <h1 class="login__title">Войдите в свою учётную запись</h1>
+              <span class="login__registration"
+                >Нет аккаунта?
+                <a tabindex="-1" href="gambit-rp.ru/account/ucp/info" target="_blank" class="login__link">Регистрация</a></span
+              >
+            </div>
+            <!-- /.form__block -->
+            <div class="form__block">
+              <input tabindex="-1" type="text" class="login__nick login__input" placeholder="Имя пользователя" required />
+              <input tabindex="-1" type="password" class="login__password login__input" placeholder="Пароль" required />
+              <input
+                tabindex="-1"
+                type="number"
+                class="login__twofactor login__input login__twofactor--hidden"
+                placeholder="Код двухфакторной авторизации"
+                size="6"
+              />
+            </div>
+            <!-- /.form__block -->
+            <div class="form__block form__block--bottom">
+              <a tabindex="-1" href="gambit-rp.ru/login" target="_blank" class="login__link">Забыли пароль?</a>
+              <button tabindex="-1" class="login__button login__button-test" type="submit">
+                Войти
+                <svg class="login__button-icon" width="19" height="10" viewBox="0 0 19 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M14.1087 0L12.9689 1.103L16.0075 4.20916H0V5.79084H16.0075L12.9689 8.897L14.1087 10L19 5L14.1087 0Z"
+                    fill="white"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </aside>
+        <div class="login__content">
+          <img src="./img/icons/logo.svg" alt="Gambit Logotype" class="logotype login__logotype" />
+        </div>
+        <!-- /.login__content -->
+      </section>
+      <section class="settings settings__section">
+        <div class="settings__content">
+          <h2 class="settings__title">Настройки</h2>
+          <form action="#" class="settings__form">
+            <div class="settings__wrapper">
+              <label class="settings__label"
+                >Запустить при включении компьютера
+                <input tabindex="-1" type="checkbox" id="launchOnLoad" class="settings__checkbox settings__checkbox--hidden" />
+                <div class="settings__checkbox settings__checkbox--real">
+                  <svg class="settings__checkmark" width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
+                  </svg>
+                </div>
+              </label>
+              <label class="settings__label">
+                Запуск в широкоэкранном режиме
+                <input tabindex="-1" type="checkbox" id="wideScreen" class="settings__checkbox settings__checkbox--hidden" />
+                <div class="settings__checkbox settings__checkbox--real">
+                  <svg class="settings__checkmark" width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
+                  </svg>
+                </div>
+              </label>
+              <label class="settings__label">
+                Запуск в окне
+                <input tabindex="-1" type="checkbox" id="windowScreen" class="settings__checkbox settings__checkbox--hidden" />
+                <div class="settings__checkbox settings__checkbox--real">
+                  <svg class="settings__checkmark" width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
+                  </svg>
+                </div>
+              </label>
+              <label class="settings__label"
+                >Включить ведение журнала отладки
+                <input tabindex="-1" type="checkbox" id="debugLog" class="settings__checkbox settings__checkbox--hidden" />
+                <div class="settings__checkbox settings__checkbox--real">
+                  <svg class="settings__checkmark" width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 3.4L4.75 7L11 1" stroke="white" stroke-width="2" />
+                  </svg>
+                </div>
+              </label>
+              <div class="settings__item">
+                Ограничение загрузки в килобайтах в секунду
+                <div class="settings__block">
+                  <input tabindex="-1" type="number" class="settings__input" id="maxDownloadSpeed" value="10000" />
+                  КБ/с
+                </div>
+              </div>
+            </div>
+            <!-- /.settings__wrapper -->
+            <div class="settings__buttons">
+              <a tabindex="-1" class="settings__button settings__button--logs settings__button--hidden" href="#">Открыть логи</a>
+              <button tabindex="-1" class="settings__button settings__button--primary" type="submit">Сохранить изменения</button>
+            </div>
+          </form>
+          <!-- /.settings__form -->
+        </div>
+        <!-- /.settings__content -->
+        <span class="settings__version"></span>
+        <a tabindex="-1" href="forum.gambit-rp.ru" target="_blank" class="settings__contact">Сообщить о проблеме</a>
+      </section>
+      <section class="error error__section error--hidden">
+        <div class="error__content">
+          <h1 class="error__title">Ошибка подключения</h1>
+          <div class="error__reason error__reason--active">
+            <span class="error__reason-text">Переподключение</span>
+            <span class="reconnection-timer">1</span>
+            <span class="points">...</span>
+          </div>
+          <!-- /.error__reason -->
+          <!-- <div class="error__buttons">
                 <button tabindex="-1" class="error__button">Попробовать опять</button>
                 <button tabindex="-1" class="error__button">Попробовать снова</button>
             </div> -->
-                    <!-- /.error-section__buttons -->
-                    <div class="tip error__tip">
-                        <img class="logotype tip__logotype" src="./img/icons/logo.svg" alt="" />
-                        <h2 class="tip__title error__tip-title">Подсказка</h2>
-                        <p class="tip__text error__tip-text">
-                            Чтобы приобрести дом или квартиру, вы можете посетить Центр Купли-Продаж в Сан-Фиерро и
-                            ознакомиться с предлагаемыми вариантами.
-                        </p>
-                    </div>
-                    <!-- /.tip -->
-                </div>
-                <!-- /.error__content -->
-            </section>
-            <section class="crash crash__section">
-                <div class="crash__popup">
-                    <h1 class="crash__title">Критическая ошибка</h1>
-                    <span class="crash__code">Код ошибки: 12345</span>
-                    <span class="crash__description">
-                        Возникла критическа ошибка, непозволяющая выполнять дальнейшую обработку информации. Если ошибка
-                        повторится вновь, обратитесь в
-                        <a tabindex="-1" href="forum.gambit-rp.ru" class="crash__link" target="_blank"
-                            >Техническую Поддержку</a
-                        >
-                    </span>
-                    <a tabindex="-1" href="#" class="button crash__button crash__button--primary">Закрыть приложение</a>
-                </div>
-                <!-- /.crash__popup -->
-            </section>
-            <div class="mainpage__tray">
-                <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--hide"></button>
-                <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--settings"></button>
-                <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--close"></button>
-            </div>
+          <!-- /.error-section__buttons -->
+          <div class="tip error__tip">
+            <img class="logotype tip__logotype" src="./img/icons/logo.svg" alt="" />
+            <h2 class="tip__title error__tip-title">Подсказка</h2>
+            <p class="tip__text error__tip-text">
+              Чтобы приобрести дом или квартиру, вы можете посетить Центр Купли-Продаж в Сан-Фиерро и ознакомиться с предлагаемыми
+              вариантами.
+            </p>
+          </div>
+          <!-- /.tip -->
         </div>
-        <!-- /.mainpage -->
-
-        <script>
-            const ipcRenderer = require("electron").ipcRenderer;
-        </script>
-        <!-- <script src="./js/swiper-bundle.min.js"></script> -->
-        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-        <script src="./js/view.js" type="text/javascript"></script>
-        <script>
-            v = new view();
-        </script>
-    </body>
+        <!-- /.error__content -->
+      </section>
+      <section class="crash crash__section">
+        <div class="crash__popup">
+          <h1 class="crash__title">Критическая ошибка</h1>
+          <span class="crash__code">Код ошибки: 12345</span>
+          <span class="crash__description">
+            Возникла критическа ошибка, непозволяющая выполнять дальнейшую обработку информации. Если ошибка повторится вновь, обратитесь в
+            <a tabindex="-1" href="forum.gambit-rp.ru" class="crash__link" target="_blank">Техническую Поддержку</a>
+          </span>
+          <a tabindex="-1" href="#" class="button crash__button crash__button--primary">Закрыть приложение</a>
+        </div>
+        <!-- /.crash__popup -->
+      </section>
+      <div class="mainpage__tray">
+        <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--hide"></button>
+        <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--settings"></button>
+        <button tabindex="-1" class="mainpage__tray-button mainpage__tray-button--close"></button>
+      </div>
+    </div>
+    <!-- /.mainpage -->
+    <!-- <script src="./js/swiper-bundle.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="./js/view.js" type="text/javascript"></script>
+    <script>
+      let v = new View()
+    </script>
+  </body>
 </html>
